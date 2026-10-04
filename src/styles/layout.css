@@ -10,6 +10,8 @@ main { display: grid; gap: var(--sp-6); min-width: 0; }
 .sec > h2 { margin-bottom: var(--sp-5); padding-left: var(--sp-3); font-size: var(--fs-md); text-transform: uppercase; letter-spacing: .12em; border-left: 3px solid var(--accent); }
 .sec h3.sub { margin: var(--sp-5) 0 var(--sp-3); font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--text-2); }
 .sec h3.sub:first-of-type { margin-top: 0; }
+.sec > p { margin: 0 0 var(--sp-4); line-height: 1.6; max-width: 72ch; }
+.sec > p:last-child { margin-bottom: 0; }
 .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); }
 .stack { display: grid; gap: var(--sp-4); }
 .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--sp-5); }
