@@ -1,16 +1,35 @@
 # Ember UI
 
-Design system em HTML e CSS puro, com visual denso e compacto de software de desktop gamer e cor de destaque laranja saturado.
+Biblioteca de componentes React do design system Ember UI: visual denso e compacto de software de desktop gamer, cor de destaque laranja saturado. Runtime principal é o [Bun](https://bun.sh).
 
-Sem frameworks, sem bibliotecas, sem CDNs. Um único arquivo.
+> Esta é a branch `react/main`. A versão original em HTML/CSS/JS puro, de arquivo único, continua em `main`.
 
 > Inspirado no estilo visual de clientes de jogos para desktop. Não usa logos, ícones ou assets de nenhuma marca.
 
 ## Como usar
 
-Abra o `index.html` no navegador. Não precisa instalar nada.
+```bash
+bun install   # instala as dependências
+bun dev       # sobe a página de demo (Vite) em http://localhost:5173
+bun run build       # build de produção da página de demo
+bun run build:lib   # gera dist/ com os componentes prontos para importar em outro projeto
+bun test             # roda a suíte de testes (bun:test)
+```
 
-A página é uma demonstração com uma seção por componente, menu lateral e botão de tema (claro/escuro) no topo.
+`src/App.tsx` é a página de demo — uma seção por componente, menu lateral e botão de tema (claro/escuro) no topo, equivalente ao `index.html` original.
+
+## Importar um componente
+
+```tsx
+import { Button, Modal, useToast } from "ember-ui";
+
+function Exemplo() {
+  const toast = useToast();
+  return <Button onClick={() => toast({ title: "Oi!", variant: "ok" })}>Clique</Button>;
+}
+```
+
+`src/index.ts` é o barrel público: reexporta todos os componentes, hooks e helpers. Cada componente mora isolado em `src/components/<Nome>/`, com seu próprio `.tsx` e `.css`.
 
 ## Componentes
 
@@ -19,43 +38,50 @@ A página é uma demonstração com uma seção por componente, menu lateral e b
 - Checkbox, radio, switch e slider
 - Tabs e menu lateral
 - Janela de app, com barra de título
-- Modais (simples, confirmação e erro)
-- Dropdown e menu de contexto
-- Tooltip e popover
+- Modais (simples, confirmação e erro) — `<dialog>` nativo
+- Dropdown e menu de contexto — posicionados com [Floating UI](https://floating-ui.com/)
+- Tooltip e popover — também via Floating UI
 - Cards de jogo/produto
 - Lista de biblioteca
 - Barra de progresso e de download
 - Badges, tags e avatar com status
-- Toasts
+- Toasts, via `ToastProvider` + `useToast()`
 - Paginação e breadcrumb
 - Scrollbar customizada
 
 Todos têm estados normal, hover, `focus-visible`, active e disabled.
 
-## Estrutura do arquivo
+## Estrutura
 
-O CSS fica dentro de `<style>`, em blocos comentados:
-
-1. **Tokens:** cores, espaçamentos, raios e sombras (`:root`)
-2. **Base**
-3. **Componentes**
-4. **Demo e utilitários**
-
-O JavaScript no final do arquivo é pequeno e cuida só de tema, modal, tabs, dropdown, menu de contexto, fechar toast e mostrar/ocultar senha.
+```
+src/
+  styles/      tokens.css, base.css (reutilizáveis) e layout.css (só da página de demo)
+  lib/         helpers puros: classnames, navegação por teclado, paginação
+  theme/       ThemeProvider / useTheme / ThemeToggle
+  components/  um componente por pasta, com .tsx + .css + index.ts
+  index.ts     barrel público da biblioteca
+  App.tsx      página de demo
+tests/         bun:test sobre a lógica não-trivial extraída em lib/ e theme/
+```
 
 ## Temas
 
-A troca é feita pelo atributo `data-theme` no `<html>`:
+A troca é feita pelo atributo `data-theme` no `<html>`, via `ThemeProvider`/`useTheme`:
 
-```html
-<html data-theme="dark">   <!-- ou "light" -->
+```tsx
+import { ThemeProvider, ThemeToggle } from "ember-ui";
+
+<ThemeProvider>
+  <ThemeToggle />
+  {/* resto do app */}
+</ThemeProvider>
 ```
 
-A escolha fica salva no `localStorage`.
+A escolha fica salva no `localStorage` (chave `ember-theme`).
 
 ## Trocar a cor de destaque
 
-Altere no `:root`:
+Altere em `src/styles/tokens.css`:
 
 | Variável | Uso |
 | --- | --- |
