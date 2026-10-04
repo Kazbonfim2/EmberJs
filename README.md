@@ -48,6 +48,7 @@ function Exemplo() {
 - Toasts, via `ToastProvider` + `useToast()`
 - Paginação e breadcrumb
 - Scrollbar customizada
+- `Flex`/`FlexItem` — sistema de layout (veja [Sistema de layout (Flex)](#sistema-de-layout-flex))
 
 Todos têm estados normal, hover, `focus-visible`, active e disabled.
 
@@ -78,6 +79,48 @@ import { ThemeProvider, ThemeToggle } from "ember-ui";
 ```
 
 A escolha fica salva no `localStorage` (chave `ember-theme`).
+
+## Sistema de layout (Flex)
+
+`Flex` e `FlexItem` existem pra não precisar escrever `display: flex` e as propriedades relacionadas na mão em todo canto — eles normalizam as opções mais comuns de flexbox como props, usando os tokens de espaçamento (`--sp-1`..`--sp-7`) no `gap`. Funcionam junto com qualquer outro componente da biblioteca (um `Flex` pode conter `Button`, `Badge`, `Card`, o que for).
+
+```tsx
+import { Flex, FlexItem, Button, Badge } from "ember-ui";
+
+// linha de botões, com quebra automática e espaçamento no token 3 (--sp-3)
+<Flex gap={3} wrap>
+  <Button variant="primary">Instalar</Button>
+  <Button variant="secondary">Cancelar</Button>
+</Flex>
+
+// alinhar nas pontas
+<Flex align="center" justify="between">
+  <Badge>Esquerda</Badge>
+  <Badge variant="ok">Direita</Badge>
+</Flex>
+
+// coluna com um item que cresce pra ocupar o espaço livre
+<Flex direction="column" gap={2}>
+  <FlexItem grow>Cresce</FlexItem>
+  <FlexItem>Tamanho natural</FlexItem>
+</Flex>
+```
+
+**`Flex` props:**
+
+| Prop | Valores | Default |
+| --- | --- | --- |
+| `direction` | `row` \| `column` \| `row-reverse` \| `column-reverse` | `row` |
+| `align` | `start` \| `center` \| `end` \| `stretch` \| `baseline` | — (`align-items` do navegador) |
+| `justify` | `start` \| `center` \| `end` \| `between` \| `around` \| `evenly` | — (`justify-content` do navegador) |
+| `gap` | `1`–`7` (usa `var(--sp-N)`) ou qualquer string CSS (`"12px"`, `"1rem"`) | — |
+| `wrap` | `boolean` | `false` |
+| `inline` | `boolean` (`inline-flex` em vez de `flex`) | `false` |
+| `as` | qualquer tag/componente (`"ul"`, `"nav"`, ...) | `"div"` |
+
+**`FlexItem` props:** `grow`/`shrink` (`boolean` vira `0`/`1`, ou passe um número exato), `basis` (qualquer `flex-basis` válido), `order`, `as`.
+
+Não gera nenhuma classe CSS nova — tudo é resolvido via `style` computado a partir das props, então não tem risco de colidir com as classes do resto do design system.
 
 ## Trocar a cor de destaque
 

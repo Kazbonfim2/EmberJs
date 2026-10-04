@@ -449,7 +449,15 @@ export function App() {
 
           <section className="sec" id="flex" aria-labelledby="h-flex">
             <h2 id="h-flex">Sistema de Flex</h2>
-            <h3 className="sub">direction, gap, align, justify</h3>
+            <p className="muted">
+              <code>Flex</code> e <code>FlexItem</code> normalizam o uso de flexbox pra não escrever <code>display: flex</code> e
+              companhia na mão em todo canto — direção, alinhamento, espaçamento (nos tokens <code>--sp-1</code> a{" "}
+              <code>--sp-7</code>) e quebra de linha ficam só props, e funcionam compondo com qualquer outro componente da
+              biblioteca (aqui embaixo, com <code>Badge</code>).
+            </p>
+
+            <h3 className="sub">align="center" + justify="between" + gap={3}</h3>
+            <p className="muted">Distribui nas pontas e centraliza no eixo cruzado — útil pra barras de ação, cabeçalhos de card etc.</p>
             <Flex
               gap={3}
               align="center"
@@ -460,7 +468,12 @@ export function App() {
               <Badge variant="info">Centro</Badge>
               <Badge variant="ok">Direita</Badge>
             </Flex>
-            <h3 className="sub">coluna com FlexItem (grow)</h3>
+
+            <h3 className="sub">direction="column" + FlexItem grow</h3>
+            <p className="muted">
+              O primeiro <code>FlexItem</code> tem <code>grow</code>, então ele consome todo o espaço livre da coluna; o
+              segundo fica no tamanho natural do conteúdo.
+            </p>
             <Flex direction="column" gap={2} style={{ maxWidth: 280 }}>
               <FlexItem grow style={{ padding: "var(--sp-3)", background: "var(--bg-inset)", borderRadius: "var(--r-sm)" }}>
                 Cresce pra ocupar o espaço (grow)
