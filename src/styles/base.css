@@ -1,0 +1,24 @@
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 56px; }
+body { margin: 0; font: var(--fs-md)/1.45 var(--font); color: var(--text); background: var(--bg-app); }
+h1, h2, h3, h4 { margin: 0; font-weight: 600; color: var(--text-strong); }
+p { margin: 0; }
+a { color: var(--accent-fg); }
+a:hover { text-decoration: none; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.ic { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ic-sm { width: 14px; height: 14px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: -999px; } .skip:focus { left: 8px; top: 8px; z-index: 99; background: var(--bg-raised); padding: 6px 10px; }
+@media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; transition: none !important; scroll-behavior: auto !important; } }
+
+/* Scrollbar customizada */
+* { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-inset); }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border: 2px solid var(--bg-inset); border-radius: var(--r-md); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+::-webkit-scrollbar-thumb:active { background: var(--accent-active); }
+::-webkit-scrollbar-corner { background: var(--bg-inset); }
