@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { Button } from "./components/Button";
+import { Button, ButtonGroup } from "./components/Button";
 import { Flex, FlexItem } from "./components/Flex";
 import { Icon } from "./components/Icon";
 import { BlinkingIcon } from "./components/BlinkingIcon";
@@ -312,15 +312,39 @@ import { Flex, FlexItem, Button } from "ember-ui";
               <Button variant="ghost" disabled>Desabilitado</Button>
               <Button variant="danger" disabled>Desabilitado</Button>
             </div>
+            <h3 className="sub">Grupos de botões</h3>
+            <div className="row" style={{ gap: 24 }}>
+              <ButtonGroup label="Formato do texto">
+                <Button variant="secondary" icon aria-label="Negrito"><Icon name="plus" /></Button>
+                <Button variant="secondary" icon aria-label="Itálico"><Icon name="minus" /></Button>
+                <Button variant="secondary" icon aria-label="Sublinhado"><Icon name="check" /></Button>
+              </ButtonGroup>
+              <ButtonGroup label="Ações da linha">
+                <Button variant="primary">Salvar</Button>
+                <Button variant="secondary">Cancelar</Button>
+                <Button variant="danger">Excluir</Button>
+              </ButtonGroup>
+              <ButtonGroup label="Ações verticais" orientation="vertical">
+                <Button variant="secondary">Topo</Button>
+                <Button variant="secondary">Meio</Button>
+                <Button variant="secondary">Base</Button>
+              </ButtonGroup>
+            </div>
 
             <CodeWindow code={`
-import { Button, Icon } from "ember-ui";
+import { Button, ButtonGroup, Icon } from "ember-ui";
 
 <Button variant="primary">Instalar</Button>
 <Button variant="secondary" loading>Salvando</Button>
 <Button variant="secondary" icon aria-label="Configurações">
   <Icon name="settings" />
 </Button>
+
+<ButtonGroup label="Ações da linha">
+  <Button variant="primary">Salvar</Button>
+  <Button variant="secondary">Cancelar</Button>
+  <Button variant="danger">Excluir</Button>
+</ButtonGroup>
             `} />
           </section>
 

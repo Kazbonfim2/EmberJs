@@ -44,3 +44,16 @@
   border-radius: 50%; animation: spin .7s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+.btn-group { display: inline-flex; }
+.btn-group.is-vertical { flex-direction: column; }
+.btn-group > .btn { position: relative; }
+
+.btn-group > .btn:not(:last-child) { margin-right: -1px; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.btn-group > .btn:not(:first-child) { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+
+.btn-group.is-vertical > .btn:not(:last-child) { margin-right: 0; margin-bottom: -1px; border-top-right-radius: var(--r-md); border-bottom-right-radius: 0; border-bottom-left-radius: 0; }
+.btn-group.is-vertical > .btn:not(:first-child) { border-top-left-radius: 0; border-top-right-radius: 0; }
+
+.btn-group > .btn:hover:not(:disabled):not([aria-disabled="true"]),
+.btn-group > .btn:focus-visible { z-index: 1; }
