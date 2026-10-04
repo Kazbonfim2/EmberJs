@@ -1,0 +1,5 @@
+.blink-ic-wrap { display: inline-flex; }
+.blink-ic { animation: blink-ic 1.2s ease-in-out infinite; }
+.blink-ic.blink-ic-lg { width: 20px; height: 20px; }
+
+@keyframes blink-ic { 0%, 100% { opacity: 1; } 50% { opacity: .15; } }

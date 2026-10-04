@@ -1,5 +1,6 @@
 export * from "./components/Flex";
 export * from "./components/Icon";
+export * from "./components/BlinkingIcon";
 export * from "./components/Text";
 export * from "./components/Button";
 export * from "./components/Field";

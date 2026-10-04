@@ -2,6 +2,7 @@ import { Fragment, useState } from "react";
 import { Button } from "./components/Button";
 import { Flex, FlexItem } from "./components/Flex";
 import { Icon } from "./components/Icon";
+import { BlinkingIcon } from "./components/BlinkingIcon";
 import { Field, Input, Textarea, Select, PasswordInput } from "./components/Field";
 import { Checkbox, Radio, Switch } from "./components/Checkbox";
 import { Slider } from "./components/Slider";
@@ -50,6 +51,7 @@ const SECTION_GROUPS = [
       ["lista", "Lista"],
       ["progresso", "Progresso e download"],
       ["badges", "Badges e avatar"],
+      ["icone-piscante", "Ícone piscante"],
       ["toasts", "Notificações"],
       ["paginacao", "Paginação"],
       ["qrcode", "QR code"],
@@ -742,6 +744,23 @@ import { Badge, Tag, Avatar } from "ember-ui";
 <Badge variant="ok">Instalado</Badge>
 <Tag onRemove={() => {}} removeLabel="Remover tag Indie">Indie</Tag>
 <Avatar status="online" label="Lucas, online">L</Avatar>
+            `} />
+          </section>
+
+          <section className="sec" id="icone-piscante" aria-labelledby="h-icone-piscante">
+            <h2 id="h-icone-piscante">Ícone piscante</h2>
+            <div className="row" style={{ gap: 24 }}>
+              <BlinkingIcon name="bell" size="sm" label="Notificação, pequeno" />
+              <BlinkingIcon name="bell" size="md" label="Notificação, médio" />
+              <BlinkingIcon name="bell" size="lg" label="Notificação, grande" />
+            </div>
+
+            <CodeWindow code={`
+import { BlinkingIcon } from "ember-ui";
+
+<BlinkingIcon name="bell" size="sm" label="Notificação" />
+<BlinkingIcon name="bell" size="md" label="Notificação" />
+<BlinkingIcon name="bell" size="lg" label="Notificação" />
             `} />
           </section>
 
