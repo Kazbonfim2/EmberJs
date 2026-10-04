@@ -4,5 +4,5 @@
 .modal-head h3 { flex: 1; font-size: var(--fs-md); text-transform: uppercase; letter-spacing: .08em; }
 .modal-body { padding: var(--sp-5); display: grid; gap: var(--sp-4); }
 .modal-foot { display: flex; justify-content: flex-end; gap: var(--sp-3); padding: var(--sp-4) var(--sp-5); border-top: 1px solid var(--border); background: var(--bg-inset); }
-.modal.is-danger { border-color: var(--err); } .modal.is-danger .modal-head { border-bottom-color: var(--err); color: var(--err-fg); }
+.modal.is-danger .modal-head { color: var(--err-fg); }
 .modal.is-warn .modal-head { color: var(--warn-fg); }
