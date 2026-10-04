@@ -1,20 +1,23 @@
 import type { CSSProperties, ElementType, HTMLAttributes } from "react";
+import { spacingStyle, splitSpacingProps, type SpacingProps } from "../../lib/spacing";
 
-export type FlexItemProps = HTMLAttributes<HTMLElement> & {
-  as?: ElementType;
-  /** true = 1, false = 0, numero = valor exato de flex-grow. */
-  grow?: boolean | number;
-  /** true = 1, false = 0, numero = valor exato de flex-shrink. */
-  shrink?: boolean | number;
-  basis?: CSSProperties["flexBasis"];
-  order?: number;
-};
+export type FlexItemProps = HTMLAttributes<HTMLElement> &
+  SpacingProps & {
+    as?: ElementType;
+    /** true = 1, false = 0, numero = valor exato de flex-grow. */
+    grow?: boolean | number;
+    /** true = 1, false = 0, numero = valor exato de flex-shrink. */
+    shrink?: boolean | number;
+    basis?: CSSProperties["flexBasis"];
+    order?: number;
+  };
 
 const toFlexFactor = (value: boolean | number | undefined): number | undefined =>
   typeof value === "boolean" ? (value ? 1 : 0) : value;
 
 /** Item de dentro de um <Flex> -- controla grow/shrink/basis/order sem CSS cru. */
 export function FlexItem({ as: As = "div", grow, shrink, basis, order, style, children, ...rest }: FlexItemProps) {
+  const [spacing, domRest] = splitSpacingProps(rest);
   return (
     <As
       style={{
@@ -22,9 +25,10 @@ export function FlexItem({ as: As = "div", grow, shrink, basis, order, style, ch
         flexShrink: toFlexFactor(shrink),
         flexBasis: basis,
         order,
+        ...spacingStyle(spacing),
         ...style,
       }}
-      {...rest}
+      {...domRest}
     >
       {children}
     </As>

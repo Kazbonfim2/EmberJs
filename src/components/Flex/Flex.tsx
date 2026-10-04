@@ -1,4 +1,5 @@
 import type { CSSProperties, ElementType, HTMLAttributes } from "react";
+import { spacingStyle, splitSpacingProps, type SpacingProps } from "../../lib/spacing";
 
 export type FlexGap = 1 | 2 | 3 | 4 | 5 | 6 | 7 | string;
 export type FlexAlign = "start" | "center" | "end" | "stretch" | "baseline";
@@ -26,15 +27,16 @@ const JUSTIFY: Record<FlexJustify, CSSProperties["justifyContent"]> = {
 export const toGapValue = (gap?: FlexGap): string | undefined =>
   gap === undefined ? undefined : typeof gap === "number" ? `var(--sp-${gap})` : gap;
 
-export type FlexProps = Omit<HTMLAttributes<HTMLElement>, "color"> & {
-  as?: ElementType;
-  direction?: FlexDirection;
-  align?: FlexAlign;
-  justify?: FlexJustify;
-  gap?: FlexGap;
-  wrap?: boolean;
-  inline?: boolean;
-};
+export type FlexProps = Omit<HTMLAttributes<HTMLElement>, "color"> &
+  SpacingProps & {
+    as?: ElementType;
+    direction?: FlexDirection;
+    align?: FlexAlign;
+    justify?: FlexJustify;
+    gap?: FlexGap;
+    wrap?: boolean;
+    inline?: boolean;
+  };
 
 /** Container flexbox normalizado -- direction/align/justify/gap/wrap como props em vez de CSS cru. */
 export function Flex({
@@ -49,6 +51,7 @@ export function Flex({
   children,
   ...rest
 }: FlexProps) {
+  const [spacing, domRest] = splitSpacingProps(rest);
   return (
     <As
       style={{
@@ -58,9 +61,10 @@ export function Flex({
         justifyContent: justify && JUSTIFY[justify],
         flexWrap: wrap ? "wrap" : undefined,
         gap: toGapValue(gap),
+        ...spacingStyle(spacing),
         ...style,
       }}
-      {...rest}
+      {...domRest}
     >
       {children}
     </As>

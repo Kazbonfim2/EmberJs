@@ -1,21 +1,48 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, HTMLAttributes } from "react";
 import { cx } from "../../lib/classnames";
+import { spacingStyle, splitSpacingProps, type SpacingProps } from "../../lib/spacing";
 import "./SideNav.css";
 
-export function SideNav({ className, children, ...rest }: HTMLAttributes<HTMLUListElement>) {
-  return <ul className={cx("sidenav", className)} {...rest}>{children}</ul>;
+export type SideNavProps = HTMLAttributes<HTMLUListElement> & SpacingProps;
+
+export function SideNav({ className, children, style, ...rest }: SideNavProps) {
+  const [spacing, domRest] = splitSpacingProps(rest);
+  return (
+    <ul className={cx("sidenav", className)} style={{ ...spacingStyle(spacing), ...style }} {...domRest}>
+      {children}
+    </ul>
+  );
 }
 
-export function SideNavTitle({ children, ...rest }: HTMLAttributes<HTMLLIElement>) {
-  return <li className="nav-title" {...rest}>{children}</li>;
+export type SideNavTitleProps = HTMLAttributes<HTMLLIElement> & SpacingProps;
+
+export function SideNavTitle({ children, style, ...rest }: SideNavTitleProps) {
+  const [spacing, domRest] = splitSpacingProps(rest);
+  return (
+    <li className="nav-title" style={{ ...spacingStyle(spacing), ...style }} {...domRest}>
+      {children}
+    </li>
+  );
 }
 
-export type SideNavLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & { current?: boolean };
+export type SideNavLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & SpacingProps & { current?: boolean };
 
-export function SideNavLink({ current, ...rest }: SideNavLinkProps) {
-  return <li><a aria-current={current ? "page" : undefined} {...rest} /></li>;
+export function SideNavLink({ current, style, ...rest }: SideNavLinkProps) {
+  const [spacing, domRest] = splitSpacingProps(rest);
+  return (
+    <li style={spacingStyle(spacing)}>
+      <a aria-current={current ? "page" : undefined} style={style} {...domRest} />
+    </li>
+  );
 }
 
-export function SideNavButton({ type = "button", ...rest }: ButtonHTMLAttributes<HTMLButtonElement>) {
-  return <li><button type={type} {...rest} /></li>;
+export type SideNavButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & SpacingProps;
+
+export function SideNavButton({ type = "button", style, ...rest }: SideNavButtonProps) {
+  const [spacing, domRest] = splitSpacingProps(rest);
+  return (
+    <li style={spacingStyle(spacing)}>
+      <button type={type} style={style} {...domRest} />
+    </li>
+  );
 }
