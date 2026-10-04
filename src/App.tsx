@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "./components/Button";
+import { Flex, FlexItem } from "./components/Flex";
 import { Icon } from "./components/Icon";
 import { Field, Input, Textarea, Select, PasswordInput } from "./components/Field";
 import { Checkbox, Radio, Switch } from "./components/Checkbox";
@@ -36,6 +37,7 @@ const SECTIONS = [
   ["badges", "Badges e avatar"],
   ["toasts", "Notificações"],
   ["paginacao", "Paginação"],
+  ["flex", "Sistema de Flex"],
   ["scrollbar", "Scrollbar"],
 ] as const;
 
@@ -102,13 +104,13 @@ export function App() {
           <section className="sec" id="botoes" aria-labelledby="h-botoes">
             <h2 id="h-botoes">Botões</h2>
             <h3 className="sub">Variantes</h3>
-            <div className="row">
+            <Flex gap={3} wrap>
               <Button variant="primary">Instalar</Button>
               <Button variant="secondary">Cancelar</Button>
               <Button variant="ghost">Ver mais</Button>
               <Button variant="danger">Excluir</Button>
               <Button variant="secondary" icon aria-label="Configurações"><Icon name="settings" /></Button>
-            </div>
+            </Flex>
             <h3 className="sub">Tamanhos</h3>
             <div className="row">
               <Button variant="primary" size="sm">Pequeno</Button>
@@ -443,6 +445,30 @@ export function App() {
             <div style={{ marginTop: 16 }}>
               <Pagination page={page} totalPages={12} onChange={setPage} />
             </div>
+          </section>
+
+          <section className="sec" id="flex" aria-labelledby="h-flex">
+            <h2 id="h-flex">Sistema de Flex</h2>
+            <h3 className="sub">direction, gap, align, justify</h3>
+            <Flex
+              gap={3}
+              align="center"
+              justify="between"
+              style={{ padding: "var(--sp-3)", background: "var(--bg-inset)", borderRadius: "var(--r-sm)" }}
+            >
+              <Badge>Esquerda</Badge>
+              <Badge variant="info">Centro</Badge>
+              <Badge variant="ok">Direita</Badge>
+            </Flex>
+            <h3 className="sub">coluna com FlexItem (grow)</h3>
+            <Flex direction="column" gap={2} style={{ maxWidth: 280 }}>
+              <FlexItem grow style={{ padding: "var(--sp-3)", background: "var(--bg-inset)", borderRadius: "var(--r-sm)" }}>
+                Cresce pra ocupar o espaço (grow)
+              </FlexItem>
+              <FlexItem style={{ padding: "var(--sp-3)", background: "var(--bg-inset)", borderRadius: "var(--r-sm)" }}>
+                Tamanho natural
+              </FlexItem>
+            </Flex>
           </section>
 
           <section className="sec" id="scrollbar" aria-labelledby="h-scrollbar">
