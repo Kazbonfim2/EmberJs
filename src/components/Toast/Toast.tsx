@@ -17,11 +17,13 @@ export type ToastProps = {
   text?: string;
   variant: ToastVariant;
   onDismiss: () => void;
+  /** Anima a entrada (fade + slide sutil). Default true; respeita prefers-reduced-motion. */
+  animated?: boolean;
 };
 
-export function Toast({ title, text, variant, onDismiss }: ToastProps) {
+export function Toast({ title, text, variant, onDismiss, animated = true }: ToastProps) {
   return (
-    <div className={cx("toast", variant)} role={variant === "err" ? "alert" : "status"}>
+    <div className={cx("toast", variant, animated && "is-animated")} role={variant === "err" ? "alert" : "status"}>
       <Icon name={VARIANT_ICON[variant]} className="kind" />
       <div>
         <div className="toast-title">{title}</div>
