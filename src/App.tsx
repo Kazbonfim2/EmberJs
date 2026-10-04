@@ -449,10 +449,25 @@ export function App() {
 
           <section className="sec" id="qrcode" aria-labelledby="h-qrcode">
             <h2 id="h-qrcode">QR code</h2>
-            <div className="row" style={{ alignItems: "flex-start" }}>
-              <QRCode value="https://ember-ui.example/convite" />
-              <QRCode value="ID-4821-FORJA-DAS-BRASAS" size={96} level="H" />
-            </div>
+            <p className="muted">
+              <code>QRCode</code> codifica texto/URL numa imagem (SVG), sem depender de canvas ou de rede — tudo acontece no
+              cliente. Cor e fundo já usam os tokens do tema por padrão, então funciona nos dois temas sem configurar nada.
+            </p>
+
+            <h3 className="sub">Link (nível de correção padrão)</h3>
+            <p className="muted">
+              Caso de uso mais comum: codificar uma URL pra escanear com o celular. O nível de correção de erro padrão
+              (<code>"M"</code>) já é suficiente pra isso.
+            </p>
+            <QRCode value="https://ember-ui.example/convite" />
+
+            <h3 className="sub">Código curto, com correção de erro alta</h3>
+            <p className="muted">
+              Pra um código que vai ser impresso e pode sujar/arranhar (etiqueta, crachá, caixa física), vale subir o{" "}
+              <code>level</code> pra <code>"H"</code> — tolera mais dano, ao custo de um QR mais denso. Nesse exemplo também
+              reduzimos o <code>size</code>, já que o conteúdo é bem mais curto que uma URL.
+            </p>
+            <QRCode value="ID-4821-FORJA-DAS-BRASAS" size={96} level="H" />
           </section>
 
           <section className="sec" id="scrollbar" aria-labelledby="h-scrollbar">

@@ -48,6 +48,7 @@ function Exemplo() {
 - Toasts, via `ToastProvider` + `useToast()`
 - Paginação e breadcrumb
 - Scrollbar customizada
+- `QRCode` — gera e exibe QR codes (veja [QRCode](#qrcode))
 
 Todos têm estados normal, hover, `focus-visible`, active e disabled.
 
@@ -78,6 +79,39 @@ import { ThemeProvider, ThemeToggle } from "ember-ui";
 ```
 
 A escolha fica salva no `localStorage` (chave `ember-theme`).
+
+## QRCode
+
+Gera e exibe QR codes como SVG — sem canvas, sem chamada de rede, sem leitura/decodificação (fora de escopo). Usa o pacote
+[`qrcode`](https://www.npmjs.com/package/qrcode) só pela parte síncrona de codificação (algoritmo de Reed-Solomon); a
+renderização em SVG é nossa, o que dá controle total de cor e tamanho via props.
+
+```tsx
+import { QRCode } from "ember-ui";
+
+// uso simples -- cor e fundo já vêm do tema (--text-strong / --bg-raised)
+<QRCode value="https://ember-ui.example/convite" />
+
+// conteúdo curto, destinado a impressão: mais correção de erro, menos espaço
+<QRCode value="ID-4821-FORJA-DAS-BRASAS" size={96} level="H" />
+
+// cor customizada, sobrepondo o tema
+<QRCode value="https://ember-ui.example" color="var(--accent)" background="none" />
+```
+
+**Props:**
+
+| Prop | Tipo | Default | Uso |
+| --- | --- | --- | --- |
+| `value` | `string` | — (obrigatório) | Texto/URL a codificar |
+| `size` | `number` | `160` | Lado do SVG, em px |
+| `level` | `"L" \| "M" \| "Q" \| "H"` | `"M"` | Correção de erro -- mais alto tolera mais dano, mas gera um QR mais denso |
+| `margin` | `number` | `2` | Módulos de zona de silêncio em volta do código |
+| `color` | `string` | `"var(--text-strong)"` | Cor dos módulos escuros |
+| `background` | `string` | `"var(--bg-raised)"` | Cor de fundo (`"none"` pra transparente) |
+
+Regra prática pro `level`: `"M"` (padrão) cobre a maioria dos casos em tela; suba pra `"Q"`/`"H"` só quando o código for
+impresso e puder se sujar, arranhar ou ser parcialmente coberto -- o ganho de robustez custa um QR com mais módulos.
 
 ## Trocar a cor de destaque
 
