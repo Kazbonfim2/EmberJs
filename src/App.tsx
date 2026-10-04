@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { Button } from "./components/Button";
 import { Flex, FlexItem } from "./components/Flex";
 import { Icon } from "./components/Icon";
@@ -23,27 +23,37 @@ import { QRCode } from "./components/QRCode";
 import { Text } from "./components/Text";
 import { ThemeToggle } from "./theme";
 
-const SECTIONS = [
-  ["cores", "Cores"],
-  ["botoes", "Botões"],
-  ["inputs", "Inputs"],
-  ["selecao", "Seleção"],
-  ["tabs", "Tabs e navegação"],
-  ["janela", "Janela"],
-  ["modal", "Modais"],
-  ["dropdown", "Dropdown e contexto"],
-  ["tooltip", "Tooltip e popover"],
-  ["cards", "Cards"],
-  ["lista", "Lista"],
-  ["progresso", "Progresso e download"],
-  ["badges", "Badges e avatar"],
-  ["toasts", "Notificações"],
-  ["paginacao", "Paginação"],
-  ["flex", "Sistema de Flex"],
-  ["qrcode", "QR code"],
-  ["spacing", "Espaçamento rápido"],
-  ["texto", "Texto"],
-  ["scrollbar", "Scrollbar"],
+const SECTION_GROUPS = [
+  {
+    title: "Fundamentos",
+    items: [
+      ["cores", "Cores"],
+      ["texto", "Texto"],
+      ["spacing", "Espaçamento rápido"],
+      ["flex", "Sistema de Flex"],
+      ["scrollbar", "Scrollbar"],
+    ],
+  },
+  {
+    title: "Componentes",
+    items: [
+      ["botoes", "Botões"],
+      ["inputs", "Inputs"],
+      ["selecao", "Seleção"],
+      ["tabs", "Tabs e navegação"],
+      ["janela", "Janela"],
+      ["modal", "Modais"],
+      ["dropdown", "Dropdown e contexto"],
+      ["tooltip", "Tooltip e popover"],
+      ["cards", "Cards"],
+      ["lista", "Lista"],
+      ["progresso", "Progresso e download"],
+      ["badges", "Badges e avatar"],
+      ["toasts", "Notificações"],
+      ["paginacao", "Paginação"],
+      ["qrcode", "QR code"],
+    ],
+  },
 ] as const;
 
 const SWATCHES = [
@@ -86,9 +96,13 @@ export function App() {
       <div className="shell">
         <nav className="demo-nav" aria-label="Seções do design system">
           <SideNav>
-            <SideNavTitle>Componentes</SideNavTitle>
-            {SECTIONS.map(([id, label]) => (
-              <SideNavLink key={id} href={`#${id}`}>{label}</SideNavLink>
+            {SECTION_GROUPS.map((group) => (
+              <Fragment key={group.title}>
+                <SideNavTitle>{group.title}</SideNavTitle>
+                {group.items.map(([id, label]) => (
+                  <SideNavLink key={id} href={`#${id}`}>{label}</SideNavLink>
+                ))}
+              </Fragment>
             ))}
           </SideNav>
         </nav>
@@ -103,6 +117,143 @@ export function App() {
                   {name}
                 </div>
               ))}
+            </div>
+          </section>
+
+          <section className="sec" id="texto" aria-labelledby="h-texto">
+            <h2 id="h-texto">Texto</h2>
+            <Text className="muted">
+              <code>Text</code> é o componente genérico pra qualquer texto da interface: <code>size</code>, <code>weight</code>,{" "}
+              <code>color</code> e <code>align</code> usam os tokens do design system (<code>--fs-*</code>, pesos 400-700,{" "}
+              <code>--text-*</code> e as cores semânticas), <code>as</code> troca o elemento (<code>p</code>, <code>span</code>,{" "}
+              <code>h1</code>..<code>h4</code>, etc.) e aceita <code>m</code>/<code>p</code> como todo o resto da biblioteca.
+            </Text>
+
+            <h3 className="sub">size + weight + color</h3>
+            <div className="stack">
+              <Text as="h3" size="xl" weight="bold" color="strong" m={0}>Forja das Brasas</Text>
+              <Text size="md" color="default" m={0}>Texto padrão, do tamanho e cor normais do corpo.</Text>
+              <Text size="sm" color="muted" m={0}>Texto secundário/legenda, mais discreto.</Text>
+              <Text size="sm" color="ok" weight="semibold" m={0}>Disponível para jogar</Text>
+              <Text size="sm" color="err" weight="semibold" m={0}>Falha ao conectar ao servidor</Text>
+            </div>
+
+            <h3 className="sub">align + truncate + m/p como os demais componentes</h3>
+            <p className="muted">Mesma prop de espaçamento que Button/Card/Badge usam — aqui com mb pra separar os três exemplos.</p>
+            <div style={{ maxWidth: 220 }}>
+              <Text align="right" mb={3}>Alinhado à direita</Text>
+              <Text truncate mb={3} style={{ padding: "var(--sp-2)", background: "var(--bg-inset)", borderRadius: "var(--r-sm)" }}>
+                Esse texto é bem mais longo do que o espaço disponível, então é cortado com reticências no final
+              </Text>
+              <Text italic color="muted">Texto em itálico, cor muted</Text>
+            </div>
+          </section>
+
+          <section className="sec" id="spacing" aria-labelledby="h-spacing">
+            <h2 id="h-spacing">Espaçamento rápido (m/p)</h2>
+            <p className="muted">
+              Todo componente da biblioteca aceita <code>m</code>/<code>mt</code>/<code>mr</code>/<code>mb</code>/<code>ml</code>/
+              <code>mx</code>/<code>my</code> (margin) e <code>p</code>/<code>pt</code>/<code>pr</code>/<code>pb</code>/<code>pl</code>/
+              <code>px</code>/<code>py</code> (padding) como props diretas — no estilo Chakra UI/styled-system. De <code>1</code> a{" "}
+              <code>7</code> usa os mesmos tokens <code>--sp-1</code>..<code>--sp-7</code> do resto do design system; qualquer outro
+              número (px) ou string CSS (<code>"1rem"</code>) passa direto. Sem precisar escrever <code>style</code> pra ajustes
+              rápidos de espaçamento.
+            </p>
+
+            <h3 className="sub">margin por lado, sem depender de Flex/gap</h3>
+            <p className="muted">
+              Cada <code>Badge</code> aqui empurra o próximo com <code>ml</code> — útil quando não dá pra (ou não vale a pena)
+              envolver os elementos num <code>Flex</code>.
+            </p>
+            <div className="row">
+              <Badge>Sem espaçamento</Badge>
+              <Badge variant="info" ml={2}>ml={"{2}"}</Badge>
+              <Badge variant="ok" ml={6}>ml={"{6}"}</Badge>
+            </div>
+
+            <h3 className="sub">padding sobrescrevendo o espaçamento padrão do componente</h3>
+            <p className="muted">
+              <code>p</code>/<code>px</code>/<code>py</code> têm prioridade sobre o padding que o componente já define via CSS —
+              é uma sobrescrita deliberada, não uma soma. Útil pra dar mais (ou menos) respiro num caso específico, sem criar uma
+              variante nova do componente.
+            </p>
+            <div className="row" style={{ alignItems: "flex-start" }}>
+              <Card title="Padding padrão" colorFrom="#333" colorTo="#666" tags={<Badge variant="muted">p padrão</Badge>} />
+              <Card title="Mais respiro" colorFrom="#333" colorTo="#666" p={6} tags={<Badge variant="info">p={"{6}"}</Badge>} />
+            </div>
+          </section>
+
+          <section className="sec" id="flex" aria-labelledby="h-flex">
+            <h2 id="h-flex">Sistema de Flex</h2>
+            <p className="muted">
+              <code>Flex</code> e <code>FlexItem</code> normalizam o uso de flexbox pra não escrever <code>display: flex</code> e
+              companhia na mão em todo canto — direção, alinhamento, espaçamento (nos tokens <code>--sp-1</code> a{" "}
+              <code>--sp-7</code>) e quebra de linha ficam só props, e funcionam compondo com qualquer outro componente da
+              biblioteca (aqui embaixo, com <code>Badge</code>).
+            </p>
+
+            <h3 className="sub">Exemplo prático: linha de usuário</h3>
+            <p className="muted">
+              Avatar, um bloco de texto que cresce pra preencher o espaço livre (<code>FlexItem grow</code>) e um botão de
+              ação, tudo alinhado numa única linha — o padrão clássico de "linha de item com ação" (lista de amigos,
+              notificação, item de configuração).
+            </p>
+            <Flex
+              align="center"
+              gap={3}
+              style={{
+                padding: "var(--sp-4)",
+                maxWidth: 420,
+                background: "var(--bg-raised)",
+                border: "1px solid var(--border)",
+                borderRadius: "var(--r-md)",
+              }}
+            >
+              <Avatar status="online" label="Lucas, online">L</Avatar>
+              <FlexItem grow>
+                <div style={{ fontWeight: 600, color: "var(--text-strong)" }}>Lucas</div>
+                <div className="muted" style={{ fontSize: "var(--fs-sm)" }}>Jogando Forja das Brasas</div>
+              </FlexItem>
+              <Button variant="secondary" size="sm">Chamar pra jogar</Button>
+            </Flex>
+
+            <h3 className="sub">align="center" + justify="between" + gap={3}</h3>
+            <p className="muted">Distribui nas pontas e centraliza no eixo cruzado — útil pra barras de ação, cabeçalhos de card etc.</p>
+            <Flex
+              gap={3}
+              align="center"
+              justify="between"
+              style={{ padding: "var(--sp-3)", background: "var(--bg-inset)", borderRadius: "var(--r-sm)" }}
+            >
+              <Badge>Esquerda</Badge>
+              <Badge variant="info">Centro</Badge>
+              <Badge variant="ok">Direita</Badge>
+            </Flex>
+
+            <h3 className="sub">direction="column" + FlexItem grow</h3>
+            <p className="muted">
+              O primeiro <code>FlexItem</code> tem <code>grow</code>, então ele consome todo o espaço livre da coluna; o
+              segundo fica no tamanho natural do conteúdo.
+            </p>
+            <Flex direction="column" gap={2} style={{ maxWidth: 280 }}>
+              <FlexItem grow style={{ padding: "var(--sp-3)", background: "var(--bg-inset)", borderRadius: "var(--r-sm)" }}>
+                Cresce pra ocupar o espaço (grow)
+              </FlexItem>
+              <FlexItem style={{ padding: "var(--sp-3)", background: "var(--bg-inset)", borderRadius: "var(--r-sm)" }}>
+                Tamanho natural
+              </FlexItem>
+            </Flex>
+          </section>
+
+          <section className="sec" id="scrollbar" aria-labelledby="h-scrollbar">
+            <h2 id="h-scrollbar">Scrollbar</h2>
+            <div className="scroll-box" tabIndex={0} role="region" aria-label="Área rolável">
+              <p>Notas da versão 2.4. Corrigimos falhas de conexão, melhoramos o desempenho de downloads e atualizamos a interface da biblioteca.</p>
+              <p>O thumb fica laranja ao passar o mouse e mais escuro ao arrastar.</p>
+              <p>Novo modo compacto para listas longas.</p>
+              <p>Suporte a atalhos de teclado em menus e modais.</p>
+              <p>Ajustes de contraste no tema claro.</p>
+              <p>Várias correções menores de estabilidade.</p>
             </div>
           </section>
 
@@ -300,8 +451,6 @@ export function App() {
                 <MenuItem icon="trash" danger onSelect={() => toast({ title: "Desinstalado", variant: "ok" })}>Desinstalar</MenuItem>
               </Dropdown>
             </div>
-            <br>
-            </br>
             <h3 className="sub">Menu de contexto (clique direito ou tecla Menu)</h3>
             <ContextMenu
               menu={<>
@@ -453,68 +602,6 @@ export function App() {
             <Pagination page={page} totalPages={12} onChange={setPage} mt={4} />
           </section>
 
-          <section className="sec" id="flex" aria-labelledby="h-flex">
-            <h2 id="h-flex">Sistema de Flex</h2>
-            <p className="muted">
-              <code>Flex</code> e <code>FlexItem</code> normalizam o uso de flexbox pra não escrever <code>display: flex</code> e
-              companhia na mão em todo canto — direção, alinhamento, espaçamento (nos tokens <code>--sp-1</code> a{" "}
-              <code>--sp-7</code>) e quebra de linha ficam só props, e funcionam compondo com qualquer outro componente da
-              biblioteca (aqui embaixo, com <code>Badge</code>).
-            </p>
-
-            <h3 className="sub">Exemplo prático: linha de usuário</h3>
-            <p className="muted">
-              Avatar, um bloco de texto que cresce pra preencher o espaço livre (<code>FlexItem grow</code>) e um botão de
-              ação, tudo alinhado numa única linha — o padrão clássico de "linha de item com ação" (lista de amigos,
-              notificação, item de configuração).
-            </p>
-            <Flex
-              align="center"
-              gap={3}
-              style={{
-                padding: "var(--sp-4)",
-                maxWidth: 420,
-                background: "var(--bg-raised)",
-                border: "1px solid var(--border)",
-                borderRadius: "var(--r-md)",
-              }}
-            >
-              <Avatar status="online" label="Lucas, online">L</Avatar>
-              <FlexItem grow>
-                <div style={{ fontWeight: 600, color: "var(--text-strong)" }}>Lucas</div>
-                <div className="muted" style={{ fontSize: "var(--fs-sm)" }}>Jogando Forja das Brasas</div>
-              </FlexItem>
-              <Button variant="secondary" size="sm">Chamar pra jogar</Button>
-            </Flex>
-
-            <h3 className="sub">align="center" + justify="between" + gap={3}</h3>
-            <p className="muted">Distribui nas pontas e centraliza no eixo cruzado — útil pra barras de ação, cabeçalhos de card etc.</p>
-            <Flex
-              gap={3}
-              align="center"
-              justify="between"
-              style={{ padding: "var(--sp-3)", background: "var(--bg-inset)", borderRadius: "var(--r-sm)" }}
-            >
-              <Badge>Esquerda</Badge>
-              <Badge variant="info">Centro</Badge>
-              <Badge variant="ok">Direita</Badge>
-            </Flex>
-
-            <h3 className="sub">direction="column" + FlexItem grow</h3>
-            <p className="muted">
-              O primeiro <code>FlexItem</code> tem <code>grow</code>, então ele consome todo o espaço livre da coluna; o
-              segundo fica no tamanho natural do conteúdo.
-            </p>
-            <Flex direction="column" gap={2} style={{ maxWidth: 280 }}>
-              <FlexItem grow style={{ padding: "var(--sp-3)", background: "var(--bg-inset)", borderRadius: "var(--r-sm)" }}>
-                Cresce pra ocupar o espaço (grow)
-              </FlexItem>
-              <FlexItem style={{ padding: "var(--sp-3)", background: "var(--bg-inset)", borderRadius: "var(--r-sm)" }}>
-                Tamanho natural
-              </FlexItem>
-            </Flex>
-          </section>
-
           <section className="sec" id="qrcode" aria-labelledby="h-qrcode">
             <h2 id="h-qrcode">QR code</h2>
             <p className="muted">
@@ -570,81 +657,6 @@ export function App() {
               reduzimos o <code>size</code>, já que o conteúdo é bem mais curto que uma URL.
             </p>
             <QRCode value="ID-4821-FORJA-DAS-BRASAS" size={96} level="H" />
-          </section>
-
-          <section className="sec" id="spacing" aria-labelledby="h-spacing">
-            <h2 id="h-spacing">Espaçamento rápido (m/p)</h2>
-            <p className="muted">
-              Todo componente da biblioteca aceita <code>m</code>/<code>mt</code>/<code>mr</code>/<code>mb</code>/<code>ml</code>/
-              <code>mx</code>/<code>my</code> (margin) e <code>p</code>/<code>pt</code>/<code>pr</code>/<code>pb</code>/<code>pl</code>/
-              <code>px</code>/<code>py</code> (padding) como props diretas — no estilo Chakra UI/styled-system. De <code>1</code> a{" "}
-              <code>7</code> usa os mesmos tokens <code>--sp-1</code>..<code>--sp-7</code> do resto do design system; qualquer outro
-              número (px) ou string CSS (<code>"1rem"</code>) passa direto. Sem precisar escrever <code>style</code> pra ajustes
-              rápidos de espaçamento.
-            </p>
-
-            <h3 className="sub">margin por lado, sem depender de Flex/gap</h3>
-            <p className="muted">
-              Cada <code>Badge</code> aqui empurra o próximo com <code>ml</code> — útil quando não dá pra (ou não vale a pena)
-              envolver os elementos num <code>Flex</code>.
-            </p>
-            <div className="row">
-              <Badge>Sem espaçamento</Badge>
-              <Badge variant="info" ml={2}>ml={"{2}"}</Badge>
-              <Badge variant="ok" ml={6}>ml={"{6}"}</Badge>
-            </div>
-
-            <h3 className="sub">padding sobrescrevendo o espaçamento padrão do componente</h3>
-            <p className="muted">
-              <code>p</code>/<code>px</code>/<code>py</code> têm prioridade sobre o padding que o componente já define via CSS —
-              é uma sobrescrita deliberada, não uma soma. Útil pra dar mais (ou menos) respiro num caso específico, sem criar uma
-              variante nova do componente.
-            </p>
-            <div className="row" style={{ alignItems: "flex-start" }}>
-              <Card title="Padding padrão" colorFrom="#333" colorTo="#666" tags={<Badge variant="muted">p padrão</Badge>} />
-              <Card title="Mais respiro" colorFrom="#333" colorTo="#666" p={6} tags={<Badge variant="info">p={"{6}"}</Badge>} />
-            </div>
-          </section>
-
-          <section className="sec" id="texto" aria-labelledby="h-texto">
-            <h2 id="h-texto">Texto</h2>
-            <Text className="muted">
-              <code>Text</code> é o componente genérico pra qualquer texto da interface: <code>size</code>, <code>weight</code>,{" "}
-              <code>color</code> e <code>align</code> usam os tokens do design system (<code>--fs-*</code>, pesos 400-700,{" "}
-              <code>--text-*</code> e as cores semânticas), <code>as</code> troca o elemento (<code>p</code>, <code>span</code>,{" "}
-              <code>h1</code>..<code>h4</code>, etc.) e aceita <code>m</code>/<code>p</code> como todo o resto da biblioteca.
-            </Text>
-
-            <h3 className="sub">size + weight + color</h3>
-            <div className="stack">
-              <Text as="h3" size="xl" weight="bold" color="strong" m={0}>Forja das Brasas</Text>
-              <Text size="md" color="default" m={0}>Texto padrão, do tamanho e cor normais do corpo.</Text>
-              <Text size="sm" color="muted" m={0}>Texto secundário/legenda, mais discreto.</Text>
-              <Text size="sm" color="ok" weight="semibold" m={0}>Disponível para jogar</Text>
-              <Text size="sm" color="err" weight="semibold" m={0}>Falha ao conectar ao servidor</Text>
-            </div>
-
-            <h3 className="sub">align + truncate + m/p como os demais componentes</h3>
-            <p className="muted">Mesma prop de espaçamento que Button/Card/Badge usam — aqui com mb pra separar os três exemplos.</p>
-            <div style={{ maxWidth: 220 }}>
-              <Text align="right" mb={3}>Alinhado à direita</Text>
-              <Text truncate mb={3} style={{ padding: "var(--sp-2)", background: "var(--bg-inset)", borderRadius: "var(--r-sm)" }}>
-                Esse texto é bem mais longo do que o espaço disponível, então é cortado com reticências no final
-              </Text>
-              <Text italic color="muted">Texto em itálico, cor muted</Text>
-            </div>
-          </section>
-
-          <section className="sec" id="scrollbar" aria-labelledby="h-scrollbar">
-            <h2 id="h-scrollbar">Scrollbar</h2>
-            <div className="scroll-box" tabIndex={0} role="region" aria-label="Área rolável">
-              <p>Notas da versão 2.4. Corrigimos falhas de conexão, melhoramos o desempenho de downloads e atualizamos a interface da biblioteca.</p>
-              <p>O thumb fica laranja ao passar o mouse e mais escuro ao arrastar.</p>
-              <p>Novo modo compacto para listas longas.</p>
-              <p>Suporte a atalhos de teclado em menus e modais.</p>
-              <p>Ajustes de contraste no tema claro.</p>
-              <p>Várias correções menores de estabilidade.</p>
-            </div>
           </section>
         </main>
       </div>
