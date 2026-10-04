@@ -11,19 +11,20 @@ import {
   useInteractions,
   useRole,
 } from "@floating-ui/react";
+import type { SpacingProps } from "../../lib/spacing";
 import { Button, type ButtonVariant } from "../Button";
 import { Icon } from "../Icon";
 import { focusableMenuItems, handleMenuKeyDown } from "./menuKeyboard";
 import { MenuContext } from "./MenuItem";
 import "./Menu.css";
 
-export type DropdownProps = {
+export type DropdownProps = SpacingProps & {
   trigger: ReactNode;
   triggerVariant?: ButtonVariant;
   children: ReactNode;
 };
 
-export function Dropdown({ trigger, triggerVariant = "secondary", children }: DropdownProps) {
+export function Dropdown({ trigger, triggerVariant = "secondary", children, ...spacing }: DropdownProps) {
   const [open, setOpen] = useState(false);
 
   const { refs, floatingStyles, context } = useFloating({
@@ -46,7 +47,7 @@ export function Dropdown({ trigger, triggerVariant = "secondary", children }: Dr
 
   return (
     <>
-      <Button variant={triggerVariant} ref={refs.setReference} aria-haspopup="menu" aria-expanded={open} {...getReferenceProps()}>
+      <Button variant={triggerVariant} ref={refs.setReference} aria-haspopup="menu" aria-expanded={open} {...getReferenceProps()} {...spacing}>
         {trigger}
         <Icon name="chevron-down" size="sm" />
       </Button>

@@ -541,7 +541,7 @@ const [open, setOpen] = useState(false);
           <section className="sec" id="dropdown" aria-labelledby="h-dropdown">
             <h2 id="h-dropdown">Dropdown e menu de contexto</h2>
             <div className="row" style={{ alignItems: "flex-start" }}>
-              <Dropdown trigger="Ações">
+              <Dropdown trigger="Ações" mb={3}>
                 <MenuItem icon="play" shortcut="Enter" onSelect={() => toast({ title: "Jogando...", variant: "info" })}>Jogar</MenuItem>
                 <MenuItem icon="copy" shortcut="Ctrl+C">Copiar link</MenuItem>
                 <MenuItem icon="download" disabled>Baixar (indisponível)</MenuItem>
@@ -549,6 +549,7 @@ const [open, setOpen] = useState(false);
                 <MenuItem icon="trash" danger onSelect={() => toast({ title: "Desinstalado", variant: "ok" })}>Desinstalar</MenuItem>
               </Dropdown>
             </div>
+
             <h3 className="sub">Menu de contexto (clique direito ou tecla Menu)</h3>
             <ContextMenu
               menu={<>
