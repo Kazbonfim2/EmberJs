@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "./components/Button";
+import { Flex, FlexItem } from "./components/Flex";
 import { Icon } from "./components/Icon";
 import { Field, Input, Textarea, Select, PasswordInput } from "./components/Field";
 import { Checkbox, Radio, Switch } from "./components/Checkbox";
@@ -37,6 +38,7 @@ const SECTIONS = [
   ["badges", "Badges e avatar"],
   ["toasts", "Notificações"],
   ["paginacao", "Paginação"],
+  ["flex", "Sistema de Flex"],
   ["qrcode", "QR code"],
   ["scrollbar", "Scrollbar"],
 ] as const;
@@ -104,13 +106,13 @@ export function App() {
           <section className="sec" id="botoes" aria-labelledby="h-botoes">
             <h2 id="h-botoes">Botões</h2>
             <h3 className="sub">Variantes</h3>
-            <div className="row">
+            <Flex gap={3} wrap>
               <Button variant="primary">Instalar</Button>
               <Button variant="secondary">Cancelar</Button>
               <Button variant="ghost">Ver mais</Button>
               <Button variant="danger">Excluir</Button>
               <Button variant="secondary" icon aria-label="Configurações"><Icon name="settings" /></Button>
-            </div>
+            </Flex>
             <h3 className="sub">Tamanhos</h3>
             <div className="row">
               <Button variant="primary" size="sm">Pequeno</Button>
@@ -448,6 +450,68 @@ export function App() {
             <div style={{ marginTop: 16 }}>
               <Pagination page={page} totalPages={12} onChange={setPage} />
             </div>
+          </section>
+
+          <section className="sec" id="flex" aria-labelledby="h-flex">
+            <h2 id="h-flex">Sistema de Flex</h2>
+            <p className="muted">
+              <code>Flex</code> e <code>FlexItem</code> normalizam o uso de flexbox pra não escrever <code>display: flex</code> e
+              companhia na mão em todo canto — direção, alinhamento, espaçamento (nos tokens <code>--sp-1</code> a{" "}
+              <code>--sp-7</code>) e quebra de linha ficam só props, e funcionam compondo com qualquer outro componente da
+              biblioteca (aqui embaixo, com <code>Badge</code>).
+            </p>
+
+            <h3 className="sub">Exemplo prático: linha de usuário</h3>
+            <p className="muted">
+              Avatar, um bloco de texto que cresce pra preencher o espaço livre (<code>FlexItem grow</code>) e um botão de
+              ação, tudo alinhado numa única linha — o padrão clássico de "linha de item com ação" (lista de amigos,
+              notificação, item de configuração).
+            </p>
+            <Flex
+              align="center"
+              gap={3}
+              style={{
+                padding: "var(--sp-4)",
+                maxWidth: 420,
+                background: "var(--bg-raised)",
+                border: "1px solid var(--border)",
+                borderRadius: "var(--r-md)",
+              }}
+            >
+              <Avatar status="online" label="Lucas, online">L</Avatar>
+              <FlexItem grow>
+                <div style={{ fontWeight: 600, color: "var(--text-strong)" }}>Lucas</div>
+                <div className="muted" style={{ fontSize: "var(--fs-sm)" }}>Jogando Forja das Brasas</div>
+              </FlexItem>
+              <Button variant="secondary" size="sm">Chamar pra jogar</Button>
+            </Flex>
+
+            <h3 className="sub">align="center" + justify="between" + gap={3}</h3>
+            <p className="muted">Distribui nas pontas e centraliza no eixo cruzado — útil pra barras de ação, cabeçalhos de card etc.</p>
+            <Flex
+              gap={3}
+              align="center"
+              justify="between"
+              style={{ padding: "var(--sp-3)", background: "var(--bg-inset)", borderRadius: "var(--r-sm)" }}
+            >
+              <Badge>Esquerda</Badge>
+              <Badge variant="info">Centro</Badge>
+              <Badge variant="ok">Direita</Badge>
+            </Flex>
+
+            <h3 className="sub">direction="column" + FlexItem grow</h3>
+            <p className="muted">
+              O primeiro <code>FlexItem</code> tem <code>grow</code>, então ele consome todo o espaço livre da coluna; o
+              segundo fica no tamanho natural do conteúdo.
+            </p>
+            <Flex direction="column" gap={2} style={{ maxWidth: 280 }}>
+              <FlexItem grow style={{ padding: "var(--sp-3)", background: "var(--bg-inset)", borderRadius: "var(--r-sm)" }}>
+                Cresce pra ocupar o espaço (grow)
+              </FlexItem>
+              <FlexItem style={{ padding: "var(--sp-3)", background: "var(--bg-inset)", borderRadius: "var(--r-sm)" }}>
+                Tamanho natural
+              </FlexItem>
+            </Flex>
           </section>
 
           <section className="sec" id="qrcode" aria-labelledby="h-qrcode">
