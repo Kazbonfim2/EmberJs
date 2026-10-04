@@ -1,6 +1,7 @@
 import { cloneElement, isValidElement, useId, useState, type ReactElement, type Ref } from "react";
 import {
   FloatingPortal,
+  autoUpdate,
   flip,
   offset,
   shift,
@@ -28,6 +29,7 @@ export function Tooltip({ label, children }: TooltipProps) {
     open,
     onOpenChange: setOpen,
     placement: "top",
+    whileElementsMounted: autoUpdate,
     middleware: [offset(6), flip(), shift({ padding: 8 })],
   });
 
@@ -48,18 +50,20 @@ export function Tooltip({ label, children }: TooltipProps) {
         children as ReactElement<Record<string, unknown>>,
         getReferenceProps({ ref, "aria-describedby": id, ...(children.props as object) }),
       )}
-      <FloatingPortal>
-        <span
-          ref={refs.setFloating}
-          id={id}
-          role="tooltip"
-          className="tip-text"
-          style={{ ...floatingStyles, opacity: open ? 1 : 0, visibility: open ? "visible" : "hidden" }}
-          {...getFloatingProps()}
-        >
-          {label}
-        </span>
-      </FloatingPortal>
+      {open && (
+        <FloatingPortal>
+          <span
+            ref={refs.setFloating}
+            id={id}
+            role="tooltip"
+            className="tip-text"
+            style={floatingStyles}
+            {...getFloatingProps()}
+          >
+            {label}
+          </span>
+        </FloatingPortal>
+      )}
     </>
   );
 }
