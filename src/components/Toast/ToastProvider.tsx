@@ -2,12 +2,18 @@ import { createContext, useCallback, useRef, useState, type ReactNode } from "re
 import { Toast, type ToastVariant } from "./Toast";
 import "./Toast.css";
 
-export type ToastInput = { title: string; text?: string; variant?: ToastVariant };
+export type ToastInput = { title: string; text?: string; variant?: ToastVariant; animated?: boolean };
 type ToastItem = ToastInput & { id: number };
 
 export const ToastContext = createContext<((toast: ToastInput) => void) | null>(null);
 
-export function ToastProvider({ children }: { children: ReactNode }) {
+export type ToastProviderProps = {
+  children: ReactNode;
+  /** Default de animação pros toasts que não especificarem `animated` no show(). */
+  animated?: boolean;
+};
+
+export function ToastProvider({ children, animated: defaultAnimated = true }: ToastProviderProps) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
   const nextId = useRef(0);
 
@@ -25,7 +31,14 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       {children}
       <div className="toasts" style={{ position: "fixed", bottom: "var(--sp-5)", right: "var(--sp-5)", zIndex: 50 }}>
         {toasts.map((t) => (
-          <Toast key={t.id} title={t.title} text={t.text} variant={t.variant ?? "info"} onDismiss={() => dismiss(t.id)} />
+          <Toast
+            key={t.id}
+            title={t.title}
+            text={t.text}
+            variant={t.variant ?? "info"}
+            animated={t.animated ?? defaultAnimated}
+            onDismiss={() => dismiss(t.id)}
+          />
         ))}
       </div>
     </ToastContext.Provider>

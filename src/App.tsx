@@ -427,8 +427,11 @@ export function App() {
             <h2 id="h-toasts">Notificações (toasts)</h2>
             <DemoToasts />
             <div className="row" style={{ marginTop: "var(--sp-4)" }}>
-              <Button variant="secondary" size="sm" onClick={() => toast({ title: "Amigo online", text: "Ana entrou e está jogando Maré Profunda.", variant: "info" })}>
-                Disparar toast (useToast)
+              <Button variant="secondary" size="sm" onClick={() => toast({ title: "Amigo online", text: "Ana entrou e está jogando Maré Profunda.", variant: "info", animated: true })}>
+                Disparar toast (com animação)
+              </Button>
+              <Button variant="secondary" size="sm" onClick={() => toast({ title: "Amigo online", text: "Ana entrou e está jogando Maré Profunda.", variant: "info", animated: false })}>
+                Disparar toast (sem animação)
               </Button>
             </div>
           </section>

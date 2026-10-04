@@ -4,3 +4,9 @@
 .toast-title { font-weight: 600; color: var(--text-strong); }
 .toast-text { font-size: var(--fs-sm); color: var(--text-2); }
 .toast.ok { --c: var(--ok); } .toast.err { --c: var(--err); } .toast.warn { --c: var(--warn); } .toast.info { --c: var(--info); }
+
+.toast.is-animated { animation: toast-in 180ms ease; }
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
