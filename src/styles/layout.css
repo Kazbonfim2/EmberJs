@@ -1,3 +1,12 @@
+body {
+  background-color: var(--bg-app);
+  background-image:
+    radial-gradient(ellipse 90% 50% at 50% -10%, var(--accent-soft), transparent),
+    url("./topography.svg");
+  background-repeat: no-repeat, repeat;
+  background-size: 100% 600px, 600px 600px;
+}
+
 .topbar { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: var(--sp-4); height: 44px; padding: 0 var(--sp-5); background: linear-gradient(var(--bg-raised), var(--bg-base)); border-bottom: 1px solid var(--border); box-shadow: var(--sh-1); }
 .brand { display: flex; align-items: center; gap: var(--sp-3); font-size: var(--fs-lg); font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--text-strong); }
 .brand-icon { width: 18px; height: 18px; color: var(--accent); }
