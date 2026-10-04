@@ -23,6 +23,7 @@ export * from "./components/Toast";
 export * from "./components/Pagination";
 export * from "./components/QRCode";
 export * from "./theme";
+export * from "./scroll";
 
 export { cx, type ClassValue } from "./lib/classnames";
 export { getPaginationRange, ELLIPSIS, type PageItem } from "./lib/pagination";

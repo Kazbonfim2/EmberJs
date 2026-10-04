@@ -38,6 +38,7 @@ const SECTION_GROUPS = [
     items: [
       ["cores", "Cores"],
       ["tema", "Tema"],
+      ["scroll-suave", "Scroll suave"],
       ["texto", "Texto"],
       ["spacing", "Espaçamento rápido"],
       ["flex", "Sistema de Flex"],
@@ -147,23 +148,27 @@ import "ember-ui/styles.css";
             <p className="muted">
               <code>IconSprite</code> injeta o sprite usado por <code>Icon</code> (e por tudo que renderiza ícone).{" "}
               <code>ThemeProvider</code> controla o tema claro/escuro (veja a seção <a href="#tema">Tema</a>).{" "}
-              <code>ToastProvider</code> só é necessário se você usar <code>useToast</code>/<code>Toast</code>.
+              <code>SmoothScrollProvider</code> suaviza o scroll da página inteira (veja{" "}
+              <a href="#scroll-suave">Scroll suave</a>). <code>ToastProvider</code> só é necessário se você usar{" "}
+              <code>useToast</code>/<code>Toast</code>.
             </p>
             <CodeWindow title="main.tsx" code={`
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { IconSprite, ThemeProvider, ToastProvider } from "ember-ui";
+import { IconSprite, ThemeProvider, SmoothScrollProvider, ToastProvider } from "ember-ui";
 import "ember-ui/styles.css";
 import { App } from "./App";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <IconSprite />
-    <ThemeProvider>
-      <ToastProvider>
-        <App />
-      </ToastProvider>
-    </ThemeProvider>
+    <SmoothScrollProvider>
+      <ThemeProvider>
+        <ToastProvider>
+          <App />
+        </ToastProvider>
+      </ThemeProvider>
+    </SmoothScrollProvider>
   </StrictMode>,
 );
             `} />
@@ -221,6 +226,35 @@ import { ThemeProvider, ThemeToggle, useTheme } from "ember-ui";
 function Exemplo() {
   const { theme, toggleTheme } = useTheme();
   return <button onClick={toggleTheme}>Tema atual: {theme}</button>;
+}
+            `} />
+          </section>
+
+          <section className="sec" id="scroll-suave" aria-labelledby="h-scroll-suave">
+            <h2 id="h-scroll-suave">Scroll suave</h2>
+            <p className="muted">
+              <code>SmoothScrollProvider</code> troca o scroll padrão do navegador por um com inércia/easing (via{" "}
+              <a href="https://lenis.darkroom.engineering/" target="_blank" rel="noreferrer">Lenis</a>), aplicado em
+              toda a página — role esta própria página pra sentir. Já cuida de <code>prefers-reduced-motion</code>{" "}
+              sozinho (desativa a suavização e deixa o scroll 1:1) e, com <code>anchors</code> ligado por padrão,
+              também suaviza cliques em links de âncora. Use <code>useSmoothScroll</code> se precisar do controle
+              programático (ex.: botão "voltar ao topo").
+            </p>
+
+            <CodeWindow title="main.tsx" code={`
+import { SmoothScrollProvider } from "ember-ui";
+
+// na raiz da aplicação, uma única vez, envolvendo o resto
+<SmoothScrollProvider>
+  <App />
+</SmoothScrollProvider>
+
+// controle programático (ex.: botão "voltar ao topo")
+import { useSmoothScroll } from "ember-ui";
+
+function VoltarAoTopo() {
+  const lenis = useSmoothScroll();
+  return <button onClick={() => lenis?.scrollTo(0)}>Voltar ao topo</button>;
 }
             `} />
           </section>
