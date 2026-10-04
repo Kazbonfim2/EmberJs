@@ -1,0 +1,8 @@
+.modal { padding: 0; width: min(440px, calc(100vw - 32px)); color: var(--text); background: var(--bg-base); border: 1px solid var(--border-strong); border-radius: var(--r-lg); box-shadow: var(--sh-3); }
+.modal::backdrop { background: var(--overlay); backdrop-filter: blur(2px); }
+.modal-head { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-4) var(--sp-5); background: var(--bg-raised); border-bottom: 1px solid var(--border); }
+.modal-head h3 { flex: 1; font-size: var(--fs-md); text-transform: uppercase; letter-spacing: .08em; }
+.modal-body { padding: var(--sp-5); display: grid; gap: var(--sp-4); }
+.modal-foot { display: flex; justify-content: flex-end; gap: var(--sp-3); padding: var(--sp-4) var(--sp-5); border-top: 1px solid var(--border); background: var(--bg-inset); }
+.modal.is-danger .modal-head { color: var(--err-fg); }
+.modal.is-warn .modal-head { color: var(--warn-fg); }

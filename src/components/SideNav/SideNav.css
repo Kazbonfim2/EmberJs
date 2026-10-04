@@ -1,0 +1,7 @@
+.sidenav { list-style: none; margin: 0; padding: var(--sp-2); width: 220px; background: var(--bg-base); border: 1px solid var(--border); border-radius: var(--r-md); }
+.sidenav .nav-title { padding: var(--sp-4) var(--sp-3) var(--sp-2); font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--text-2); font-weight: 700; }
+.sidenav a, .sidenav button { display: flex; align-items: center; gap: var(--sp-3); width: 100%; padding: 6px var(--sp-3); border: 0; border-left: 3px solid transparent; background: transparent; color: var(--text); text-align: left; text-decoration: none; border-radius: var(--r-sm); }
+.sidenav a:hover, .sidenav button:hover:not(:disabled) { background: var(--bg-hover); color: var(--text-strong); }
+.sidenav a:active, .sidenav button:active:not(:disabled) { background: var(--bg-inset); }
+.sidenav [aria-current="page"] { background: var(--accent-soft); border-left-color: var(--accent); color: var(--text-strong); font-weight: 600; }
+.sidenav button:disabled { color: var(--text-off); cursor: not-allowed; }

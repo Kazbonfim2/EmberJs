@@ -1,0 +1,12 @@
+.pager { display: flex; gap: var(--sp-2); list-style: none; margin: 0; padding: 0; }
+.pager button { min-width: var(--h-md); height: var(--h-md); padding: 0 var(--sp-3); display: grid; place-items: center; background: var(--bg-raised); border: 1px solid var(--border); border-radius: var(--r-sm); color: var(--text); }
+.pager button:hover:not(:disabled) { border-color: var(--accent); color: var(--text-strong); }
+.pager button:active:not(:disabled) { background: var(--bg-inset); }
+.pager button[aria-current="page"] { color: var(--on-accent); font-weight: 700; background: linear-gradient(var(--accent-hover), var(--accent)); border-color: var(--accent-active); }
+.pager button:disabled { opacity: .4; cursor: not-allowed; }
+
+.crumbs { display: flex; flex-wrap: wrap; align-items: center; list-style: none; margin: 0; padding: 0; font-size: var(--fs-sm); }
+.crumbs li + li::before { content: "/"; margin: 0 var(--sp-3); color: var(--text-off); }
+.crumbs a { color: var(--text-2); text-decoration: none; padding: 2px 4px; border-radius: var(--r-sm); }
+.crumbs a:hover { color: var(--accent-fg); background: var(--bg-hover); }
+.crumbs [aria-current="page"] { color: var(--text-strong); font-weight: 600; }

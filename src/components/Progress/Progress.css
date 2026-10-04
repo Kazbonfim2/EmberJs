@@ -1,0 +1,11 @@
+.progress { height: 8px; background: var(--bg-inset); border: 1px solid var(--border); border-radius: var(--r-sm); overflow: hidden; }
+.progress > span { display: block; height: 100%; width: var(--v, 0%); background: linear-gradient(var(--accent-hover), var(--accent)); box-shadow: var(--glow); }
+.progress.is-ok > span { background: linear-gradient(#6fd18a, var(--ok)); }
+.progress.is-paused > span { background: var(--text-off); box-shadow: none; }
+.progress.is-live > span { background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.22) 0 8px, transparent 8px 16px), linear-gradient(var(--accent-hover), var(--accent)); background-size: 22.6px 22.6px, 100% 100%; animation: stripes .8s linear infinite; }
+@keyframes stripes { to { background-position: 22.6px 0, 0 0; } }
+
+.download { display: grid; gap: var(--sp-3); padding: var(--sp-4); max-width: 420px; background: var(--bg-base); border: 1px solid var(--border); border-radius: var(--r-md); }
+.download-head { display: flex; justify-content: space-between; gap: var(--sp-3); }
+.download-stats { display: flex; justify-content: space-between; font-size: var(--fs-sm); color: var(--text-2); }
+.download-stats b { color: var(--accent-fg); font-weight: 600; }

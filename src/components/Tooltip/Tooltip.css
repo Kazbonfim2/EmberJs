@@ -1,0 +1,1 @@
+.tip-text { z-index: 20; padding: 4px 8px; white-space: nowrap; font-size: var(--fs-sm); color: var(--text-strong); background: var(--bg-inset); border: 1px solid var(--border-strong); border-radius: var(--r-sm); box-shadow: var(--sh-2); transition: opacity var(--ease); pointer-events: none; }

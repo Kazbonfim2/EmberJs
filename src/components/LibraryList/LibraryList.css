@@ -1,0 +1,9 @@
+.lib { list-style: none; margin: 0; padding: var(--sp-2); max-width: 300px; background: var(--bg-base); border: 1px solid var(--border); border-radius: var(--r-md); }
+.lib-item { display: flex; align-items: center; gap: var(--sp-3); width: 100%; padding: 4px var(--sp-3); border: 0; border-left: 3px solid transparent; background: transparent; color: var(--text); text-align: left; border-radius: var(--r-sm); }
+.lib-item:hover { background: var(--bg-hover); color: var(--text-strong); }
+.lib-item:active { background: var(--bg-inset); }
+.lib-item[aria-current="true"] { background: var(--accent-soft); border-left-color: var(--accent); color: var(--text-strong); font-weight: 600; }
+.lib-item:disabled { color: var(--text-off); cursor: not-allowed; background: transparent; }
+.lib-thumb { width: 22px; height: 22px; flex: none; border-radius: var(--r-sm); background: linear-gradient(135deg, var(--c1), var(--c2)); }
+.lib-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lib-meta { font-size: var(--fs-xs); color: var(--text-2); }

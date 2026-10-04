@@ -1,0 +1,2 @@
+.popover-body { z-index: 20; width: 240px; padding: var(--sp-4); display: grid; gap: var(--sp-3); background: var(--bg-raised); border: 1px solid var(--border-strong); border-top: 2px solid var(--accent); border-radius: var(--r-md); box-shadow: var(--sh-2); }
+.popover-body h4 { font-size: var(--fs-sm); text-transform: uppercase; letter-spacing: .08em; }

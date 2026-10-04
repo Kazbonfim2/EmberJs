@@ -1,0 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Devanagari:wght@400;500;600;700&display=swap");
+
+:root {
+  --font: "IBM Plex Sans Devanagari", "Segoe UI", Arial, sans-serif;
+  --fs-xs: 11px; --fs-sm: 12px; --fs-md: 13px; --fs-lg: 15px; --fs-xl: 20px;
+  --sp-1: 2px; --sp-2: 4px; --sp-3: 8px; --sp-4: 12px; --sp-5: 16px; --sp-6: 24px; --sp-7: 32px;
+  --r-sm: 2px; --r-md: 3px; --r-lg: 4px;
+  --h-sm: 22px; --h-md: 28px; --h-lg: 36px;
+  --ease: 120ms ease;
+
+  /* Cor de destaque (laranja saturado) */
+  --accent: #FF6A00;
+  --accent-hover: #FF8A2B;
+  --accent-active: #E05A00;
+  --on-accent: #1a0f05;            /* texto sobre laranja: contraste 6.6:1 (AA) */
+  --accent-soft: rgba(255,106,0,.16);
+
+  /* Semânticas */
+  --ok: #3fae60;   --ok-bg: rgba(63,174,96,.16);   --ok-fg: #6fd18a;
+  --err: #cc3d3d;  --err-bg: rgba(229,72,77,.16);  --err-fg: #ff8083;
+  --warn: #f2b705; --warn-bg: rgba(242,183,5,.16); --warn-fg: #ffd24a;
+  --info: #2bb8d4; --info-bg: rgba(43,184,212,.16);--info-fg: #5fd3e8;
+
+  --glow: inset 0 1px 0 rgba(255,255,255,.35), inset 0 -1px 0 rgba(0,0,0,.15);
+  --sh-1: 0 1px 2px rgba(0,0,0,.35);
+  --sh-2: 0 4px 12px rgba(0,0,0,.4);
+  --sh-3: 0 12px 32px rgba(0,0,0,.55);
+}
+/* Tema escuro (padrão) */
+:root, [data-theme="dark"] {
+  color-scheme: dark;
+  --bg-app: #171a21; --bg-base: #1b2838; --bg-raised: #2a3a4f; --bg-hover: #34475f; --bg-inset: #10161f;
+  --overlay: rgba(5,8,12,.72);
+  --text: #c7d5e0; --text-2: #8f98a0; --text-strong: #eef4f9; --text-off: #5f6b77;
+  --border: #3a4d63; --border-strong: #52667f; --border-soft: rgba(255,255,255,.06);
+  --accent-fg: #FF8A2B;             /* laranja usado como TEXTO/link */
+  --focus: #FFB066;
+}
+/* Tema claro */
+[data-theme="light"] {
+  color-scheme: light;
+  --bg-app: #dde3ea; --bg-base: #eef1f5; --bg-raised: #ffffff; --bg-hover: #e4e9f0; --bg-inset: #f6f8fa;
+  --overlay: rgba(20,30,45,.55);
+  --text: #1b2838; --text-2: #55636f; --text-strong: #0d1620; --text-off: #98a3ae;
+  --border: #c3ccd6; --border-strong: #9aa7b5; --border-soft: rgba(0,0,0,.06);
+  --accent-fg: #B84700;             /* laranja escurecido p/ texto (5.3:1 no branco) */
+  --accent-soft: rgba(255,106,0,.13);
+  --focus: #B84700;
+  --ok-fg: #1f7a3d; --err-fg: #b42318; --warn-fg: #8a5a00; --info-fg: #0b6f84;
+  --sh-1: 0 1px 2px rgba(20,40,60,.15);
+  --sh-2: 0 4px 12px rgba(20,40,60,.18);
+  --sh-3: 0 12px 32px rgba(20,40,60,.28);
+}

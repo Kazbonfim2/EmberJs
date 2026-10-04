@@ -1,16 +1,35 @@
 # Ember UI
 
-Design system em HTML e CSS puro, com visual denso e compacto de software de desktop gamer e cor de destaque laranja saturado.
+Biblioteca de componentes React do design system Ember UI: visual denso e compacto de software de desktop gamer, cor de destaque laranja saturado. Runtime principal é o [Bun](https://bun.sh).
 
-Sem frameworks, sem bibliotecas, sem CDNs. Um único arquivo.
+> Esta é a branch `react/main`. A versão original em HTML/CSS/JS puro, de arquivo único, continua em `main`.
 
 > Inspirado no estilo visual de clientes de jogos para desktop. Não usa logos, ícones ou assets de nenhuma marca.
 
 ## Como usar
 
-Abra o `index.html` no navegador. Não precisa instalar nada.
+```bash
+bun install   # instala as dependências
+bun dev       # sobe a página de demo (Vite) em http://localhost:5173
+bun run build       # build de produção da página de demo
+bun run build:lib   # gera dist/ com os componentes prontos para importar em outro projeto
+bun test             # roda a suíte de testes (bun:test)
+```
 
-A página é uma demonstração com uma seção por componente, menu lateral e botão de tema (claro/escuro) no topo.
+`src/App.tsx` é a página de demo — uma seção por componente, menu lateral e botão de tema (claro/escuro) no topo, equivalente ao `index.html` original.
+
+## Importar um componente
+
+```tsx
+import { Button, Modal, useToast } from "ember-ui";
+
+function Exemplo() {
+  const toast = useToast();
+  return <Button onClick={() => toast({ title: "Oi!", variant: "ok" })}>Clique</Button>;
+}
+```
+
+`src/index.ts` é o barrel público: reexporta todos os componentes, hooks e helpers. Cada componente mora isolado em `src/components/<Nome>/`, com seu próprio `.tsx` e `.css`.
 
 ## Componentes
 
@@ -19,43 +38,127 @@ A página é uma demonstração com uma seção por componente, menu lateral e b
 - Checkbox, radio, switch e slider
 - Tabs e menu lateral
 - Janela de app, com barra de título
-- Modais (simples, confirmação e erro)
-- Dropdown e menu de contexto
-- Tooltip e popover
+- Modais (simples, confirmação e erro) — `<dialog>` nativo
+- Dropdown e menu de contexto — posicionados com [Floating UI](https://floating-ui.com/)
+- Tooltip e popover — também via Floating UI
 - Cards de jogo/produto
 - Lista de biblioteca
 - Barra de progresso e de download
 - Badges, tags e avatar com status
-- Toasts
+- Toasts, via `ToastProvider` + `useToast()`
 - Paginação e breadcrumb
 - Scrollbar customizada
+- `Flex`/`FlexItem` — sistema de layout (veja [Sistema de layout (Flex)](#sistema-de-layout-flex))
+- `QRCode` — gera e exibe QR codes (veja [QRCode](#qrcode))
 
 Todos têm estados normal, hover, `focus-visible`, active e disabled.
 
-## Estrutura do arquivo
+## Estrutura
 
-O CSS fica dentro de `<style>`, em blocos comentados:
-
-1. **Tokens:** cores, espaçamentos, raios e sombras (`:root`)
-2. **Base**
-3. **Componentes**
-4. **Demo e utilitários**
-
-O JavaScript no final do arquivo é pequeno e cuida só de tema, modal, tabs, dropdown, menu de contexto, fechar toast e mostrar/ocultar senha.
+```
+src/
+  styles/      tokens.css, base.css (reutilizáveis) e layout.css (só da página de demo)
+  lib/         helpers puros: classnames, navegação por teclado, paginação
+  theme/       ThemeProvider / useTheme / ThemeToggle
+  components/  um componente por pasta, com .tsx + .css + index.ts
+  index.ts     barrel público da biblioteca
+  App.tsx      página de demo
+tests/         bun:test sobre a lógica não-trivial extraída em lib/ e theme/
+```
 
 ## Temas
 
-A troca é feita pelo atributo `data-theme` no `<html>`:
+A troca é feita pelo atributo `data-theme` no `<html>`, via `ThemeProvider`/`useTheme`:
 
-```html
-<html data-theme="dark">   <!-- ou "light" -->
+```tsx
+import { ThemeProvider, ThemeToggle } from "ember-ui";
+
+<ThemeProvider>
+  <ThemeToggle />
+  {/* resto do app */}
+</ThemeProvider>
 ```
 
-A escolha fica salva no `localStorage`.
+A escolha fica salva no `localStorage` (chave `ember-theme`).
+
+## Sistema de layout (Flex)
+
+`Flex` e `FlexItem` existem pra não precisar escrever `display: flex` e as propriedades relacionadas na mão em todo canto — eles normalizam as opções mais comuns de flexbox como props, usando os tokens de espaçamento (`--sp-1`..`--sp-7`) no `gap`. Funcionam junto com qualquer outro componente da biblioteca (um `Flex` pode conter `Button`, `Badge`, `Card`, o que for).
+
+```tsx
+import { Flex, FlexItem, Button, Badge } from "ember-ui";
+
+// linha de botões, com quebra automática e espaçamento no token 3 (--sp-3)
+<Flex gap={3} wrap>
+  <Button variant="primary">Instalar</Button>
+  <Button variant="secondary">Cancelar</Button>
+</Flex>
+
+// alinhar nas pontas
+<Flex align="center" justify="between">
+  <Badge>Esquerda</Badge>
+  <Badge variant="ok">Direita</Badge>
+</Flex>
+
+// coluna com um item que cresce pra ocupar o espaço livre
+<Flex direction="column" gap={2}>
+  <FlexItem grow>Cresce</FlexItem>
+  <FlexItem>Tamanho natural</FlexItem>
+</Flex>
+```
+
+**`Flex` props:**
+
+| Prop | Valores | Default |
+| --- | --- | --- |
+| `direction` | `row` \| `column` \| `row-reverse` \| `column-reverse` | `row` |
+| `align` | `start` \| `center` \| `end` \| `stretch` \| `baseline` | — (`align-items` do navegador) |
+| `justify` | `start` \| `center` \| `end` \| `between` \| `around` \| `evenly` | — (`justify-content` do navegador) |
+| `gap` | `1`–`7` (usa `var(--sp-N)`) ou qualquer string CSS (`"12px"`, `"1rem"`) | — |
+| `wrap` | `boolean` | `false` |
+| `inline` | `boolean` (`inline-flex` em vez de `flex`) | `false` |
+| `as` | qualquer tag/componente (`"ul"`, `"nav"`, ...) | `"div"` |
+
+**`FlexItem` props:** `grow`/`shrink` (`boolean` vira `0`/`1`, ou passe um número exato), `basis` (qualquer `flex-basis` válido), `order`, `as`.
+
+Não gera nenhuma classe CSS nova — tudo é resolvido via `style` computado a partir das props, então não tem risco de colidir com as classes do resto do design system.
+
+## QRCode
+
+Gera e exibe QR codes como SVG — sem canvas, sem chamada de rede, sem leitura/decodificação (fora de escopo). Usa o pacote
+[`qrcode`](https://www.npmjs.com/package/qrcode) só pela parte síncrona de codificação (algoritmo de Reed-Solomon); a
+renderização em SVG é nossa, o que dá controle total de cor e tamanho via props.
+
+```tsx
+import { QRCode } from "ember-ui";
+
+// uso simples -- cor e fundo já vêm do tema (--text-strong / --bg-raised)
+<QRCode value="https://ember-ui.example/convite" />
+
+// conteúdo curto, destinado a impressão: mais correção de erro, menos espaço
+<QRCode value="ID-4821-FORJA-DAS-BRASAS" size={96} level="H" />
+
+// cor customizada, sobrepondo o tema
+<QRCode value="https://ember-ui.example" color="var(--accent)" background="none" />
+```
+
+**Props:**
+
+| Prop | Tipo | Default | Uso |
+| --- | --- | --- | --- |
+| `value` | `string` | — (obrigatório) | Texto/URL a codificar |
+| `size` | `number` | `160` | Lado do SVG, em px |
+| `level` | `"L" \| "M" \| "Q" \| "H"` | `"M"` | Correção de erro -- mais alto tolera mais dano, mas gera um QR mais denso |
+| `margin` | `number` | `2` | Módulos de zona de silêncio em volta do código |
+| `color` | `string` | `"var(--text-strong)"` | Cor dos módulos escuros |
+| `background` | `string` | `"var(--bg-raised)"` | Cor de fundo (`"none"` pra transparente) |
+
+Regra prática pro `level`: `"M"` (padrão) cobre a maioria dos casos em tela; suba pra `"Q"`/`"H"` só quando o código for
+impresso e puder se sujar, arranhar ou ser parcialmente coberto -- o ganho de robustez custa um QR com mais módulos.
 
 ## Trocar a cor de destaque
 
-Altere no `:root`:
+Altere em `src/styles/tokens.css`:
 
 | Variável | Uso |
 | --- | --- |
@@ -77,4 +180,4 @@ Altere no `:root`:
 
 ## Créditos
 
-Ícones: [Lucide](https://lucide.dev), licença ISC, embutidos como SVG inline.
+Ícones: [Famicons](https://icones.js.org/collection/famicons) (via [Iconify](https://iconify.design)), licença MIT, embutidos como SVG inline.
