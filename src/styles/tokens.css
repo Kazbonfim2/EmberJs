@@ -1,5 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Devanagari:wght@400;500;600;700&display=swap");
+
 :root {
-  --font: "Segoe UI", Arial, sans-serif;
+  --font: "IBM Plex Sans Devanagari", "Segoe UI", Arial, sans-serif;
   --fs-xs: 11px; --fs-sm: 12px; --fs-md: 13px; --fs-lg: 15px; --fs-xl: 20px;
   --sp-1: 2px; --sp-2: 4px; --sp-3: 8px; --sp-4: 12px; --sp-5: 16px; --sp-6: 24px; --sp-7: 32px;
   --r-sm: 2px; --r-md: 3px; --r-lg: 4px;

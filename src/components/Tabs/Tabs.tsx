@@ -1,5 +1,6 @@
 import { createContext, useContext, useRef, type KeyboardEvent, type ReactNode } from "react";
 import { tabKeyDelta, wrapIndex } from "../../lib/keyboardNav";
+import { spacingStyle, splitSpacingProps, type SpacingProps } from "../../lib/spacing";
 import "./Tabs.css";
 
 type TabsContextValue = { value: string; onChange: (value: string) => void };
@@ -18,8 +19,11 @@ export function Tabs({ value, onChange, children }: TabsProps) {
   return <TabsContext.Provider value={{ value, onChange }}>{children}</TabsContext.Provider>;
 }
 
-export function TabList({ children, "aria-label": ariaLabel }: { children: ReactNode; "aria-label": string }) {
+export type TabListProps = SpacingProps & { children: ReactNode; "aria-label": string };
+
+export function TabList({ children, "aria-label": ariaLabel, ...rest }: TabListProps) {
   const listRef = useRef<HTMLDivElement>(null);
+  const [spacing] = splitSpacingProps(rest);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     const delta = tabKeyDelta(e.key);
@@ -34,15 +38,18 @@ export function TabList({ children, "aria-label": ariaLabel }: { children: React
   };
 
   return (
-    <div className="tabs" role="tablist" aria-label={ariaLabel} ref={listRef} onKeyDown={handleKeyDown}>
+    <div className="tabs" role="tablist" aria-label={ariaLabel} ref={listRef} onKeyDown={handleKeyDown} style={spacingStyle(spacing)}>
       {children}
     </div>
   );
 }
 
-export function Tab({ value, disabled, children }: { value: string; disabled?: boolean; children: ReactNode }) {
+export type TabProps = SpacingProps & { value: string; disabled?: boolean; children: ReactNode };
+
+export function Tab({ value, disabled, children, ...rest }: TabProps) {
   const ctx = useTabsContext();
   const selected = ctx.value === value;
+  const [spacing] = splitSpacingProps(rest);
   return (
     <button
       id={`tab-${value}`}
@@ -54,17 +61,29 @@ export function Tab({ value, disabled, children }: { value: string; disabled?: b
       disabled={disabled}
       className="tab"
       onClick={() => ctx.onChange(value)}
+      style={spacingStyle(spacing)}
     >
       {children}
     </button>
   );
 }
 
-export function TabPanel({ value, children }: { value: string; children: ReactNode }) {
+export type TabPanelProps = SpacingProps & { value: string; children: ReactNode };
+
+export function TabPanel({ value, children, ...rest }: TabPanelProps) {
   const ctx = useTabsContext();
   const selected = ctx.value === value;
+  const [spacing] = splitSpacingProps(rest);
   return (
-    <div role="tabpanel" id={`panel-${value}`} aria-labelledby={`tab-${value}`} tabIndex={0} className="tabpanel" hidden={!selected}>
+    <div
+      role="tabpanel"
+      id={`panel-${value}`}
+      aria-labelledby={`tab-${value}`}
+      tabIndex={0}
+      className="tabpanel"
+      hidden={!selected}
+      style={spacingStyle(spacing)}
+    >
       {children}
     </div>
   );

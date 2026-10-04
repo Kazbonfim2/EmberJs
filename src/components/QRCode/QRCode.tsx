@@ -1,9 +1,10 @@
-import { useMemo, type ReactNode } from "react";
+import { useMemo, type CSSProperties, type ReactNode } from "react";
 import { create as createQRCode, type QRCodeErrorCorrectionLevel } from "qrcode";
 import { cx } from "../../lib/classnames";
+import { spacingStyle, type SpacingProps } from "../../lib/spacing";
 import "./QRCode.css";
 
-export type QRCodeProps = {
+export type QRCodeProps = SpacingProps & {
   /** Texto, URL ou qualquer conteudo a codificar. */
   value: string;
   /** Tamanho do lado em px. */
@@ -17,6 +18,7 @@ export type QRCodeProps = {
   /** Cor de fundo. */
   background?: string;
   className?: string;
+  style?: CSSProperties;
 };
 
 export function QRCode({
@@ -27,6 +29,8 @@ export function QRCode({
   color = "var(--text-strong)",
   background = "var(--bg-raised)",
   className,
+  style,
+  ...spacing
 }: QRCodeProps) {
   const modules = useMemo(() => createQRCode(value, { errorCorrectionLevel: level }).modules, [value, level]);
   const count = modules.size;
@@ -50,6 +54,7 @@ export function QRCode({
       viewBox={`0 0 ${total} ${total}`}
       shapeRendering="crispEdges"
       className={cx("qrcode", className)}
+      style={{ ...spacingStyle(spacing), ...style }}
     >
       <rect width={total} height={total} fill={background} />
       <g fill={color}>{cells}</g>

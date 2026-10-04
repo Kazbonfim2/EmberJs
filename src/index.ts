@@ -23,6 +23,7 @@ export * from "./theme";
 
 export { cx, type ClassValue } from "./lib/classnames";
 export { getPaginationRange, ELLIPSIS, type PageItem } from "./lib/pagination";
+export { spacingStyle, splitSpacingProps, type SpacingProps, type SpacingValue } from "./lib/spacing";
 
 import "./styles/tokens.css";
 import "./styles/base.css";

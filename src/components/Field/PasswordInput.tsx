@@ -1,10 +1,13 @@
 import { forwardRef, useState, type InputHTMLAttributes } from "react";
 import { Button } from "../Button";
 import { Icon } from "../Icon";
+import type { SpacingProps } from "../../lib/spacing";
 import { Input } from "./Input";
 import "./Field.css";
 
-export const PasswordInput = forwardRef<HTMLInputElement, Omit<InputHTMLAttributes<HTMLInputElement>, "type">>(
+export type PasswordInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & SpacingProps;
+
+export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
   function PasswordInput(props, ref) {
     const [visible, setVisible] = useState(false);
     return (

@@ -1,6 +1,7 @@
 import { cx } from "../../lib/classnames";
 import { Button } from "../Button";
 import { Icon, type IconName } from "../Icon";
+import { spacingStyle, splitSpacingProps, type SpacingProps } from "../../lib/spacing";
 import "./Toast.css";
 
 export type ToastVariant = "ok" | "err" | "warn" | "info";
@@ -12,7 +13,7 @@ const VARIANT_ICON: Record<ToastVariant, IconName> = {
   info: "info",
 };
 
-export type ToastProps = {
+export type ToastProps = SpacingProps & {
   title: string;
   text?: string;
   variant: ToastVariant;
@@ -21,9 +22,14 @@ export type ToastProps = {
   animated?: boolean;
 };
 
-export function Toast({ title, text, variant, onDismiss, animated = true }: ToastProps) {
+export function Toast({ title, text, variant, onDismiss, animated = true, ...rest }: ToastProps) {
+  const [spacing] = splitSpacingProps(rest);
   return (
-    <div className={cx("toast", variant, animated && "is-animated")} role={variant === "err" ? "alert" : "status"}>
+    <div
+      className={cx("toast", variant, animated && "is-animated")}
+      role={variant === "err" ? "alert" : "status"}
+      style={spacingStyle(spacing)}
+    >
       <Icon name={VARIANT_ICON[variant]} className="kind" />
       <div>
         <div className="toast-title">{title}</div>

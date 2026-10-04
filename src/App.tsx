@@ -40,6 +40,7 @@ const SECTIONS = [
   ["paginacao", "Paginação"],
   ["flex", "Sistema de Flex"],
   ["qrcode", "QR code"],
+  ["spacing", "Espaçamento rápido"],
   ["scrollbar", "Scrollbar"],
 ] as const;
 
@@ -430,14 +431,14 @@ export function App() {
           <section className="sec" id="toasts" aria-labelledby="h-toasts">
             <h2 id="h-toasts">Notificações (toasts)</h2>
             <DemoToasts />
-            <div className="row" style={{ marginTop: "var(--sp-4)" }}>
+            <Flex gap={3} mt={4}>
               <Button variant="secondary" size="sm" onClick={() => toast({ title: "Amigo online", text: "Ana entrou e está jogando Maré Profunda.", variant: "info", animated: true })}>
                 Disparar toast (com animação)
               </Button>
               <Button variant="secondary" size="sm" onClick={() => toast({ title: "Amigo online", text: "Ana entrou e está jogando Maré Profunda.", variant: "info", animated: false })}>
                 Disparar toast (sem animação)
               </Button>
-            </div>
+            </Flex>
           </section>
 
           <section className="sec" id="paginacao" aria-labelledby="h-paginacao">
@@ -447,9 +448,7 @@ export function App() {
               <BreadcrumbItem href="#paginacao">Ação</BreadcrumbItem>
               <BreadcrumbItem current>Forja das Brasas</BreadcrumbItem>
             </Breadcrumb>
-            <div style={{ marginTop: 16 }}>
-              <Pagination page={page} totalPages={12} onChange={setPage} />
-            </div>
+            <Pagination page={page} totalPages={12} onChange={setPage} mt={4} />
           </section>
 
           <section className="sec" id="flex" aria-labelledby="h-flex">
@@ -569,6 +568,40 @@ export function App() {
               reduzimos o <code>size</code>, já que o conteúdo é bem mais curto que uma URL.
             </p>
             <QRCode value="ID-4821-FORJA-DAS-BRASAS" size={96} level="H" />
+          </section>
+
+          <section className="sec" id="spacing" aria-labelledby="h-spacing">
+            <h2 id="h-spacing">Espaçamento rápido (m/p)</h2>
+            <p className="muted">
+              Todo componente da biblioteca aceita <code>m</code>/<code>mt</code>/<code>mr</code>/<code>mb</code>/<code>ml</code>/
+              <code>mx</code>/<code>my</code> (margin) e <code>p</code>/<code>pt</code>/<code>pr</code>/<code>pb</code>/<code>pl</code>/
+              <code>px</code>/<code>py</code> (padding) como props diretas — no estilo Chakra UI/styled-system. De <code>1</code> a{" "}
+              <code>7</code> usa os mesmos tokens <code>--sp-1</code>..<code>--sp-7</code> do resto do design system; qualquer outro
+              número (px) ou string CSS (<code>"1rem"</code>) passa direto. Sem precisar escrever <code>style</code> pra ajustes
+              rápidos de espaçamento.
+            </p>
+
+            <h3 className="sub">margin por lado, sem depender de Flex/gap</h3>
+            <p className="muted">
+              Cada <code>Badge</code> aqui empurra o próximo com <code>ml</code> — útil quando não dá pra (ou não vale a pena)
+              envolver os elementos num <code>Flex</code>.
+            </p>
+            <div className="row">
+              <Badge>Sem espaçamento</Badge>
+              <Badge variant="info" ml={2}>ml={"{2}"}</Badge>
+              <Badge variant="ok" ml={6}>ml={"{6}"}</Badge>
+            </div>
+
+            <h3 className="sub">padding sobrescrevendo o espaçamento padrão do componente</h3>
+            <p className="muted">
+              <code>p</code>/<code>px</code>/<code>py</code> têm prioridade sobre o padding que o componente já define via CSS —
+              é uma sobrescrita deliberada, não uma soma. Útil pra dar mais (ou menos) respiro num caso específico, sem criar uma
+              variante nova do componente.
+            </p>
+            <div className="row" style={{ alignItems: "flex-start" }}>
+              <Card title="Padding padrão" colorFrom="#333" colorTo="#666" tags={<Badge variant="muted">p padrão</Badge>} />
+              <Card title="Mais respiro" colorFrom="#333" colorTo="#666" p={6} tags={<Badge variant="info">p={"{6}"}</Badge>} />
+            </div>
           </section>
 
           <section className="sec" id="scrollbar" aria-labelledby="h-scrollbar">
