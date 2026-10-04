@@ -7,6 +7,7 @@ export * from "./components/Field";
 export * from "./components/Checkbox";
 export * from "./components/Slider";
 export * from "./components/Tabs";
+export * from "./components/Accordion";
 export * from "./components/SideNav";
 export * from "./components/Window";
 export * from "./components/Modal";

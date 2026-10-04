@@ -7,6 +7,7 @@ import { Field, Input, Textarea, Select, PasswordInput } from "./components/Fiel
 import { Checkbox, Radio, Switch } from "./components/Checkbox";
 import { Slider } from "./components/Slider";
 import { Tabs, TabList, Tab, TabPanel } from "./components/Tabs";
+import { Accordion, AccordionItem } from "./components/Accordion";
 import { SideNav, SideNavTitle, SideNavLink, SideNavButton } from "./components/SideNav";
 import { Window } from "./components/Window";
 import { Modal } from "./components/Modal";
@@ -44,6 +45,7 @@ const SECTION_GROUPS = [
       ["inputs", "Inputs"],
       ["selecao", "Seleção"],
       ["tabs", "Tabs e navegação"],
+      ["accordion", "Accordion"],
       ["janela", "Janela"],
       ["modal", "Modais"],
       ["dropdown", "Dropdown e contexto"],
@@ -503,6 +505,38 @@ const [tab, setTab] = useState("loja");
   <TabPanel value="loja">Destaques da semana.</TabPanel>
   <TabPanel value="biblioteca">Seus jogos instalados.</TabPanel>
 </Tabs>
+            `} />
+          </section>
+
+          <section className="sec" id="accordion" aria-labelledby="h-accordion">
+            <h2 id="h-accordion">Accordion</h2>
+            <p className="muted">
+              Só uma seção fica aberta por vez — abrir uma fecha a anterior. Navegação por teclado com{" "}
+              <kbd>↑</kbd>/<kbd>↓</kbd> entre os cabeçalhos.
+            </p>
+            <Accordion defaultValue="requisitos">
+              <AccordionItem value="requisitos" title="Requisitos do sistema">
+                Windows 10 ou superior, 8 GB de RAM, GPU com suporte a DirectX 12.
+              </AccordionItem>
+              <AccordionItem value="pagamento" title="Formas de pagamento">
+                Cartão de crédito, PIX e carteira da loja.
+              </AccordionItem>
+              <AccordionItem value="suporte" title="Suporte indisponível" disabled>
+                Em manutenção.
+              </AccordionItem>
+            </Accordion>
+
+            <CodeWindow code={`
+import { Accordion, AccordionItem } from "ember-ui";
+
+<Accordion defaultValue="requisitos">
+  <AccordionItem value="requisitos" title="Requisitos do sistema">
+    Windows 10 ou superior, 8 GB de RAM, GPU com suporte a DirectX 12.
+  </AccordionItem>
+  <AccordionItem value="pagamento" title="Formas de pagamento">
+    Cartão de crédito, PIX e carteira da loja.
+  </AccordionItem>
+</Accordion>
             `} />
           </section>
 
