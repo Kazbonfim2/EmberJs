@@ -20,6 +20,7 @@ import { Badge, Tag, Avatar } from "./components/Badge";
 import { Toast, useToast } from "./components/Toast";
 import { Pagination, Breadcrumb, BreadcrumbItem } from "./components/Pagination";
 import { QRCode } from "./components/QRCode";
+import { Text } from "./components/Text";
 import { ThemeToggle } from "./theme";
 
 const SECTIONS = [
@@ -41,6 +42,7 @@ const SECTIONS = [
   ["flex", "Sistema de Flex"],
   ["qrcode", "QR code"],
   ["spacing", "Espaçamento rápido"],
+  ["texto", "Texto"],
   ["scrollbar", "Scrollbar"],
 ] as const;
 
@@ -601,6 +603,35 @@ export function App() {
             <div className="row" style={{ alignItems: "flex-start" }}>
               <Card title="Padding padrão" colorFrom="#333" colorTo="#666" tags={<Badge variant="muted">p padrão</Badge>} />
               <Card title="Mais respiro" colorFrom="#333" colorTo="#666" p={6} tags={<Badge variant="info">p={"{6}"}</Badge>} />
+            </div>
+          </section>
+
+          <section className="sec" id="texto" aria-labelledby="h-texto">
+            <h2 id="h-texto">Texto</h2>
+            <Text className="muted">
+              <code>Text</code> é o componente genérico pra qualquer texto da interface: <code>size</code>, <code>weight</code>,{" "}
+              <code>color</code> e <code>align</code> usam os tokens do design system (<code>--fs-*</code>, pesos 400-700,{" "}
+              <code>--text-*</code> e as cores semânticas), <code>as</code> troca o elemento (<code>p</code>, <code>span</code>,{" "}
+              <code>h1</code>..<code>h4</code>, etc.) e aceita <code>m</code>/<code>p</code> como todo o resto da biblioteca.
+            </Text>
+
+            <h3 className="sub">size + weight + color</h3>
+            <div className="stack">
+              <Text as="h3" size="xl" weight="bold" color="strong" m={0}>Forja das Brasas</Text>
+              <Text size="md" color="default" m={0}>Texto padrão, do tamanho e cor normais do corpo.</Text>
+              <Text size="sm" color="muted" m={0}>Texto secundário/legenda, mais discreto.</Text>
+              <Text size="sm" color="ok" weight="semibold" m={0}>Disponível para jogar</Text>
+              <Text size="sm" color="err" weight="semibold" m={0}>Falha ao conectar ao servidor</Text>
+            </div>
+
+            <h3 className="sub">align + truncate + m/p como os demais componentes</h3>
+            <p className="muted">Mesma prop de espaçamento que Button/Card/Badge usam — aqui com mb pra separar os três exemplos.</p>
+            <div style={{ maxWidth: 220 }}>
+              <Text align="right" mb={3}>Alinhado à direita</Text>
+              <Text truncate mb={3} style={{ padding: "var(--sp-2)", background: "var(--bg-inset)", borderRadius: "var(--r-sm)" }}>
+                Esse texto é bem mais longo do que o espaço disponível, então é cortado com reticências no final
+              </Text>
+              <Text italic color="muted">Texto em itálico, cor muted</Text>
             </div>
           </section>
 
