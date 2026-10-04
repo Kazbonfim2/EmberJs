@@ -89,7 +89,7 @@ export function App() {
       <a className="skip" href="#main">Pular para o conteúdo</a>
 
       <header className="topbar">
-        <div className="brand"><i aria-hidden="true" /> Ember UI</div>
+        <div className="brand"><Icon name="bonfire" className="brand-icon" /> Ember UI</div>
         <span className="muted grow">Design system</span>
         <ThemeToggle />
       </header>

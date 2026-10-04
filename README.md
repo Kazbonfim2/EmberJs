@@ -180,4 +180,4 @@ Altere em `src/styles/tokens.css`:
 
 ## Créditos
 
-Ícones: [Lucide](https://lucide.dev), licença ISC, embutidos como SVG inline.
+Ícones: [Famicons](https://icones.js.org/collection/famicons) (via [Iconify](https://iconify.design)), licença MIT, embutidos como SVG inline.
