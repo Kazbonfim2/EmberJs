@@ -28,6 +28,12 @@ import { CodeWindow } from "./demo/CodeWindow";
 
 const SECTION_GROUPS = [
   {
+    title: "Primeiros passos",
+    items: [
+      ["primeiros-passos", "Instalação e uso"],
+    ],
+  },
+  {
     title: "Fundamentos",
     items: [
       ["cores", "Cores"],
@@ -115,6 +121,66 @@ export function App() {
         </nav>
 
         <main id="main">
+          <section className="sec" id="primeiros-passos" aria-labelledby="h-primeiros-passos">
+            <h2 id="h-primeiros-passos">Primeiros passos</h2>
+            <p className="muted">
+              <code>ember-ui</code> é o pacote deste design system React/TypeScript. Instale, importe o CSS base uma
+              única vez, envolva a raiz da aplicação com os providers necessários e importe os componentes direto do
+              pacote — sem import por componente.
+            </p>
+
+            <h3 className="sub">1. Instalação</h3>
+            <CodeWindow title="Terminal" code={`
+npm install ember-ui react react-dom
+            `} />
+
+            <h3 className="sub">2. CSS base</h3>
+            <p className="muted">
+              Uma única vez, na raiz da aplicação — traz os tokens (cores, espaçamento, tipografia) e o reset usados
+              por todo componente.
+            </p>
+            <CodeWindow title="main.tsx" code={`
+import "ember-ui/styles.css";
+            `} />
+
+            <h3 className="sub">3. Providers na raiz</h3>
+            <p className="muted">
+              <code>IconSprite</code> injeta o sprite usado por <code>Icon</code> (e por tudo que renderiza ícone).{" "}
+              <code>ThemeProvider</code> controla o tema claro/escuro (veja a seção <a href="#tema">Tema</a>).{" "}
+              <code>ToastProvider</code> só é necessário se você usar <code>useToast</code>/<code>Toast</code>.
+            </p>
+            <CodeWindow title="main.tsx" code={`
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { IconSprite, ThemeProvider, ToastProvider } from "ember-ui";
+import "ember-ui/styles.css";
+import { App } from "./App";
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <IconSprite />
+    <ThemeProvider>
+      <ToastProvider>
+        <App />
+      </ToastProvider>
+    </ThemeProvider>
+  </StrictMode>,
+);
+            `} />
+
+            <h3 className="sub">4. Use os componentes</h3>
+            <p className="muted">
+              Tudo sai do mesmo pacote. Todo componente que renderiza um elemento aceita <code>m</code>/<code>p</code>{" "}
+              (veja <a href="#spacing">Espaçamento rápido</a>) além das próprias props.
+            </p>
+            <CodeWindow code={`
+import { Button, Card, Badge } from "ember-ui";
+
+<Card title="Forja das Brasas" colorFrom="#333" colorTo="#666" tags={<Badge variant="ok">Instalado</Badge>} />
+<Button variant="primary" mt={4}>Jogar</Button>
+            `} />
+          </section>
+
           <section className="sec" id="cores" aria-labelledby="h-cores">
             <h2 id="h-cores">Cores</h2>
             <div className="swatches">
