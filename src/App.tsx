@@ -18,6 +18,7 @@ import { Progress, Download } from "./components/Progress";
 import { Badge, Tag, Avatar } from "./components/Badge";
 import { Toast, useToast } from "./components/Toast";
 import { Pagination, Breadcrumb, BreadcrumbItem } from "./components/Pagination";
+import { QRCode } from "./components/QRCode";
 import { ThemeToggle } from "./theme";
 
 const SECTIONS = [
@@ -36,6 +37,7 @@ const SECTIONS = [
   ["badges", "Badges e avatar"],
   ["toasts", "Notificações"],
   ["paginacao", "Paginação"],
+  ["qrcode", "QR code"],
   ["scrollbar", "Scrollbar"],
 ] as const;
 
@@ -446,6 +448,63 @@ export function App() {
             <div style={{ marginTop: 16 }}>
               <Pagination page={page} totalPages={12} onChange={setPage} />
             </div>
+          </section>
+
+          <section className="sec" id="qrcode" aria-labelledby="h-qrcode">
+            <h2 id="h-qrcode">QR code</h2>
+            <p className="muted">
+              <code>QRCode</code> codifica texto/URL numa imagem (SVG), sem depender de canvas ou de rede — tudo acontece no
+              cliente. Cor e fundo já usam os tokens do tema por padrão, então funciona nos dois temas sem configurar nada.
+            </p>
+
+            <h3 className="sub">Exemplo prático: card de convite</h3>
+            <p className="muted">
+              O padrão mais comum de uso: um QRCode ao lado de um texto e um botão de ação, pra compartilhar um link de
+              verdade (convite pra partida, evento, cupom). O botão copia o mesmo link que está codificado no QR.
+            </p>
+            <div
+              className="row"
+              style={{
+                alignItems: "center",
+                gap: "var(--sp-4)",
+                padding: "var(--sp-5)",
+                maxWidth: 440,
+                background: "var(--bg-raised)",
+                border: "1px solid var(--border)",
+                borderRadius: "var(--r-md)",
+              }}
+            >
+              <QRCode value="https://ember-ui.example/convite/forja-das-brasas" size={96} />
+              <div style={{ display: "grid", gap: "var(--sp-2)" }}>
+                <strong style={{ color: "var(--text-strong)" }}>Convite para Forja das Brasas</strong>
+                <p className="muted" style={{ fontSize: "var(--fs-sm)", margin: 0 }}>
+                  Aponte a câmera do celular ou copie o link abaixo pra entrar na partida.
+                </p>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => navigator.clipboard?.writeText("https://ember-ui.example/convite/forja-das-brasas")}
+                >
+                  <Icon name="copy" size="sm" />
+                  Copiar link
+                </Button>
+              </div>
+            </div>
+
+            <h3 className="sub">Link (nível de correção padrão)</h3>
+            <p className="muted">
+              Caso de uso mais comum: codificar uma URL pra escanear com o celular. O nível de correção de erro padrão
+              (<code>"M"</code>) já é suficiente pra isso.
+            </p>
+            <QRCode value="https://ember-ui.example/convite" />
+
+            <h3 className="sub">Código curto, com correção de erro alta</h3>
+            <p className="muted">
+              Pra um código que vai ser impresso e pode sujar/arranhar (etiqueta, crachá, caixa física), vale subir o{" "}
+              <code>level</code> pra <code>"H"</code> — tolera mais dano, ao custo de um QR mais denso. Nesse exemplo também
+              reduzimos o <code>size</code>, já que o conteúdo é bem mais curto que uma URL.
+            </p>
+            <QRCode value="ID-4821-FORJA-DAS-BRASAS" size={96} level="H" />
           </section>
 
           <section className="sec" id="scrollbar" aria-labelledby="h-scrollbar">
