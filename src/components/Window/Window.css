@@ -1,0 +1,11 @@
+.win { background: var(--bg-base); border: 1px solid var(--border-strong); border-radius: var(--r-lg); box-shadow: var(--sh-3); overflow: hidden; max-width: 560px; }
+.win-bar { display: flex; align-items: center; gap: var(--sp-3); height: 30px; padding-left: var(--sp-4); background: linear-gradient(var(--bg-raised), var(--bg-base)); border-bottom: 1px solid var(--border); }
+.win-title { flex: 1; font-size: var(--fs-sm); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--text-2); }
+.win-dot { width: 10px; height: 10px; background: var(--accent); border-radius: var(--r-sm); }
+.win-ctl { display: flex; height: 100%; }
+.win-ctl button { width: 40px; display: grid; place-items: center; border: 0; background: transparent; color: var(--text-2); }
+.win-ctl button:hover { background: var(--bg-hover); color: var(--text-strong); }
+.win-ctl button:active { background: var(--bg-inset); }
+.win-ctl button.close:hover { background: #c42b2b; color: #fff; }
+.win-ctl button:focus-visible { outline-offset: -2px; }
+.win-body { padding: var(--sp-5); display: grid; gap: var(--sp-4); }
