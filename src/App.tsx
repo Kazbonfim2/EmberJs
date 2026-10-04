@@ -31,7 +31,7 @@ const SECTIONS = [
   ["dropdown", "Dropdown e contexto"],
   ["tooltip", "Tooltip e popover"],
   ["cards", "Cards"],
-  ["lista", "Lista (biblioteca)"],
+  ["lista", "Lista"],
   ["progresso", "Progresso e download"],
   ["badges", "Badges e avatar"],
   ["toasts", "Notificações"],
@@ -371,7 +371,7 @@ export function App() {
           </section>
 
           <section className="sec" id="lista" aria-labelledby="h-lista">
-            <h2 id="h-lista">Lista de itens (biblioteca)</h2>
+            <h2 id="h-lista">Lista de itens</h2>
             <LibraryList aria-label="Biblioteca de jogos">
               <LibraryItem colorFrom="#7a2e00" colorTo="#ff6a00" name="Forja das Brasas" meta="12 h" />
               <LibraryItem colorFrom="#0b3b4a" colorTo="#2bb8d4" name="Maré Profunda" meta="3 h" current />
