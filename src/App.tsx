@@ -456,6 +456,31 @@ export function App() {
               biblioteca (aqui embaixo, com <code>Badge</code>).
             </p>
 
+            <h3 className="sub">Exemplo prático: linha de usuário</h3>
+            <p className="muted">
+              Avatar, um bloco de texto que cresce pra preencher o espaço livre (<code>FlexItem grow</code>) e um botão de
+              ação, tudo alinhado numa única linha — o padrão clássico de "linha de item com ação" (lista de amigos,
+              notificação, item de configuração).
+            </p>
+            <Flex
+              align="center"
+              gap={3}
+              style={{
+                padding: "var(--sp-4)",
+                maxWidth: 420,
+                background: "var(--bg-raised)",
+                border: "1px solid var(--border)",
+                borderRadius: "var(--r-md)",
+              }}
+            >
+              <Avatar status="online" label="Lucas, online">L</Avatar>
+              <FlexItem grow>
+                <div style={{ fontWeight: 600, color: "var(--text-strong)" }}>Lucas</div>
+                <div className="muted" style={{ fontSize: "var(--fs-sm)" }}>Jogando Forja das Brasas</div>
+              </FlexItem>
+              <Button variant="secondary" size="sm">Chamar pra jogar</Button>
+            </Flex>
+
             <h3 className="sub">align="center" + justify="between" + gap={3}</h3>
             <p className="muted">Distribui nas pontas e centraliza no eixo cruzado — útil pra barras de ação, cabeçalhos de card etc.</p>
             <Flex
