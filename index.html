@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ember UI - Design System</title>
+<style>
+/* =========================================================
+   1. TOKENS  (troque aqui as cores, espaçamentos, raios, sombras)
+   ========================================================= */
+:root {
+  --font: "Segoe UI", Arial, sans-serif;
+  --fs-xs: 11px; --fs-sm: 12px; --fs-md: 13px; --fs-lg: 15px; --fs-xl: 20px;
+  --sp-1: 2px; --sp-2: 4px; --sp-3: 8px; --sp-4: 12px; --sp-5: 16px; --sp-6: 24px; --sp-7: 32px;
+  --r-sm: 2px; --r-md: 3px; --r-lg: 4px;
+  --h-sm: 22px; --h-md: 28px; --h-lg: 36px;
+  --ease: 120ms ease;
+
+  /* Cor de destaque (laranja saturado) */
+  --accent: #FF6A00;
+  --accent-hover: #FF8A2B;
+  --accent-active: #E05A00;
+  --on-accent: #1a0f05;            /* texto sobre laranja: contraste 6.6:1 (AA) */
+  --accent-soft: rgba(255,106,0,.16);
+
+  /* Semânticas */
+  --ok: #3fae60;   --ok-bg: rgba(63,174,96,.16);   --ok-fg: #6fd18a;
+  --err: #cc3d3d;  --err-bg: rgba(229,72,77,.16);  --err-fg: #ff8083;
+  --warn: #f2b705; --warn-bg: rgba(242,183,5,.16); --warn-fg: #ffd24a;
+  --info: #2bb8d4; --info-bg: rgba(43,184,212,.16);--info-fg: #5fd3e8;
+
+  --glow: inset 0 1px 0 rgba(255,255,255,.35), inset 0 -1px 0 rgba(0,0,0,.15);
+  --sh-1: 0 1px 2px rgba(0,0,0,.35);
+  --sh-2: 0 4px 12px rgba(0,0,0,.4);
+  --sh-3: 0 12px 32px rgba(0,0,0,.55);
+}
+/* Tema escuro (padrão) */
+:root, [data-theme="dark"] {
+  color-scheme: dark;
+  --bg-app: #171a21; --bg-base: #1b2838; --bg-raised: #2a3a4f; --bg-hover: #34475f; --bg-inset: #10161f;
+  --overlay: rgba(5,8,12,.72);
+  --text: #c7d5e0; --text-2: #8f98a0; --text-strong: #eef4f9; --text-off: #5f6b77;
+  --border: #3a4d63; --border-strong: #52667f; --border-soft: rgba(255,255,255,.06);
+  --accent-fg: #FF8A2B;             /* laranja usado como TEXTO/link */
+  --focus: #FFB066;
+}
+/* Tema claro */
+[data-theme="light"] {
+  color-scheme: light;
+  --bg-app: #dde3ea; --bg-base: #eef1f5; --bg-raised: #ffffff; --bg-hover: #e4e9f0; --bg-inset: #f6f8fa;
+  --overlay: rgba(20,30,45,.55);
+  --text: #1b2838; --text-2: #55636f; --text-strong: #0d1620; --text-off: #98a3ae;
+  --border: #c3ccd6; --border-strong: #9aa7b5; --border-soft: rgba(0,0,0,.06);
+  --accent-fg: #B84700;             /* laranja escurecido p/ texto (5.3:1 no branco) */
+  --accent-soft: rgba(255,106,0,.13);
+  --focus: #B84700;
+  --ok-fg: #1f7a3d; --err-fg: #b42318; --warn-fg: #8a5a00; --info-fg: #0b6f84;
+  --sh-1: 0 1px 2px rgba(20,40,60,.15);
+  --sh-2: 0 4px 12px rgba(20,40,60,.18);
+  --sh-3: 0 12px 32px rgba(20,40,60,.28);
+}
+
+/* =========================================================
+   2. BASE
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 56px; }
+body { margin: 0; font: var(--fs-md)/1.45 var(--font); color: var(--text); background: var(--bg-app); }
+h1, h2, h3, h4 { margin: 0; font-weight: 600; color: var(--text-strong); }
+p { margin: 0; }
+a { color: var(--accent-fg); }
+a:hover { text-decoration: none; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.ic { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ic-sm { width: 14px; height: 14px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: -999px; } .skip:focus { left: 8px; top: 8px; z-index: 99; background: var(--bg-raised); padding: 6px 10px; }
+@media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; transition: none !important; scroll-behavior: auto !important; } }
+
+/* Scrollbar customizada */
+* { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-inset); }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border: 2px solid var(--bg-inset); border-radius: var(--r-md); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+::-webkit-scrollbar-thumb:active { background: var(--accent-active); }
+::-webkit-scrollbar-corner { background: var(--bg-inset); }
+
+/* =========================================================
+   3. COMPONENTES
+   ========================================================= */
+
+/* --- Botões --- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-3);
+  height: var(--h-md); padding: 0 var(--sp-5); border: 1px solid transparent; border-radius: var(--r-md);
+  font-size: var(--fs-md); font-weight: 600; white-space: nowrap; text-decoration: none;
+  transition: background var(--ease), border-color var(--ease), filter var(--ease);
+}
+.btn:active:not(:disabled):not([aria-disabled="true"]) { transform: translateY(1px); }
+.btn:disabled, .btn[aria-disabled="true"] { opacity: .45; cursor: not-allowed; box-shadow: none; }
+.btn-sm { height: var(--h-sm); padding: 0 var(--sp-4); font-size: var(--fs-sm); }
+.btn-lg { height: var(--h-lg); padding: 0 var(--sp-6); font-size: var(--fs-lg); }
+
+.btn-primary {
+  color: var(--on-accent); border-color: var(--accent-active);
+  background: linear-gradient(var(--accent-hover), var(--accent));
+  box-shadow: var(--glow), var(--sh-1);
+}
+.btn-primary:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: linear-gradient(color-mix(in srgb, var(--accent-hover) 75%, #fff), var(--accent-hover));
+}
+.btn-primary:active:not(:disabled):not([aria-disabled="true"]) {
+  background: linear-gradient(var(--accent-active), color-mix(in srgb, var(--accent-active) 85%, #000));
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.4);
+}
+.btn-secondary {
+  color: var(--text-strong); border-color: var(--border-strong);
+  background: linear-gradient(var(--bg-hover), var(--bg-raised)); box-shadow: var(--sh-1);
+}
+.btn-secondary:hover:not(:disabled):not([aria-disabled="true"]) { border-color: var(--accent); background: linear-gradient(color-mix(in srgb, var(--bg-hover) 80%, #fff), var(--bg-hover)); }
+.btn-secondary:active:not(:disabled):not([aria-disabled="true"]) { background: var(--bg-inset); box-shadow: inset 0 1px 3px rgba(0,0,0,.35); }
+.btn-ghost { color: var(--text); background: transparent; }
+.btn-ghost:hover:not(:disabled):not([aria-disabled="true"]) { background: var(--bg-hover); color: var(--text-strong); }
+.btn-ghost:active:not(:disabled):not([aria-disabled="true"]) { background: var(--bg-inset); }
+.btn-danger {
+  color: #fff; border-color: #8f2323;
+  background: linear-gradient(#cc3d3d, #b83232); box-shadow: var(--glow), var(--sh-1);
+}
+.btn-danger:hover:not(:disabled):not([aria-disabled="true"]) { background: linear-gradient(#e04b4b, #cc3d3d); }
+.btn-danger:active:not(:disabled):not([aria-disabled="true"]) { background: #a02a2a; box-shadow: inset 0 1px 3px rgba(0,0,0,.45); }
+.btn-icon { width: var(--h-md); padding: 0; }
+.btn-icon.btn-sm { width: var(--h-sm); } .btn-icon.btn-lg { width: var(--h-lg); }
+.is-loading { pointer-events: none; }
+.is-loading::before {
+  content: ""; width: 12px; height: 12px; border: 2px solid currentColor; border-right-color: transparent;
+  border-radius: 50%; animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* --- Campos de texto --- */
+.field { display: flex; flex-direction: column; gap: var(--sp-2); min-width: 0; }
+.label { font-size: var(--fs-xs); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text-2); }
+.control { position: relative; display: flex; align-items: center; }
+.input, .textarea, .select {
+  width: 100%; height: var(--h-md); padding: 0 var(--sp-3); background: var(--bg-inset);
+  border: 1px solid var(--border); border-radius: var(--r-sm); box-shadow: inset 0 1px 2px rgba(0,0,0,.25);
+  transition: border-color var(--ease), box-shadow var(--ease);
+}
+.textarea { height: auto; min-height: 72px; padding: var(--sp-3); resize: vertical; }
+.input::placeholder, .textarea::placeholder { color: var(--text-off); }
+.input:hover, .textarea:hover, .select:hover { border-color: var(--border-strong); }
+.input:focus-visible, .textarea:focus-visible, .select:focus-visible { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft), 0 0 0 1px var(--accent); }
+.input:disabled, .textarea:disabled, .select:disabled { opacity: .5; cursor: not-allowed; }
+.has-icon-l .input { padding-left: 30px; } .has-icon-r .input { padding-right: 32px; }
+.control > .ic.lead { position: absolute; left: 9px; color: var(--text-2); pointer-events: none; }
+.control > .btn.trail { position: absolute; right: 2px; }
+.select { appearance: none; padding-right: 28px; }
+.control > .ic.chev { position: absolute; right: 8px; pointer-events: none; color: var(--text-2); }
+.is-error .input, .is-error .textarea { border-color: var(--err); }
+.is-error .input:focus-visible { box-shadow: 0 0 0 2px var(--err-bg), 0 0 0 1px var(--err); }
+.is-success .input { border-color: var(--ok); }
+.hint { display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-sm); color: var(--text-2); }
+.is-error .hint { color: var(--err-fg); } .is-success .hint { color: var(--ok-fg); }
+
+/* --- Checkbox, radio, switch, slider --- */
+.check { display: inline-flex; align-items: center; gap: var(--sp-3); cursor: pointer; }
+.check:has(input:disabled) { opacity: .45; cursor: not-allowed; }
+.check input { appearance: none; margin: 0; display: grid; place-content: center; width: 16px; height: 16px; background: var(--bg-inset); border: 1px solid var(--border-strong); border-radius: var(--r-sm); cursor: inherit; transition: background var(--ease), border-color var(--ease); }
+.check input:hover:not(:disabled) { border-color: var(--accent); }
+.check input:checked { background: linear-gradient(var(--accent-hover), var(--accent)); border-color: var(--accent-active); }
+.check input:active:not(:disabled) { filter: brightness(.9); }
+.check input[type="checkbox"]::after { content: ""; width: 8px; height: 4px; border: solid var(--on-accent); border-width: 0 0 2px 2px; transform: translateY(-1px) rotate(-45deg) scale(0); transition: transform var(--ease); }
+.check input[type="checkbox"]:checked::after { transform: translateY(-1px) rotate(-45deg) scale(1); }
+.check input[type="radio"] { border-radius: 50%; }
+.check input[type="radio"]::after { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--on-accent); transform: scale(0); transition: transform var(--ease); }
+.check input[type="radio"]:checked::after { transform: scale(1); }
+.check input.switch { width: 34px; height: 18px; display: block; position: relative; }
+.check input.switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: var(--r-sm); background: var(--text-2); transition: transform var(--ease), background var(--ease); }
+.check input.switch:checked::after { transform: translateX(16px); background: var(--on-accent); }
+
+.slider { width: 100%; max-width: 280px; height: 18px; background: transparent; appearance: none; cursor: pointer; }
+.slider::-webkit-slider-runnable-track { height: 4px; background: var(--bg-inset); border: 1px solid var(--border); border-radius: var(--r-sm); }
+.slider::-moz-range-track { height: 4px; background: var(--bg-inset); border: 1px solid var(--border); border-radius: var(--r-sm); }
+.slider::-webkit-slider-thumb { appearance: none; width: 12px; height: 16px; margin-top: -7px; background: linear-gradient(var(--accent-hover), var(--accent)); border: 1px solid var(--accent-active); border-radius: var(--r-sm); box-shadow: var(--glow); }
+.slider::-moz-range-thumb { width: 10px; height: 14px; background: var(--accent); border: 1px solid var(--accent-active); border-radius: var(--r-sm); }
+.slider:hover::-webkit-slider-thumb { background: var(--accent-hover); }
+.slider:active::-webkit-slider-thumb { background: var(--accent-active); }
+.slider:disabled { opacity: .45; cursor: not-allowed; }
+
+/* --- Tabs e menu lateral --- */
+.tabs { display: flex; gap: var(--sp-1); border-bottom: 1px solid var(--border); }
+.tab { height: 32px; padding: 0 var(--sp-5); background: transparent; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; color: var(--text-2); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; font-size: var(--fs-sm); transition: color var(--ease), background var(--ease); }
+.tab:hover:not(:disabled) { color: var(--text-strong); background: var(--bg-hover); }
+.tab:active:not(:disabled) { background: var(--bg-inset); }
+.tab[aria-selected="true"] { color: var(--accent-fg); border-bottom-color: var(--accent); }
+.tab:disabled { color: var(--text-off); cursor: not-allowed; }
+.tabpanel { padding: var(--sp-4) 0; }
+.sidenav { list-style: none; margin: 0; padding: var(--sp-2); width: 220px; background: var(--bg-base); border: 1px solid var(--border); border-radius: var(--r-md); }
+.sidenav .nav-title { padding: var(--sp-4) var(--sp-3) var(--sp-2); font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--text-2); font-weight: 700; }
+.sidenav a, .sidenav button { display: flex; align-items: center; gap: var(--sp-3); width: 100%; padding: 6px var(--sp-3); border: 0; border-left: 3px solid transparent; background: transparent; color: var(--text); text-align: left; text-decoration: none; border-radius: var(--r-sm); }
+.sidenav a:hover, .sidenav button:hover:not(:disabled) { background: var(--bg-hover); color: var(--text-strong); }
+.sidenav a:active, .sidenav button:active:not(:disabled) { background: var(--bg-inset); }
+.sidenav [aria-current="page"] { background: var(--accent-soft); border-left-color: var(--accent); color: var(--text-strong); font-weight: 600; }
+.sidenav button:disabled { color: var(--text-off); cursor: not-allowed; }
+
+/* --- Janela de app --- */
+.win { background: var(--bg-base); border: 1px solid var(--border-strong); border-radius: var(--r-lg); box-shadow: var(--sh-3); overflow: hidden; max-width: 560px; }
+.win-bar { display: flex; align-items: center; gap: var(--sp-3); height: 30px; padding-left: var(--sp-4); background: linear-gradient(var(--bg-raised), var(--bg-base)); border-bottom: 1px solid var(--border); }
+.win-title { flex: 1; font-size: var(--fs-sm); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--text-2); }
+.win-dot { width: 10px; height: 10px; background: var(--accent); border-radius: var(--r-sm); }
+.win-ctl { display: flex; height: 100%; }
+.win-ctl button { width: 40px; display: grid; place-items: center; border: 0; background: transparent; color: var(--text-2); }
+.win-ctl button:hover { background: var(--bg-hover); color: var(--text-strong); }
+.win-ctl button:active { background: var(--bg-inset); }
+.win-ctl button.close:hover { background: #c42b2b; color: #fff; }
+.win-ctl button:focus-visible { outline-offset: -2px; }
+.win-body { padding: var(--sp-5); display: grid; gap: var(--sp-4); }
+
+/* --- Modal (dialog nativo) --- */
+.modal { padding: 0; width: min(440px, calc(100vw - 32px)); color: var(--text); background: var(--bg-base); border: 1px solid var(--border-strong); border-radius: var(--r-lg); box-shadow: var(--sh-3); }
+.modal::backdrop { background: var(--overlay); backdrop-filter: blur(2px); }
+.modal-head { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-4) var(--sp-5); background: var(--bg-raised); border-bottom: 1px solid var(--border); }
+.modal-head h3 { flex: 1; font-size: var(--fs-md); text-transform: uppercase; letter-spacing: .08em; }
+.modal-body { padding: var(--sp-5); display: grid; gap: var(--sp-4); }
+.modal-foot { display: flex; justify-content: flex-end; gap: var(--sp-3); padding: var(--sp-4) var(--sp-5); border-top: 1px solid var(--border); background: var(--bg-inset); }
+.modal.is-danger { border-color: var(--err); } .modal.is-danger .modal-head { border-bottom-color: var(--err); color: var(--err-fg); }
+.modal.is-warn .modal-head { color: var(--warn-fg); }
+
+/* --- Dropdown e menu de contexto --- */
+.dd { position: relative; display: inline-block; }
+.menu { position: absolute; z-index: 30; top: calc(100% + 4px); left: 0; min-width: 200px; margin: 0; padding: var(--sp-2) 0; list-style: none; background: var(--bg-raised); border: 1px solid var(--border-strong); border-radius: var(--r-md); box-shadow: var(--sh-2); }
+.menu[hidden] { display: none; }
+.menu.is-ctx { position: fixed; top: 0; left: 0; }
+.menu-item { display: flex; align-items: center; gap: var(--sp-3); width: 100%; padding: 5px var(--sp-4); border: 0; background: transparent; color: var(--text); text-align: left; }
+.menu-item:hover, .menu-item:focus-visible { background: var(--accent); color: var(--on-accent); outline: none; }
+.menu-item:active { background: var(--accent-active); }
+.menu-item[aria-disabled="true"] { color: var(--text-off); background: transparent; cursor: not-allowed; }
+.menu-item.danger { color: var(--err-fg); } .menu-item.danger:hover { background: var(--err); color: #fff; }
+.menu-item kbd { margin-left: auto; font: inherit; font-size: var(--fs-xs); opacity: .7; }
+.menu-sep { height: 1px; margin: var(--sp-2) 0; background: var(--border); }
+.ctx-area { display: grid; place-items: center; min-height: 100px; border: 1px dashed var(--border-strong); border-radius: var(--r-md); color: var(--text-2); }
+
+/* --- Tooltip e popover --- */
+.tip { position: relative; display: inline-flex; }
+.tip-text { position: absolute; z-index: 20; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); padding: 4px 8px; white-space: nowrap; font-size: var(--fs-sm); color: var(--text-strong); background: var(--bg-inset); border: 1px solid var(--border-strong); border-radius: var(--r-sm); box-shadow: var(--sh-2); opacity: 0; visibility: hidden; transition: opacity var(--ease); pointer-events: none; }
+.tip:hover .tip-text, .tip:focus-within .tip-text { opacity: 1; visibility: visible; }
+.popover { position: relative; display: inline-block; }
+.popover > summary { list-style: none; } .popover > summary::-webkit-details-marker { display: none; }
+.popover-body { position: absolute; z-index: 20; top: calc(100% + 6px); left: 0; width: 240px; padding: var(--sp-4); display: grid; gap: var(--sp-3); background: var(--bg-raised); border: 1px solid var(--border-strong); border-top: 2px solid var(--accent); border-radius: var(--r-md); box-shadow: var(--sh-2); }
+.popover-body h4 { font-size: var(--fs-sm); text-transform: uppercase; letter-spacing: .08em; }
+
+/* --- Cards de jogo --- */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: var(--sp-4); }
+.card { display: flex; flex-direction: column; background: var(--bg-raised); border: 1px solid var(--border); border-radius: var(--r-md); overflow: hidden; box-shadow: var(--sh-1); transition: border-color var(--ease), transform var(--ease); }
+.card:hover, .card:focus-within { border-color: var(--accent); transform: translateY(-1px); }
+.card.is-disabled { opacity: .5; pointer-events: none; }
+.card-img { height: 96px; display: grid; place-items: center; color: rgba(255,255,255,.35); background: linear-gradient(135deg, var(--c1), var(--c2)); }
+.card-img .ic { width: 40px; height: 40px; stroke-width: 1.5; }
+.card-body { display: grid; align-content: start; gap: var(--sp-3); padding: var(--sp-4); flex: 1; }
+.card-title { font-size: var(--fs-md); }
+.card-title a { color: var(--text-strong); text-decoration: none; }
+.card-title a:focus-visible { outline-offset: 4px; }
+.card-tags { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.price { display: flex; align-items: center; justify-content: flex-end; gap: var(--sp-3); min-height: 40px; padding: var(--sp-3) var(--sp-4); background: var(--bg-inset); }
+.price-old { color: var(--text-2); text-decoration: line-through; font-size: var(--fs-sm); }
+.price-now { color: var(--text-strong); font-weight: 600; }
+.discount { margin-right: auto; padding: 2px 6px; font-weight: 700; color: #0e2a17; background: #6fd18a; border-radius: var(--r-sm); }
+
+/* --- Lista de itens (biblioteca) --- */
+.lib { list-style: none; margin: 0; padding: var(--sp-2); max-width: 300px; background: var(--bg-base); border: 1px solid var(--border); border-radius: var(--r-md); }
+.lib-item { display: flex; align-items: center; gap: var(--sp-3); width: 100%; padding: 4px var(--sp-3); border: 0; border-left: 3px solid transparent; background: transparent; color: var(--text); text-align: left; border-radius: var(--r-sm); }
+.lib-item:hover { background: var(--bg-hover); color: var(--text-strong); }
+.lib-item:active { background: var(--bg-inset); }
+.lib-item[aria-current="true"] { background: var(--accent-soft); border-left-color: var(--accent); color: var(--text-strong); font-weight: 600; }
+.lib-item:disabled { color: var(--text-off); cursor: not-allowed; background: transparent; }
+.lib-thumb { width: 22px; height: 22px; flex: none; border-radius: var(--r-sm); background: linear-gradient(135deg, var(--c1), var(--c2)); }
+.lib-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lib-meta { font-size: var(--fs-xs); color: var(--text-2); }
+
+/* --- Progresso e download --- */
+.progress { height: 8px; background: var(--bg-inset); border: 1px solid var(--border); border-radius: var(--r-sm); overflow: hidden; }
+.progress > span { display: block; height: 100%; width: var(--v, 0%); background: linear-gradient(var(--accent-hover), var(--accent)); box-shadow: var(--glow); }
+.progress.is-ok > span { background: linear-gradient(#6fd18a, var(--ok)); }
+.progress.is-paused > span { background: var(--text-off); box-shadow: none; }
+.progress.is-live > span { background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.22) 0 8px, transparent 8px 16px), linear-gradient(var(--accent-hover), var(--accent)); background-size: 22.6px 22.6px, 100% 100%; animation: stripes .8s linear infinite; }
+@keyframes stripes { to { background-position: 22.6px 0, 0 0; } }
+.download { display: grid; gap: var(--sp-3); padding: var(--sp-4); max-width: 420px; background: var(--bg-base); border: 1px solid var(--border); border-radius: var(--r-md); }
+.download-head { display: flex; justify-content: space-between; gap: var(--sp-3); }
+.download-stats { display: flex; justify-content: space-between; font-size: var(--fs-sm); color: var(--text-2); }
+.download-stats b { color: var(--accent-fg); font-weight: 600; }
+
+/* --- Badges, tags, avatar --- */
+.badge { display: inline-flex; align-items: center; gap: var(--sp-2); height: 18px; padding: 0 var(--sp-3); font-size: var(--fs-xs); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; border-radius: var(--r-sm); color: var(--on-accent); background: var(--accent); }
+.badge-ok { color: var(--ok-fg); background: var(--ok-bg); box-shadow: inset 0 0 0 1px var(--ok); }
+.badge-err { color: var(--err-fg); background: var(--err-bg); box-shadow: inset 0 0 0 1px var(--err); }
+.badge-warn { color: var(--warn-fg); background: var(--warn-bg); box-shadow: inset 0 0 0 1px var(--warn); }
+.badge-info { color: var(--info-fg); background: var(--info-bg); box-shadow: inset 0 0 0 1px var(--info); }
+.badge-muted { color: var(--text-2); background: var(--bg-raised); box-shadow: inset 0 0 0 1px var(--border); }
+.tag { display: inline-flex; align-items: center; gap: var(--sp-2); height: 20px; padding: 0 var(--sp-3); font-size: var(--fs-xs); color: var(--text-2); background: var(--bg-inset); border: 1px solid var(--border); border-radius: var(--r-sm); }
+.tag:hover { color: var(--text-strong); border-color: var(--accent); }
+.tag button { display: grid; place-items: center; padding: 0; border: 0; background: transparent; color: inherit; }
+.tag button:hover { color: var(--accent-fg); }
+.avatar { position: relative; display: inline-grid; place-items: center; width: 36px; height: 36px; font-weight: 700; color: var(--on-accent); background: linear-gradient(135deg, var(--accent-hover), var(--accent-active)); border-radius: var(--r-md); }
+.avatar.lg { width: 48px; height: 48px; font-size: var(--fs-lg); }
+.avatar .status { position: absolute; right: -4px; bottom: -4px; width: 12px; height: 12px; border-radius: 50%; background: var(--text-off); border: 2px solid var(--bg-app); }
+.status.online { background: var(--ok); } .status.away { background: var(--warn); } .status.offline { background: var(--text-off); }
+.avatar.is-offline { filter: grayscale(.8) brightness(.8); }
+
+/* --- Toasts --- */
+.toasts { display: grid; gap: var(--sp-3); max-width: 380px; }
+.toast { display: grid; grid-template-columns: auto 1fr auto; gap: var(--sp-3); align-items: start; padding: var(--sp-4); background: var(--bg-raised); border: 1px solid var(--border); border-left: 4px solid var(--c, var(--accent)); border-radius: var(--r-md); box-shadow: var(--sh-2); }
+.toast .ic.kind { color: var(--c, var(--accent-fg)); margin-top: 2px; }
+.toast-title { font-weight: 600; color: var(--text-strong); }
+.toast-text { font-size: var(--fs-sm); color: var(--text-2); }
+.toast.ok { --c: var(--ok); } .toast.err { --c: var(--err); } .toast.warn { --c: var(--warn); } .toast.info { --c: var(--info); }
+
+/* --- Paginação e breadcrumb --- */
+.pager { display: flex; gap: var(--sp-2); list-style: none; margin: 0; padding: 0; }
+.pager button { min-width: var(--h-md); height: var(--h-md); padding: 0 var(--sp-3); display: grid; place-items: center; background: var(--bg-raised); border: 1px solid var(--border); border-radius: var(--r-sm); color: var(--text); }
+.pager button:hover:not(:disabled) { border-color: var(--accent); color: var(--text-strong); }
+.pager button:active:not(:disabled) { background: var(--bg-inset); }
+.pager button[aria-current="page"] { color: var(--on-accent); font-weight: 700; background: linear-gradient(var(--accent-hover), var(--accent)); border-color: var(--accent-active); }
+.pager button:disabled { opacity: .4; cursor: not-allowed; }
+.crumbs { display: flex; flex-wrap: wrap; align-items: center; list-style: none; margin: 0; padding: 0; font-size: var(--fs-sm); }
+.crumbs li + li::before { content: "/"; margin: 0 var(--sp-3); color: var(--text-off); }
+.crumbs a { color: var(--text-2); text-decoration: none; padding: 2px 4px; border-radius: var(--r-sm); }
+.crumbs a:hover { color: var(--accent-fg); background: var(--bg-hover); }
+.crumbs [aria-current="page"] { color: var(--text-strong); font-weight: 600; }
+
+/* =========================================================
+   4. DEMO + UTILITÁRIOS
+   ========================================================= */
+.topbar { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: var(--sp-4); height: 44px; padding: 0 var(--sp-5); background: linear-gradient(var(--bg-raised), var(--bg-base)); border-bottom: 1px solid var(--border); box-shadow: var(--sh-1); }
+.brand { display: flex; align-items: center; gap: var(--sp-3); font-size: var(--fs-lg); font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--text-strong); }
+.brand i { width: 14px; height: 14px; background: linear-gradient(var(--accent-hover), var(--accent-active)); border-radius: var(--r-sm); }
+.topbar .grow { flex: 1; }
+.shell { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: var(--sp-6); max-width: 1180px; margin: 0 auto; padding: var(--sp-6) var(--sp-5) 64px; }
+.demo-nav { position: sticky; top: 60px; align-self: start; max-height: calc(100vh - 76px); overflow: auto; }
+.demo-nav .sidenav { width: auto; }
+main { display: grid; gap: var(--sp-6); min-width: 0; }
+.sec { padding: var(--sp-5); background: var(--bg-base); border: 1px solid var(--border); border-radius: var(--r-md); }
+.sec > h2 { margin-bottom: var(--sp-5); padding-left: var(--sp-3); font-size: var(--fs-md); text-transform: uppercase; letter-spacing: .12em; border-left: 3px solid var(--accent); }
+.sec h3.sub { margin: var(--sp-5) 0 var(--sp-3); font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--text-2); }
+.sec h3.sub:first-of-type { margin-top: 0; }
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); }
+.stack { display: grid; gap: var(--sp-4); }
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--sp-5); }
+.muted { color: var(--text-2); }
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: var(--sp-3); }
+.sw { padding: var(--sp-3); font-size: var(--fs-xs); background: var(--bg-raised); border: 1px solid var(--border); border-radius: var(--r-sm); }
+.sw i { display: block; height: 28px; margin-bottom: var(--sp-2); border-radius: var(--r-sm); border: 1px solid var(--border-soft); }
+.scroll-box { max-height: 120px; overflow: auto; padding: var(--sp-4); background: var(--bg-inset); border: 1px solid var(--border); border-radius: var(--r-sm); }
+
+@media (max-width: 860px) {
+  .shell { grid-template-columns: 1fr; gap: var(--sp-4); }
+  .demo-nav { position: static; max-height: none; }
+  .demo-nav .sidenav { display: flex; overflow-x: auto; padding: var(--sp-2); }
+  .demo-nav .sidenav li { flex: none; } .demo-nav .sidenav .nav-title { display: none; }
+  .demo-nav .sidenav a { border-left: 0; border-bottom: 2px solid transparent; }
+  .sidenav { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- Ícones: Lucide (lucide.dev, licença ISC), embutidos inline -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-square" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+  <symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></symbol>
+  <symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+  <symbol id="i-ellipsis" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+  <symbol id="i-gamepad" viewBox="0 0 24 24"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></symbol>
+  <symbol id="i-library" viewBox="0 0 24 24"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></symbol>
+  <symbol id="i-store" viewBox="0 0 24 24"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></symbol>
+</svg>
+
+<a class="skip" href="#main">Pular para o conteúdo</a>
+
+<header class="topbar">
+  <div class="brand"><i aria-hidden="true"></i> Ember UI</div>
+  <span class="muted grow">Design system</span>
+  <button class="btn btn-secondary btn-sm" id="theme-toggle" type="button" aria-pressed="false">
+    <svg class="ic ic-sm" aria-hidden="true"><use href="#i-sun"/></svg><span>Tema claro</span>
+  </button>
+</header>
+
+<div class="shell">
+  <nav class="demo-nav" aria-label="Seções do design system">
+    <ul class="sidenav">
+      <li class="nav-title">Componentes</li>
+      <li><a href="#cores">Cores</a></li>
+      <li><a href="#botoes">Botões</a></li>
+      <li><a href="#inputs">Inputs</a></li>
+      <li><a href="#selecao">Seleção</a></li>
+      <li><a href="#tabs">Tabs e navegação</a></li>
+      <li><a href="#janela">Janela</a></li>
+      <li><a href="#modal">Modais</a></li>
+      <li><a href="#dropdown">Dropdown e contexto</a></li>
+      <li><a href="#tooltip">Tooltip e popover</a></li>
+      <li><a href="#cards">Cards</a></li>
+      <li><a href="#lista">Lista (biblioteca)</a></li>
+      <li><a href="#progresso">Progresso e download</a></li>
+      <li><a href="#badges">Badges e avatar</a></li>
+      <li><a href="#toasts">Notificações</a></li>
+      <li><a href="#paginacao">Paginação</a></li>
+      <li><a href="#scrollbar">Scrollbar</a></li>
+    </ul>
+  </nav>
+
+  <main id="main">
+
+    <section class="sec" id="cores" aria-labelledby="h-cores">
+      <h2 id="h-cores">Cores</h2>
+      <div class="swatches">
+        <div class="sw"><i style="background:var(--accent)"></i>--accent</div>
+        <div class="sw"><i style="background:var(--accent-hover)"></i>--accent-hover</div>
+        <div class="sw"><i style="background:var(--accent-active)"></i>--accent-active</div>
+        <div class="sw"><i style="background:var(--bg-app)"></i>--bg-app</div>
+        <div class="sw"><i style="background:var(--bg-base)"></i>--bg-base</div>
+        <div class="sw"><i style="background:var(--bg-raised)"></i>--bg-raised</div>
+        <div class="sw"><i style="background:var(--ok)"></i>--ok</div>
+        <div class="sw"><i style="background:var(--err)"></i>--err</div>
+        <div class="sw"><i style="background:var(--warn)"></i>--warn</div>
+        <div class="sw"><i style="background:var(--info)"></i>--info</div>
+      </div>
+    </section>
+
+    <section class="sec" id="botoes" aria-labelledby="h-botoes">
+      <h2 id="h-botoes">Botões</h2>
+      <h3 class="sub">Variantes</h3>
+      <div class="row">
+        <button class="btn btn-primary" type="button">Instalar</button>
+        <button class="btn btn-secondary" type="button">Cancelar</button>
+        <button class="btn btn-ghost" type="button">Ver mais</button>
+        <button class="btn btn-danger" type="button">Excluir</button>
+        <button class="btn btn-icon btn-secondary" type="button" aria-label="Configurações"><svg class="ic" aria-hidden="true"><use href="#i-settings"/></svg></button>
+      </div>
+      <h3 class="sub">Tamanhos</h3>
+      <div class="row">
+        <button class="btn btn-primary btn-sm" type="button">Pequeno</button>
+        <button class="btn btn-primary" type="button">Médio</button>
+        <button class="btn btn-primary btn-lg" type="button">Grande</button>
+        <button class="btn btn-icon btn-sm btn-secondary" type="button" aria-label="Adicionar"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-plus"/></svg></button>
+        <button class="btn btn-icon btn-lg btn-secondary" type="button" aria-label="Adicionar"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></button>
+      </div>
+      <h3 class="sub">Com ícone, carregando e desabilitado</h3>
+      <div class="row">
+        <button class="btn btn-primary" type="button"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg>Baixar</button>
+        <button class="btn btn-primary is-loading" type="button" aria-busy="true">Carregando</button>
+        <button class="btn btn-secondary is-loading" type="button" aria-busy="true">Salvando</button>
+        <button class="btn btn-primary" type="button" disabled>Desabilitado</button>
+        <button class="btn btn-secondary" type="button" disabled>Desabilitado</button>
+        <button class="btn btn-ghost" type="button" disabled>Desabilitado</button>
+        <button class="btn btn-danger" type="button" disabled>Desabilitado</button>
+      </div>
+    </section>
+
+    <section class="sec" id="inputs" aria-labelledby="h-inputs">
+      <h2 id="h-inputs">Inputs</h2>
+      <div class="grid-2">
+        <div class="field"><label class="label" for="i-nome">Nome de usuário</label>
+          <div class="control"><input class="input" id="i-nome" type="text" placeholder="Digite seu nome"></div></div>
+        <div class="field"><label class="label" for="i-senha">Senha</label>
+          <div class="control has-icon-r"><input class="input" id="i-senha" type="password" value="segredo123">
+            <button class="btn btn-ghost btn-icon btn-sm trail" type="button" id="pw-toggle" aria-label="Mostrar senha"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-eye"/></svg></button></div></div>
+        <div class="field"><label class="label" for="i-busca">Busca</label>
+          <div class="control has-icon-l"><svg class="ic ic-sm lead" aria-hidden="true"><use href="#i-search"/></svg>
+            <input class="input" id="i-busca" type="search" placeholder="Buscar na loja"></div></div>
+        <div class="field"><label class="label" for="i-sel">Select</label>
+          <div class="control"><select class="select" id="i-sel"><option>Todos os jogos</option><option>Instalados</option><option>Favoritos</option></select>
+            <svg class="ic ic-sm chev" aria-hidden="true"><use href="#i-chevron-down"/></svg></div></div>
+        <div class="field is-error"><label class="label" for="i-err">E-mail (erro)</label>
+          <div class="control"><input class="input" id="i-err" type="email" value="usuario@" aria-invalid="true" aria-describedby="e-err"></div>
+          <p class="hint" id="e-err"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-circle-alert"/></svg>Informe um e-mail válido.</p></div>
+        <div class="field is-success"><label class="label" for="i-ok">Apelido (sucesso)</label>
+          <div class="control"><input class="input" id="i-ok" type="text" value="ember_player" aria-describedby="e-ok"></div>
+          <p class="hint" id="e-ok"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-circle-check"/></svg>Apelido disponível.</p></div>
+        <div class="field"><label class="label" for="i-dis">Desabilitado</label>
+          <div class="control"><input class="input" id="i-dis" type="text" value="Somente leitura" disabled></div></div>
+        <div class="field"><label class="label" for="i-ta">Mensagem</label>
+          <textarea class="textarea" id="i-ta" placeholder="Escreva aqui..."></textarea></div>
+      </div>
+    </section>
+
+    <section class="sec" id="selecao" aria-labelledby="h-selecao">
+      <h2 id="h-selecao">Checkbox, radio, switch e slider</h2>
+      <div class="grid-2">
+        <fieldset class="stack" style="border:0;padding:0;margin:0"><legend class="label" style="margin-bottom:8px">Checkbox</legend>
+          <label class="check"><input type="checkbox"> Normal</label>
+          <label class="check"><input type="checkbox" checked> Marcado</label>
+          <label class="check"><input type="checkbox" disabled> Desabilitado</label>
+          <label class="check"><input type="checkbox" checked disabled> Marcado desabilitado</label></fieldset>
+        <fieldset class="stack" style="border:0;padding:0;margin:0"><legend class="label" style="margin-bottom:8px">Radio</legend>
+          <label class="check"><input type="radio" name="q" checked> Alta</label>
+          <label class="check"><input type="radio" name="q"> Média</label>
+          <label class="check"><input type="radio" name="q"> Baixa</label>
+          <label class="check"><input type="radio" name="q" disabled> Desabilitado</label></fieldset>
+        <fieldset class="stack" style="border:0;padding:0;margin:0"><legend class="label" style="margin-bottom:8px">Switch</legend>
+          <label class="check"><input class="switch" type="checkbox" role="switch"> Desligado</label>
+          <label class="check"><input class="switch" type="checkbox" role="switch" checked> Ligado</label>
+          <label class="check"><input class="switch" type="checkbox" role="switch" disabled> Desabilitado</label></fieldset>
+        <div class="stack"><span class="label" id="l-vol">Slider</span>
+          <input class="slider" type="range" min="0" max="100" value="60" aria-labelledby="l-vol">
+          <input class="slider" type="range" min="0" max="100" value="30" disabled aria-label="Slider desabilitado"></div>
+      </div>
+    </section>
+
+    <section class="sec" id="tabs" aria-labelledby="h-tabs">
+      <h2 id="h-tabs">Tabs e menu lateral</h2>
+      <div data-tabs>
+        <div class="tabs" role="tablist" aria-label="Exemplo de tabs">
+          <button class="tab" role="tab" id="t1" aria-selected="true" aria-controls="p1" type="button">Loja</button>
+          <button class="tab" role="tab" id="t2" aria-selected="false" aria-controls="p2" tabindex="-1" type="button">Biblioteca</button>
+          <button class="tab" role="tab" id="t3" aria-selected="false" aria-controls="p3" tabindex="-1" type="button">Comunidade</button>
+          <button class="tab" role="tab" aria-selected="false" tabindex="-1" type="button" disabled>Em breve</button>
+        </div>
+        <div class="tabpanel" role="tabpanel" id="p1" aria-labelledby="t1" tabindex="0">Destaques e promoções da semana.</div>
+        <div class="tabpanel" role="tabpanel" id="p2" aria-labelledby="t2" tabindex="0" hidden>Seus jogos instalados e favoritos.</div>
+        <div class="tabpanel" role="tabpanel" id="p3" aria-labelledby="t3" tabindex="0" hidden>Grupos, fóruns e screenshots.</div>
+      </div>
+      <h3 class="sub">Menu lateral</h3>
+      <ul class="sidenav" style="list-style:none">
+        <li class="nav-title">Navegação</li>
+        <li><a href="#tabs" aria-current="page"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-store"/></svg>Loja</a></li>
+        <li><a href="#tabs"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-library"/></svg>Biblioteca</a></li>
+        <li><a href="#tabs"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-users"/></svg>Amigos</a></li>
+        <li><button type="button" disabled><svg class="ic ic-sm" aria-hidden="true"><use href="#i-settings"/></svg>Ajustes (indisponível)</button></li>
+      </ul>
+    </section>
+
+    <section class="sec" id="janela" aria-labelledby="h-janela">
+      <h2 id="h-janela">Janela</h2>
+      <div class="win" role="group" aria-label="Janela de exemplo">
+        <div class="win-bar">
+          <span class="win-dot" aria-hidden="true"></span>
+          <span class="win-title">Configurações</span>
+          <div class="win-ctl">
+            <button type="button" aria-label="Minimizar"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-minus"/></svg></button>
+            <button type="button" aria-label="Maximizar"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-square"/></svg></button>
+            <button type="button" class="close" aria-label="Fechar"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-x"/></svg></button>
+          </div>
+        </div>
+        <div class="win-body">
+          <label class="check"><input class="switch" type="checkbox" role="switch" checked> Iniciar com o sistema</label>
+          <label class="check"><input class="switch" type="checkbox" role="switch"> Mostrar notificações</label>
+          <div class="row" style="justify-content:flex-end"><button class="btn btn-secondary" type="button">Cancelar</button><button class="btn btn-primary" type="button">Aplicar</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="modal" aria-labelledby="h-modal">
+      <h2 id="h-modal">Modais</h2>
+      <div class="row">
+        <button class="btn btn-primary" type="button" data-open="m-basic">Modal simples</button>
+        <button class="btn btn-secondary" type="button" data-open="m-confirm">Confirmação</button>
+        <button class="btn btn-danger" type="button" data-open="m-error">Erro</button>
+      </div>
+
+      <dialog class="modal" id="m-basic" aria-labelledby="m-basic-t">
+        <div class="modal-head"><h3 id="m-basic-t">Atualização disponível</h3>
+          <button class="btn btn-ghost btn-icon btn-sm" type="button" data-close aria-label="Fechar"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+        <div class="modal-body"><p>Uma nova versão do cliente está pronta. Deseja instalar agora?</p></div>
+        <div class="modal-foot"><button class="btn btn-secondary" type="button" data-close>Depois</button><button class="btn btn-primary" type="button" data-close>Instalar</button></div>
+      </dialog>
+
+      <dialog class="modal is-warn" id="m-confirm" aria-labelledby="m-confirm-t">
+        <div class="modal-head"><svg class="ic" aria-hidden="true"><use href="#i-triangle-alert"/></svg><h3 id="m-confirm-t">Confirmar desinstalação</h3></div>
+        <div class="modal-body"><p>O jogo será removido deste computador. Seus saves na nuvem serão mantidos.</p></div>
+        <div class="modal-foot"><button class="btn btn-secondary" type="button" data-close>Cancelar</button><button class="btn btn-danger" type="button" data-close>Desinstalar</button></div>
+      </dialog>
+
+      <dialog class="modal is-danger" id="m-error" aria-labelledby="m-error-t">
+        <div class="modal-head"><svg class="ic" aria-hidden="true"><use href="#i-circle-alert"/></svg><h3 id="m-error-t">Falha na conexão</h3></div>
+        <div class="modal-body"><p>Não foi possível alcançar o servidor. Verifique sua internet e tente de novo.</p><p class="muted">Código: ERR_TIMEOUT (408)</p></div>
+        <div class="modal-foot"><button class="btn btn-secondary" type="button" data-close>Fechar</button><button class="btn btn-primary" type="button" data-close>Tentar novamente</button></div>
+      </dialog>
+    </section>
+
+    <section class="sec" id="dropdown" aria-labelledby="h-dropdown">
+      <h2 id="h-dropdown">Dropdown e menu de contexto</h2>
+      <div class="row" style="align-items:flex-start">
+        <div class="dd">
+          <button class="btn btn-secondary" type="button" data-dd aria-haspopup="menu" aria-expanded="false">Ações<svg class="ic ic-sm" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+          <ul class="menu" role="menu" hidden>
+            <li role="none"><button class="menu-item" role="menuitem" type="button"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-play"/></svg>Jogar<kbd>Enter</kbd></button></li>
+            <li role="none"><button class="menu-item" role="menuitem" type="button"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-copy"/></svg>Copiar link<kbd>Ctrl+C</kbd></button></li>
+            <li role="none"><button class="menu-item" role="menuitem" type="button" aria-disabled="true"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-download"/></svg>Baixar (indisponível)</button></li>
+            <li class="menu-sep" role="separator"></li>
+            <li role="none"><button class="menu-item danger" role="menuitem" type="button"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"/></svg>Desinstalar</button></li>
+          </ul>
+        </div>
+      </div>
+      <h3 class="sub">Menu de contexto (clique direito ou tecla Menu)</h3>
+      <div class="ctx-area" tabindex="0" aria-label="Área de teste do menu de contexto">Clique com o botão direito aqui</div>
+      <ul class="menu is-ctx" role="menu" id="ctx-menu" hidden>
+        <li role="none"><button class="menu-item" role="menuitem" type="button">Abrir<kbd>Enter</kbd></button></li>
+        <li role="none"><button class="menu-item" role="menuitem" type="button">Renomear<kbd>F2</kbd></button></li>
+        <li class="menu-sep" role="separator"></li>
+        <li role="none"><button class="menu-item danger" role="menuitem" type="button">Excluir<kbd>Del</kbd></button></li>
+      </ul>
+    </section>
+
+    <section class="sec" id="tooltip" aria-labelledby="h-tooltip">
+      <h2 id="h-tooltip">Tooltip e popover</h2>
+      <div class="row" style="min-height:140px;align-items:flex-start">
+        <span class="tip"><button class="btn btn-secondary btn-icon" type="button" aria-describedby="tp1" aria-label="Favoritar"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg></button><span class="tip-text" role="tooltip" id="tp1">Ativar alertas</span></span>
+        <span class="tip"><button class="btn btn-secondary" type="button" aria-describedby="tp2">Passe o mouse ou foque</button><span class="tip-text" role="tooltip" id="tp2">Também aparece com o teclado</span></span>
+        <details class="popover">
+          <summary class="btn btn-secondary">Popover<svg class="ic ic-sm" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+          <div class="popover-body"><h4>Resumo do jogo</h4><p class="muted">Aventura cooperativa para até 4 jogadores, com suporte a controle.</p><button class="btn btn-primary btn-sm" type="button">Ver detalhes</button></div>
+        </details>
+      </div>
+    </section>
+
+    <section class="sec" id="cards" aria-labelledby="h-cards">
+      <h2 id="h-cards">Cards</h2>
+      <div class="cards">
+        <article class="card">
+          <div class="card-img" style="--c1:#7a2e00;--c2:#ff6a00"><svg class="ic" aria-hidden="true"><use href="#i-gamepad"/></svg></div>
+          <div class="card-body"><h3 class="card-title"><a href="#cards">Forja das Brasas</a></h3><div class="card-tags"><span class="tag">Ação</span><span class="tag">Co-op</span></div></div>
+          <div class="price"><span class="discount">-50%</span><span class="price-old">R$ 79,90</span><span class="price-now">R$ 39,95</span></div>
+        </article>
+        <article class="card">
+          <div class="card-img" style="--c1:#0b3b4a;--c2:#2bb8d4"><svg class="ic" aria-hidden="true"><use href="#i-gamepad"/></svg></div>
+          <div class="card-body"><h3 class="card-title"><a href="#cards">Maré Profunda</a></h3><div class="card-tags"><span class="tag">Aventura</span><span class="badge badge-info">Novo</span></div></div>
+          <div class="price"><span class="price-now">R$ 59,90</span></div>
+        </article>
+        <article class="card">
+          <div class="card-img" style="--c1:#2d1b4e;--c2:#7a4fd1"><svg class="ic" aria-hidden="true"><use href="#i-gamepad"/></svg></div>
+          <div class="card-body"><h3 class="card-title"><a href="#cards">Noite Violeta</a></h3><div class="card-tags"><span class="tag">RPG</span></div></div>
+          <div class="price"><span class="discount">-25%</span><span class="price-old">R$ 120,00</span><span class="price-now">R$ 90,00</span></div>
+        </article>
+        <article class="card is-disabled" aria-disabled="true">
+          <div class="card-img" style="--c1:#333;--c2:#666"><svg class="ic" aria-hidden="true"><use href="#i-gamepad"/></svg></div>
+          <div class="card-body"><h3 class="card-title"><a href="#cards" tabindex="-1">Indisponível</a></h3><div class="card-tags"><span class="badge badge-muted">Em breve</span></div></div>
+          <div class="price"><span class="muted">Sem preço</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="sec" id="lista" aria-labelledby="h-lista">
+      <h2 id="h-lista">Lista de itens (biblioteca)</h2>
+      <ul class="lib" aria-label="Biblioteca de jogos">
+        <li><button class="lib-item" type="button"><span class="lib-thumb" style="--c1:#7a2e00;--c2:#ff6a00"></span><span class="lib-name">Forja das Brasas</span><span class="lib-meta">12 h</span></button></li>
+        <li><button class="lib-item" type="button" aria-current="true"><span class="lib-thumb" style="--c1:#0b3b4a;--c2:#2bb8d4"></span><span class="lib-name">Maré Profunda</span><span class="lib-meta">3 h</span></button></li>
+        <li><button class="lib-item" type="button"><span class="lib-thumb" style="--c1:#2d1b4e;--c2:#7a4fd1"></span><span class="lib-name">Noite Violeta</span><span class="lib-meta">48 h</span></button></li>
+        <li><button class="lib-item" type="button" disabled><span class="lib-thumb" style="--c1:#333;--c2:#555"></span><span class="lib-name">Pacote bloqueado</span><span class="lib-meta">-</span></button></li>
+      </ul>
+    </section>
+
+    <section class="sec" id="progresso" aria-labelledby="h-progresso">
+      <h2 id="h-progresso">Barra de progresso e download</h2>
+      <div class="stack" style="max-width:420px">
+        <div class="progress" role="progressbar" aria-label="Progresso" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="--v:65%"><span></span></div>
+        <div class="progress is-ok" role="progressbar" aria-label="Concluído" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="--v:100%"><span></span></div>
+        <div class="progress is-paused" role="progressbar" aria-label="Pausado" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="--v:30%"><span></span></div>
+      </div>
+      <h3 class="sub">Download</h3>
+      <div class="download">
+        <div class="download-head"><strong>Forja das Brasas</strong><span class="muted">Baixando</span></div>
+        <div class="progress is-live" role="progressbar" aria-label="Download de Forja das Brasas" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100" style="--v:42%"><span></span></div>
+        <div class="download-stats"><span><b>18,4 MB/s</b></span><span>3,2 de 7,6 GB</span><span>4 min restantes</span></div>
+        <div class="row" style="justify-content:flex-end"><button class="btn btn-secondary btn-sm" type="button">Pausar</button><button class="btn btn-ghost btn-sm" type="button">Cancelar</button></div>
+      </div>
+    </section>
+
+    <section class="sec" id="badges" aria-labelledby="h-badges">
+      <h2 id="h-badges">Badges, tags e avatar</h2>
+      <h3 class="sub">Badges</h3>
+      <div class="row"><span class="badge">Destaque</span><span class="badge badge-ok">Instalado</span><span class="badge badge-err">Erro</span><span class="badge badge-warn">Atualizar</span><span class="badge badge-info">Novo</span><span class="badge badge-muted">Beta</span></div>
+      <h3 class="sub">Tags</h3>
+      <div class="row"><span class="tag">Indie</span><span class="tag">Multiplayer</span>
+        <span class="tag">Removível<button type="button" aria-label="Remover tag Removível"><svg class="ic ic-sm" aria-hidden="true" style="width:12px;height:12px"><use href="#i-x"/></svg></button></span></div>
+      <h3 class="sub">Avatar com status</h3>
+      <div class="row" style="gap:24px">
+        <span class="avatar lg" role="img" aria-label="Lucas, online">L<span class="status online"></span></span>
+        <span class="avatar" role="img" aria-label="Ana, ausente">A<span class="status away"></span></span>
+        <span class="avatar is-offline" role="img" aria-label="Bruno, offline">B<span class="status offline"></span></span>
+      </div>
+    </section>
+
+    <section class="sec" id="toasts" aria-labelledby="h-toasts">
+      <h2 id="h-toasts">Notificações (toasts)</h2>
+      <div class="toasts">
+        <div class="toast ok" role="status"><svg class="ic kind" aria-hidden="true"><use href="#i-circle-check"/></svg><div><div class="toast-title">Download concluído</div><div class="toast-text">Forja das Brasas está pronto para jogar.</div></div><button class="btn btn-ghost btn-icon btn-sm" type="button" data-dismiss aria-label="Dispensar"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+        <div class="toast err" role="alert"><svg class="ic kind" aria-hidden="true"><use href="#i-circle-alert"/></svg><div><div class="toast-title">Falha ao sincronizar</div><div class="toast-text">Tentaremos de novo em 30 segundos.</div></div><button class="btn btn-ghost btn-icon btn-sm" type="button" data-dismiss aria-label="Dispensar"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+        <div class="toast warn" role="status"><svg class="ic kind" aria-hidden="true"><use href="#i-triangle-alert"/></svg><div><div class="toast-title">Pouco espaço em disco</div><div class="toast-text">Restam 2 GB no drive C.</div></div><button class="btn btn-ghost btn-icon btn-sm" type="button" data-dismiss aria-label="Dispensar"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+        <div class="toast info" role="status"><svg class="ic kind" aria-hidden="true"><use href="#i-info"/></svg><div><div class="toast-title">Amigo online</div><div class="toast-text">Ana entrou e está jogando Maré Profunda.</div></div><button class="btn btn-ghost btn-icon btn-sm" type="button" data-dismiss aria-label="Dispensar"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+      </div>
+    </section>
+
+    <section class="sec" id="paginacao" aria-labelledby="h-paginacao">
+      <h2 id="h-paginacao">Paginação e breadcrumb</h2>
+      <nav aria-label="Você está em"><ol class="crumbs"><li><a href="#paginacao">Loja</a></li><li><a href="#paginacao">Ação</a></li><li><span aria-current="page">Forja das Brasas</span></li></ol></nav>
+      <nav aria-label="Paginação" style="margin-top:16px"><ul class="pager">
+        <li><button type="button" disabled aria-label="Página anterior"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-chevron-left"/></svg></button></li>
+        <li><button type="button" aria-current="page">1</button></li>
+        <li><button type="button">2</button></li>
+        <li><button type="button">3</button></li>
+        <li><button type="button" aria-label="Mais páginas"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-ellipsis"/></svg></button></li>
+        <li><button type="button">12</button></li>
+        <li><button type="button" aria-label="Próxima página"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-chevron-right"/></svg></button></li>
+      </ul></nav>
+    </section>
+
+    <section class="sec" id="scrollbar" aria-labelledby="h-scrollbar">
+      <h2 id="h-scrollbar">Scrollbar</h2>
+      <div class="scroll-box" tabindex="0" role="region" aria-label="Área rolável">
+        <p>Notas da versão 2.4. Corrigimos falhas de conexão, melhoramos o desempenho de downloads e atualizamos a interface da biblioteca.</p>
+        <p>O thumb fica laranja ao passar o mouse e mais escuro ao arrastar.</p>
+        <p>Novo modo compacto para listas longas.</p>
+        <p>Suporte a atalhos de teclado em menus e modais.</p>
+        <p>Ajustes de contraste no tema claro.</p>
+        <p>Várias correções menores de estabilidade.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(() => {
+  const root = document.documentElement;
+
+  /* Tema */
+  const tbtn = document.getElementById('theme-toggle');
+  const setTheme = t => {
+    root.dataset.theme = t;
+    tbtn.setAttribute('aria-pressed', t === 'light');
+    tbtn.querySelector('span').textContent = t === 'light' ? 'Tema escuro' : 'Tema claro';
+    tbtn.querySelector('use').setAttribute('href', t === 'light' ? '#i-moon' : '#i-sun');
+    try { localStorage.setItem('ember-theme', t); } catch (e) {}
+  };
+  try { setTheme(localStorage.getItem('ember-theme') || 'dark'); } catch (e) { setTheme('dark'); }
+  tbtn.addEventListener('click', () => setTheme(root.dataset.theme === 'light' ? 'dark' : 'light'));
+
+  /* Modal (dialog nativo: foco, Esc e overlay já vêm prontos) */
+  document.querySelectorAll('[data-open]').forEach(b =>
+    b.addEventListener('click', () => document.getElementById(b.dataset.open).showModal()));
+  document.querySelectorAll('dialog').forEach(d => {
+    d.addEventListener('click', e => { if (e.target === d) d.close(); });
+    d.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => d.close()));
+  });
+
+  /* Tabs com setas */
+  document.querySelectorAll('[data-tabs]').forEach(box => {
+    const tabs = [...box.querySelectorAll('[role=tab]:not(:disabled)')];
+    const pick = t => {
+      tabs.forEach(x => {
+        const on = x === t;
+        x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1;
+        document.getElementById(x.getAttribute('aria-controls')).hidden = !on;
+      });
+      t.focus();
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => pick(t));
+      t.addEventListener('keydown', e => {
+        const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+        if (d) { e.preventDefault(); pick(tabs[(i + d + tabs.length) % tabs.length]); }
+      });
+    });
+  });
+
+  /* Dropdown + menu de contexto */
+  const menus = () => document.querySelectorAll('.menu');
+  const closeAll = () => {
+    menus().forEach(m => m.hidden = true);
+    document.querySelectorAll('[data-dd]').forEach(b => b.setAttribute('aria-expanded', 'false'));
+  };
+  const items = m => [...m.querySelectorAll('.menu-item:not([aria-disabled=true])')];
+  document.querySelectorAll('[data-dd]').forEach(b => {
+    const m = b.nextElementSibling;
+    b.addEventListener('click', e => {
+      e.stopPropagation();
+      const open = m.hidden; closeAll();
+      m.hidden = !open; b.setAttribute('aria-expanded', open);
+      if (open) items(m)[0]?.focus();
+    });
+  });
+  const ctx = document.getElementById('ctx-menu');
+  document.querySelector('.ctx-area').addEventListener('contextmenu', e => {
+    e.preventDefault(); closeAll(); ctx.hidden = false;
+    const r = e.target.getBoundingClientRect();
+    const x = e.clientX || r.left + 20, y = e.clientY || r.top + 20;
+    ctx.style.left = Math.min(x, innerWidth - ctx.offsetWidth - 8) + 'px';
+    ctx.style.top = Math.min(y, innerHeight - ctx.offsetHeight - 8) + 'px';
+    items(ctx)[0]?.focus();
+  });
+  menus().forEach(m => m.addEventListener('keydown', e => {
+    const list = items(m), i = list.indexOf(document.activeElement);
+    if (e.key === 'ArrowDown') { e.preventDefault(); list[(i + 1) % list.length].focus(); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); list[(i - 1 + list.length) % list.length].focus(); }
+  }));
+  document.addEventListener('click', e => {
+    closeAll();
+    document.querySelectorAll('details.popover[open]').forEach(p => { if (!p.contains(e.target)) p.open = false; });
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      const opened = document.querySelector('[data-dd][aria-expanded=true]');
+      closeAll(); opened?.focus();
+      document.querySelectorAll('details.popover[open]').forEach(p => p.open = false);
+    }
+  });
+
+  /* Dispensar toast */
+  document.querySelectorAll('[data-dismiss]').forEach(b =>
+    b.addEventListener('click', () => b.closest('.toast').remove()));
+
+  /* Mostrar/ocultar senha */
+  const pw = document.getElementById('pw-toggle'), pwi = document.getElementById('i-senha');
+  pw.addEventListener('click', () => {
+    const show = pwi.type === 'password';
+    pwi.type = show ? 'text' : 'password';
+    pw.setAttribute('aria-label', show ? 'Ocultar senha' : 'Mostrar senha');
+    pw.querySelector('use').setAttribute('href', show ? '#i-eye-off' : '#i-eye');
+  });
+})();
+</script>
+</body>
+</html>
