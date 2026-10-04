@@ -18,6 +18,7 @@ import { Progress, Download } from "./components/Progress";
 import { Badge, Tag, Avatar } from "./components/Badge";
 import { Toast, useToast } from "./components/Toast";
 import { Pagination, Breadcrumb, BreadcrumbItem } from "./components/Pagination";
+import { QRCode } from "./components/QRCode";
 import { ThemeToggle } from "./theme";
 
 const SECTIONS = [
@@ -36,6 +37,7 @@ const SECTIONS = [
   ["badges", "Badges e avatar"],
   ["toasts", "Notificações"],
   ["paginacao", "Paginação"],
+  ["qrcode", "QR code"],
   ["scrollbar", "Scrollbar"],
 ] as const;
 
@@ -442,6 +444,14 @@ export function App() {
             </Breadcrumb>
             <div style={{ marginTop: 16 }}>
               <Pagination page={page} totalPages={12} onChange={setPage} />
+            </div>
+          </section>
+
+          <section className="sec" id="qrcode" aria-labelledby="h-qrcode">
+            <h2 id="h-qrcode">QR code</h2>
+            <div className="row" style={{ alignItems: "flex-start" }}>
+              <QRCode value="https://ember-ui.example/convite" />
+              <QRCode value="ID-4821-FORJA-DAS-BRASAS" size={96} level="H" />
             </div>
           </section>
 

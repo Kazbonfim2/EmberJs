@@ -17,6 +17,7 @@ export * from "./components/Progress";
 export * from "./components/Badge";
 export * from "./components/Toast";
 export * from "./components/Pagination";
+export * from "./components/QRCode";
 export * from "./theme";
 
 export { cx, type ClassValue } from "./lib/classnames";
