@@ -1,0 +1,23 @@
+.field { display: flex; flex-direction: column; gap: var(--sp-2); min-width: 0; }
+.label { font-size: var(--fs-xs); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text-2); }
+.control { position: relative; display: flex; align-items: center; }
+.input, .textarea, .select {
+  width: 100%; height: var(--h-md); padding: 0 var(--sp-3); background: var(--bg-inset);
+  border: 1px solid var(--border); border-radius: var(--r-sm); box-shadow: inset 0 1px 2px rgba(0,0,0,.25);
+  transition: border-color var(--ease), box-shadow var(--ease);
+}
+.textarea { height: auto; min-height: 72px; padding: var(--sp-3); resize: vertical; }
+.input::placeholder, .textarea::placeholder { color: var(--text-off); }
+.input:hover, .textarea:hover, .select:hover { border-color: var(--border-strong); }
+.input:focus-visible, .textarea:focus-visible, .select:focus-visible { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft), 0 0 0 1px var(--accent); }
+.input:disabled, .textarea:disabled, .select:disabled { opacity: .5; cursor: not-allowed; }
+.has-icon-l .input { padding-left: 30px; } .has-icon-r .input { padding-right: 32px; }
+.control > .ic.lead { position: absolute; left: 9px; color: var(--text-2); pointer-events: none; }
+.control > .btn.trail { position: absolute; right: 2px; }
+.select { appearance: none; padding-right: 28px; }
+.control > .ic.chev { position: absolute; right: 8px; pointer-events: none; color: var(--text-2); }
+.is-error .input, .is-error .textarea { border-color: var(--err); }
+.is-error .input:focus-visible { box-shadow: 0 0 0 2px var(--err-bg), 0 0 0 1px var(--err); }
+.is-success .input { border-color: var(--ok); }
+.hint { display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-sm); color: var(--text-2); }
+.is-error .hint { color: var(--err-fg); } .is-success .hint { color: var(--ok-fg); }

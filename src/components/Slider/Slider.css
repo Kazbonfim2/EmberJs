@@ -1,0 +1,8 @@
+.slider { width: 100%; max-width: 280px; height: 18px; background: transparent; appearance: none; cursor: pointer; }
+.slider::-webkit-slider-runnable-track { height: 4px; background: var(--bg-inset); border: 1px solid var(--border); border-radius: var(--r-sm); }
+.slider::-moz-range-track { height: 4px; background: var(--bg-inset); border: 1px solid var(--border); border-radius: var(--r-sm); }
+.slider::-webkit-slider-thumb { appearance: none; width: 12px; height: 16px; margin-top: -7px; background: linear-gradient(var(--accent-hover), var(--accent)); border: 1px solid var(--accent-active); border-radius: var(--r-sm); box-shadow: var(--glow); }
+.slider::-moz-range-thumb { width: 10px; height: 14px; background: var(--accent); border: 1px solid var(--accent-active); border-radius: var(--r-sm); }
+.slider:hover::-webkit-slider-thumb { background: var(--accent-hover); }
+.slider:active::-webkit-slider-thumb { background: var(--accent-active); }
+.slider:disabled { opacity: .45; cursor: not-allowed; }
