@@ -22,7 +22,7 @@ import { Toast, useToast } from "./components/Toast";
 import { Pagination, Breadcrumb, BreadcrumbItem } from "./components/Pagination";
 import { QRCode } from "./components/QRCode";
 import { Text } from "./components/Text";
-import { ThemeToggle } from "./theme";
+import { ThemeToggle, useTheme } from "./theme";
 import { CodeWindow } from "./demo/CodeWindow";
 
 const SECTION_GROUPS = [
@@ -30,6 +30,7 @@ const SECTION_GROUPS = [
     title: "Fundamentos",
     items: [
       ["cores", "Cores"],
+      ["tema", "Tema"],
       ["texto", "Texto"],
       ["spacing", "Espaçamento rápido"],
       ["flex", "Sistema de Flex"],
@@ -85,6 +86,7 @@ export function App() {
   const [openModal, setOpenModal] = useState<"basic" | "confirm" | "error" | null>(null);
   const [page, setPage] = useState(1);
   const toast = useToast();
+  const { theme } = useTheme();
 
   return (
     <>
@@ -121,6 +123,38 @@ export function App() {
                 </div>
               ))}
             </div>
+          </section>
+
+          <section className="sec" id="tema" aria-labelledby="h-tema">
+            <h2 id="h-tema">Tema</h2>
+            <p className="muted">
+              <code>ThemeProvider</code> fica uma única vez na raiz da aplicação (veja <code>main.tsx</code>) e guarda o
+              tema (<code>light</code>/<code>dark</code>) em contexto, persistindo a escolha entre sessões. Dentro dele,{" "}
+              <code>useTheme</code> dá acesso a <code>theme</code> e <code>toggleTheme</code> em qualquer componente, e{" "}
+              <code>ThemeToggle</code> é o botão pronto — é o mesmo que aparece no topo desta página.
+            </p>
+            <div className="row">
+              <ThemeToggle />
+              <Text size="sm" color="muted" m={0}>Tema atual: <strong>{theme}</strong></Text>
+            </div>
+
+            <CodeWindow code={`
+import { ThemeProvider, ThemeToggle, useTheme } from "ember-ui";
+
+// na raiz da aplicação, uma única vez
+<ThemeProvider>
+  <App />
+</ThemeProvider>
+
+// botão pronto, já conectado ao contexto
+<ThemeToggle />
+
+// ou leia/controle o tema você mesmo
+function Exemplo() {
+  const { theme, toggleTheme } = useTheme();
+  return <button onClick={toggleTheme}>Tema atual: {theme}</button>;
+}
+            `} />
           </section>
 
           <section className="sec" id="texto" aria-labelledby="h-texto">
