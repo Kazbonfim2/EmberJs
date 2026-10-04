@@ -1,6 +1,6 @@
 .topbar { position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: var(--sp-4); height: 44px; padding: 0 var(--sp-5); background: linear-gradient(var(--bg-raised), var(--bg-base)); border-bottom: 1px solid var(--border); box-shadow: var(--sh-1); }
 .brand { display: flex; align-items: center; gap: var(--sp-3); font-size: var(--fs-lg); font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--text-strong); }
-.brand i { width: 14px; height: 14px; background: linear-gradient(var(--accent-hover), var(--accent-active)); border-radius: var(--r-sm); }
+.brand-icon { width: 18px; height: 18px; color: var(--accent); }
 .topbar .grow { flex: 1; }
 .shell { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: var(--sp-6); max-width: 1180px; margin: 0 auto; padding: var(--sp-6) var(--sp-5) 64px; }
 .demo-nav { position: sticky; top: 60px; align-self: start; max-height: calc(100vh - 76px); overflow: auto; }

@@ -6,7 +6,7 @@ export type IconName =
   | "x" | "minus" | "square" | "plus" | "check" | "search" | "eye" | "eye-off"
   | "chevron-down" | "chevron-left" | "chevron-right" | "download" | "bell" | "info"
   | "circle-alert" | "circle-check" | "triangle-alert" | "trash" | "copy" | "ellipsis"
-  | "sun" | "moon" | "play" | "gamepad" | "library" | "store" | "users" | "settings";
+  | "sun" | "moon" | "play" | "gamepad" | "library" | "store" | "users" | "settings" | "bonfire";
 
 export type IconProps = SVGAttributes<SVGSVGElement> &
   SpacingProps & {

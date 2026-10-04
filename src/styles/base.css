@@ -8,7 +8,7 @@ a:hover { text-decoration: none; }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
-.ic { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ic { width: 16px; height: 16px; flex: none; }
 .ic-sm { width: 14px; height: 14px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .skip { position: absolute; left: -999px; } .skip:focus { left: 8px; top: 8px; z-index: 99; background: var(--bg-raised); padding: 6px 10px; }
