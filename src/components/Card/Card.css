@@ -1,6 +1,6 @@
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: var(--sp-4); }
-.card { display: flex; flex-direction: column; background: var(--bg-raised); border: 1px solid var(--border); border-radius: var(--r-md); overflow: hidden; box-shadow: var(--sh-1); transition: border-color var(--ease), transform var(--ease); }
-.card:hover, .card:focus-within { border-color: var(--accent); transform: translateY(-1px); }
+.card { display: flex; flex-direction: column; background: var(--bg-raised); border: 1px solid var(--border); border-radius: var(--r-md); overflow: hidden; box-shadow: var(--sh-1); transition: border-color var(--ease); }
+.card:hover, .card:focus-within { border-color: var(--accent); }
 .card.is-disabled { opacity: .5; pointer-events: none; }
 .card-img { height: 96px; display: grid; place-items: center; color: rgba(255,255,255,.35); background: linear-gradient(135deg, var(--c1), var(--c2)); }
 .card-img .ic { width: 40px; height: 40px; stroke-width: 1.5; }
