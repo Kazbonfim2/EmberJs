@@ -22,6 +22,7 @@ import { Pagination, Breadcrumb, BreadcrumbItem } from "./components/Pagination"
 import { QRCode } from "./components/QRCode";
 import { Text } from "./components/Text";
 import { ThemeToggle } from "./theme";
+import { CodeWindow } from "./demo/CodeWindow";
 
 const SECTION_GROUPS = [
   {
@@ -147,6 +148,14 @@ export function App() {
               </Text>
               <Text italic color="muted">Texto em itálico, cor muted</Text>
             </div>
+
+            <CodeWindow code={`
+import { Text } from "ember-ui";
+
+<Text as="h3" size="xl" weight="bold" color="strong">Forja das Brasas</Text>
+<Text size="sm" color="muted">Texto secundário/legenda.</Text>
+<Text truncate style={{ maxWidth: 200 }}>Corta com reticências numa linha só</Text>
+            `} />
           </section>
 
           <section className="sec" id="spacing" aria-labelledby="h-spacing">
@@ -181,6 +190,13 @@ export function App() {
               <Card title="Padding padrão" colorFrom="#333" colorTo="#666" tags={<Badge variant="muted">p padrão</Badge>} />
               <Card title="Mais respiro" colorFrom="#333" colorTo="#666" p={6} tags={<Badge variant="info">p={"{6}"}</Badge>} />
             </div>
+
+            <CodeWindow code={`
+import { Badge, Card } from "ember-ui";
+
+<Badge ml={2}>Com margem</Badge>
+<Card title="Mais respiro" colorFrom="#333" colorTo="#666" p={6} />
+            `} />
           </section>
 
           <section className="sec" id="flex" aria-labelledby="h-flex">
@@ -243,6 +259,15 @@ export function App() {
                 Tamanho natural
               </FlexItem>
             </Flex>
+
+            <CodeWindow code={`
+import { Flex, FlexItem, Button } from "ember-ui";
+
+<Flex align="center" gap={3}>
+  <FlexItem grow>Cresce pra ocupar o espaço</FlexItem>
+  <Button variant="secondary" size="sm">Ação</Button>
+</Flex>
+            `} />
           </section>
 
           <section className="sec" id="scrollbar" aria-labelledby="h-scrollbar">
@@ -285,6 +310,16 @@ export function App() {
               <Button variant="ghost" disabled>Desabilitado</Button>
               <Button variant="danger" disabled>Desabilitado</Button>
             </div>
+
+            <CodeWindow code={`
+import { Button, Icon } from "ember-ui";
+
+<Button variant="primary">Instalar</Button>
+<Button variant="secondary" loading>Salvando</Button>
+<Button variant="secondary" icon aria-label="Configurações">
+  <Icon name="settings" />
+</Button>
+            `} />
           </section>
 
           <section className="sec" id="inputs" aria-labelledby="h-inputs">
@@ -319,6 +354,17 @@ export function App() {
                 <Textarea id="i-ta" placeholder="Escreva aqui..." />
               </Field>
             </div>
+
+            <CodeWindow code={`
+import { Field, Input, PasswordInput } from "ember-ui";
+
+<Field label="Nome de usuário" htmlFor="nome">
+  <Input id="nome" placeholder="Digite seu nome" />
+</Field>
+<Field label="Senha" htmlFor="senha">
+  <PasswordInput id="senha" />
+</Field>
+            `} />
           </section>
 
           <section className="sec" id="selecao" aria-labelledby="h-selecao">
@@ -350,6 +396,15 @@ export function App() {
                 <Slider min={0} max={100} defaultValue={30} disabled aria-label="Slider desabilitado" />
               </div>
             </div>
+
+            <CodeWindow code={`
+import { Checkbox, Radio, Switch, Slider } from "ember-ui";
+
+<Checkbox defaultChecked>Marcado</Checkbox>
+<Radio name="q" defaultChecked>Alta</Radio>
+<Switch defaultChecked>Ligado</Switch>
+<Slider min={0} max={100} defaultValue={60} aria-label="Volume" />
+            `} />
           </section>
 
           <section className="sec" id="tabs" aria-labelledby="h-tabs">
@@ -373,6 +428,22 @@ export function App() {
               <SideNavLink href="#tabs"><Icon name="users" size="sm" /> Amigos</SideNavLink>
               <SideNavButton disabled><Icon name="settings" size="sm" /> Ajustes (indisponível)</SideNavButton>
             </SideNav>
+
+            <CodeWindow code={`
+import { Tabs, TabList, Tab, TabPanel } from "ember-ui";
+import { useState } from "react";
+
+const [tab, setTab] = useState("loja");
+
+<Tabs value={tab} onChange={setTab}>
+  <TabList aria-label="Exemplo de tabs">
+    <Tab value="loja">Loja</Tab>
+    <Tab value="biblioteca">Biblioteca</Tab>
+  </TabList>
+  <TabPanel value="loja">Destaques da semana.</TabPanel>
+  <TabPanel value="biblioteca">Seus jogos instalados.</TabPanel>
+</Tabs>
+            `} />
           </section>
 
           <section className="sec" id="janela" aria-labelledby="h-janela">
@@ -385,6 +456,15 @@ export function App() {
                 <Button variant="primary">Aplicar</Button>
               </div>
             </Window>
+
+            <CodeWindow code={`
+import { Window, Switch, Button } from "ember-ui";
+
+<Window title="Configurações">
+  <Switch defaultChecked>Iniciar com o sistema</Switch>
+  <Button variant="primary">Aplicar</Button>
+</Window>
+            `} />
           </section>
 
           <section className="sec" id="modal" aria-labelledby="h-modal">
@@ -438,6 +518,24 @@ export function App() {
               <p>Não foi possível alcançar o servidor. Verifique sua internet e tente de novo.</p>
               <p className="muted">Código: ERR_TIMEOUT (408)</p>
             </Modal>
+
+            <CodeWindow code={`
+import { Modal, Button } from "ember-ui";
+import { useState } from "react";
+
+const [open, setOpen] = useState(false);
+
+<Button onClick={() => setOpen(true)}>Modal simples</Button>
+<Modal
+  open={open}
+  onClose={() => setOpen(false)}
+  titleId="t"
+  title="Atualização disponível"
+  footer={<Button onClick={() => setOpen(false)}>Instalar</Button>}
+>
+  <p>Uma nova versão do cliente está pronta.</p>
+</Modal>
+            `} />
           </section>
 
           <section className="sec" id="dropdown" aria-labelledby="h-dropdown">
@@ -469,6 +567,16 @@ export function App() {
                 Clique com o botão direito aqui
               </div>
             </ContextMenu>
+
+            <CodeWindow code={`
+import { Dropdown, MenuItem, MenuSeparator } from "ember-ui";
+
+<Dropdown trigger="Ações">
+  <MenuItem icon="play" shortcut="Enter" onSelect={() => {}}>Jogar</MenuItem>
+  <MenuSeparator />
+  <MenuItem icon="trash" danger onSelect={() => {}}>Desinstalar</MenuItem>
+</Dropdown>
+            `} />
           </section>
 
           <section className="sec" id="tooltip" aria-labelledby="h-tooltip">
@@ -486,6 +594,18 @@ export function App() {
                 <Button variant="primary" size="sm">Ver detalhes</Button>
               </Popover>
             </div>
+
+            <CodeWindow code={`
+import { Tooltip, Popover, Button } from "ember-ui";
+
+<Tooltip label="Ativar alertas">
+  <Button variant="secondary">Favoritar</Button>
+</Tooltip>
+
+<Popover trigger="Popover">
+  <p>Conteúdo do popover.</p>
+</Popover>
+            `} />
           </section>
 
           <section className="sec" id="cards" aria-labelledby="h-cards">
@@ -524,6 +644,21 @@ export function App() {
                 price={<span className="muted">Sem preço</span>}
               />
             </CardGrid>
+
+            <CodeWindow code={`
+import { Card, CardGrid, Tag, PriceNow } from "ember-ui";
+
+<CardGrid>
+  <Card
+    title="Forja das Brasas"
+    href="#"
+    colorFrom="#7a2e00"
+    colorTo="#ff6a00"
+    tags={<Tag>Ação</Tag>}
+    price={<PriceNow>R$ 39,95</PriceNow>}
+  />
+</CardGrid>
+            `} />
           </section>
 
           <section className="sec" id="lista" aria-labelledby="h-lista">
@@ -534,6 +669,14 @@ export function App() {
               <LibraryItem colorFrom="#2d1b4e" colorTo="#7a4fd1" name="Noite Violeta" meta="48 h" />
               <LibraryItem colorFrom="#333" colorTo="#555" name="Pacote bloqueado" meta="-" disabled />
             </LibraryList>
+
+            <CodeWindow code={`
+import { LibraryList, LibraryItem } from "ember-ui";
+
+<LibraryList aria-label="Biblioteca de jogos">
+  <LibraryItem colorFrom="#7a2e00" colorTo="#ff6a00" name="Forja das Brasas" meta="12 h" current />
+</LibraryList>
+            `} />
           </section>
 
           <section className="sec" id="progresso" aria-labelledby="h-progresso">
@@ -552,6 +695,20 @@ export function App() {
               sizeText="3,2 de 7,6 GB"
               etaText="4 min restantes"
             />
+
+            <CodeWindow code={`
+import { Progress, Download } from "ember-ui";
+
+<Progress value={65} label="Progresso" />
+<Download
+  title="Forja das Brasas"
+  status="Baixando"
+  percent={42}
+  speed="18,4 MB/s"
+  sizeText="3,2 de 7,6 GB"
+  etaText="4 min restantes"
+/>
+            `} />
           </section>
 
           <section className="sec" id="badges" aria-labelledby="h-badges">
@@ -577,6 +734,14 @@ export function App() {
               <Avatar status="away" label="Ana, ausente">A</Avatar>
               <Avatar status="offline" label="Bruno, offline">B</Avatar>
             </div>
+
+            <CodeWindow code={`
+import { Badge, Tag, Avatar } from "ember-ui";
+
+<Badge variant="ok">Instalado</Badge>
+<Tag onRemove={() => {}} removeLabel="Remover tag Indie">Indie</Tag>
+<Avatar status="online" label="Lucas, online">L</Avatar>
+            `} />
           </section>
 
           <section className="sec" id="toasts" aria-labelledby="h-toasts">
@@ -590,6 +755,23 @@ export function App() {
                 Disparar toast (sem animação)
               </Button>
             </Flex>
+
+            <CodeWindow code={`
+import { ToastProvider, useToast, Button } from "ember-ui";
+
+function Exemplo() {
+  const toast = useToast();
+  return (
+    <Button onClick={() => toast({ title: "Amigo online", variant: "info" })}>
+      Disparar toast
+    </Button>
+  );
+}
+
+<ToastProvider>
+  <Exemplo />
+</ToastProvider>
+            `} />
           </section>
 
           <section className="sec" id="paginacao" aria-labelledby="h-paginacao">
@@ -600,6 +782,19 @@ export function App() {
               <BreadcrumbItem current>Forja das Brasas</BreadcrumbItem>
             </Breadcrumb>
             <Pagination page={page} totalPages={12} onChange={setPage} mt={4} />
+
+            <CodeWindow code={`
+import { Pagination, Breadcrumb, BreadcrumbItem } from "ember-ui";
+import { useState } from "react";
+
+const [page, setPage] = useState(1);
+
+<Breadcrumb>
+  <BreadcrumbItem href="#">Loja</BreadcrumbItem>
+  <BreadcrumbItem current>Forja das Brasas</BreadcrumbItem>
+</Breadcrumb>
+<Pagination page={page} totalPages={12} onChange={setPage} />
+            `} />
           </section>
 
           <section className="sec" id="qrcode" aria-labelledby="h-qrcode">
@@ -657,6 +852,13 @@ export function App() {
               reduzimos o <code>size</code>, já que o conteúdo é bem mais curto que uma URL.
             </p>
             <QRCode value="ID-4821-FORJA-DAS-BRASAS" size={96} level="H" />
+
+            <CodeWindow code={`
+import { QRCode } from "ember-ui";
+
+<QRCode value="https://ember-ui.example/convite" />
+<QRCode value="ID-4821-FORJA-DAS-BRASAS" size={96} level="H" />
+            `} />
           </section>
         </main>
       </div>
