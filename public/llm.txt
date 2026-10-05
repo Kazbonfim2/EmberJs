@@ -1,0 +1,640 @@
+# Ember UI — guia para agentes de IA (LLMs)
+
+> Design system em React 18 + TypeScript com visual denso de software de desktop gamer (cor de
+> destaque laranja saturado, `#FF6A00`). Este arquivo resume tudo que um agente de IA precisa para
+> gerar código correto usando esta biblioteca sem precisar explorar o repositório inteiro.
+> Formato inspirado na convenção llms.txt (https://llmstxt.org/).
+
+Pacote npm: `ember-ui`. Peer deps: `react@^18`, `react-dom@^18`.
+
+## Instalação
+
+```bash
+npm install ember-ui react react-dom
+```
+
+CSS base, uma única vez, na raiz da aplicação:
+
+```tsx
+import "ember-ui/styles.css";
+```
+
+## Setup obrigatório na raiz da aplicação
+
+```tsx
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { IconSprite, ThemeProvider, SmoothScrollProvider, ToastProvider } from "ember-ui";
+import "ember-ui/styles.css";
+import { App } from "./App";
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <IconSprite />
+    <SmoothScrollProvider>
+      <ThemeProvider>
+        <ToastProvider>
+          <App />
+        </ToastProvider>
+      </ThemeProvider>
+    </SmoothScrollProvider>
+  </StrictMode>,
+);
+```
+
+- `IconSprite` injeta o sprite SVG usado por `Icon`/`BlinkingIcon`. Sem ele, todo ícone renderiza
+  vazio. Renderizar uma única vez, fora de qualquer condicional.
+- `ThemeProvider` é obrigatório para usar `useTheme`/`ThemeToggle` (lança erro fora dele).
+- `SmoothScrollProvider` é opcional — só necessário se quiser o scroll suave (Lenis) e/ou
+  `useSmoothScroll`. Sem ele, a página usa o scroll nativo do navegador normalmente.
+- `ToastProvider` é obrigatório para usar `useToast` (lança erro fora dele).
+
+Todo export é nomeado (nunca `default`) e sai do mesmo barrel `ember-ui` — não existe import por
+componente (`ember-ui/Button` etc. não existe).
+
+## Convenções que valem para TODO componente
+
+1. **SpacingProps (`m`/`p`)**: praticamente todo componente aceita `m`, `mt`, `mr`, `mb`, `ml`,
+   `mx`, `my` (margin) e `p`, `pt`, `pr`, `pb`, `pl`, `px`, `py` (padding) como props diretas, no
+   estilo Chakra UI/styled-system. Valores `1`–`7` usam os tokens `--sp-1`..`--sp-7`; qualquer
+   outro número (interpretado como px) ou string CSS (`"1rem"`) passa direto. `p`/`px`/`py`
+   SOBRESCREVEM o padding que o componente já define via CSS (não somam).
+   Exemplo: `<Badge ml={2}>Com margem</Badge>`, `<Card p={6} />`.
+2. **Prop `as`** (em `Flex`, `Text`, `Heading`): troca o elemento/componente raiz renderizado, ex.
+   `<Flex as="fieldset">`, `<Text as="span">`. Não gera classe CSS nova.
+3. **Nunca inventar CSS cru**: para layout, use `Flex`/`FlexItem`; para texto, use `Text`/`Heading`.
+   Não escreva `style={{ display: "flex" }}` ou `className` com classes do design system que você
+   não viu definidas — elas não existem fora da própria biblioteca.
+4. **Ícones**: só os nomes do tipo `IconName` existem (lista completa abaixo) — não é um conjunto
+   livre de string.
+5. Todo elemento interativo já tem estados `hover`, `focus-visible`, `active` e `disabled`
+   cobertos pelo CSS da própria biblioteca — não é necessário estilizá-los à mão.
+
+## Tokens de design (`src/styles/tokens.css`)
+
+### Espaçamento (usado em `gap`, `m`/`p`, etc. — número de 1 a 7)
+
+| Token | Valor |
+| --- | --- |
+| `--sp-1` | 2px |
+| `--sp-2` | 4px |
+| `--sp-3` | 8px |
+| `--sp-4` | 12px |
+| `--sp-5` | 16px |
+| `--sp-6` | 24px |
+| `--sp-7` | 32px |
+
+### Tipografia
+
+- Fonte: `"IBM Plex Sans Devanagari"`, fallback `"Segoe UI", Arial, sans-serif`.
+- Tamanhos: `--fs-xs: 11px`, `--fs-sm: 12px`, `--fs-md: 13px`, `--fs-lg: 15px`, `--fs-xl: 20px`
+  (mapeiam para a prop `size` de `Text`/`Heading`: `xs`/`sm`/`md`/`lg`/`xl`).
+
+### Raios e alturas
+
+`--r-sm: 2px`, `--r-md: 3px`, `--r-lg: 4px` · `--h-sm: 22px`, `--h-md: 28px`, `--h-lg: 36px`.
+
+### Cor de destaque e semânticas (por tema, claro/escuro)
+
+`--accent` (laranja, `#FF6A00`), `--accent-hover`, `--accent-active`, `--on-accent` (texto sobre o
+destaque), `--accent-soft`, `--accent-fg` (destaque usado como texto/link) · `--ok`/`--ok-fg`,
+`--err`/`--err-fg`, `--warn`/`--warn-fg`, `--info`/`--info-fg` · `--text`, `--text-2` (= cor
+"muted"), `--text-strong`, `--text-off` · `--bg-app`, `--bg-base`, `--bg-raised`, `--bg-hover`,
+`--bg-inset` · `--border`, `--border-strong`, `--border-soft` · `--focus`.
+Para trocar a cor de destaque da aplicação inteira, basta sobrescrever essas variáveis — não editar
+componente por componente.
+
+## Tema (claro/escuro)
+
+```tsx
+import { ThemeProvider, ThemeToggle, useTheme } from "ember-ui";
+
+<ThemeProvider>
+  <ThemeToggle />  {/* botão pronto, já conectado ao contexto */}
+</ThemeProvider>
+
+function Exemplo() {
+  const { theme, toggleTheme } = useTheme(); // theme: "light" | "dark"
+  return <button onClick={toggleTheme}>Tema atual: {theme}</button>;
+}
+```
+
+A troca é feita via atributo `data-theme` em `<html>`; a escolha persiste em
+`localStorage` (chave `ember-theme`).
+
+## Scroll suave
+
+```tsx
+import { SmoothScrollProvider, useSmoothScroll } from "ember-ui";
+
+<SmoothScrollProvider>{/* resto do app */}</SmoothScrollProvider>
+
+function VoltarAoTopo() {
+  const lenis = useSmoothScroll(); // pode ser undefined fora do provider
+  return <button onClick={() => lenis?.scrollTo(0)}>Voltar ao topo</button>;
+}
+```
+
+Baseado em Lenis; respeita `prefers-reduced-motion` automaticamente e suaviza cliques em âncoras
+(`<a href="#id">`) por padrão.
+
+---
+
+## Catálogo de componentes
+
+### Flex / FlexItem — sistema de layout
+
+Normaliza flexbox como props, em vez de `style={{ display: "flex", ... }}` cru.
+
+```tsx
+import { Flex, FlexItem, Button, Badge } from "ember-ui";
+
+<Flex gap={3} wrap>
+  <Button variant="primary">Instalar</Button>
+  <Button variant="secondary">Cancelar</Button>
+</Flex>
+
+<Flex align="center" justify="between">
+  <Badge>Esquerda</Badge>
+  <Badge variant="ok">Direita</Badge>
+</Flex>
+
+<Flex direction="column" gap={2}>
+  <FlexItem grow>Cresce pra ocupar o espaço</FlexItem>
+  <FlexItem>Tamanho natural</FlexItem>
+</Flex>
+```
+
+**`Flex` props:** `direction` (`row`\|`column`\|`row-reverse`\|`column-reverse`, default `row`) ·
+`align` (`start`\|`center`\|`end`\|`stretch`\|`baseline`) · `justify`
+(`start`\|`center`\|`end`\|`between`\|`around`\|`evenly`) · `gap` (`1`–`7` ou string CSS livre) ·
+`wrap` (`boolean`, default `false`) · `inline` (`boolean`, usa `inline-flex`, default `false`) ·
+`as` (default `"div"`) · mais `SpacingProps` e todo `HTMLAttributes`.
+
+**`FlexItem` props:** `grow`/`shrink` (`boolean` vira `0`/`1`, ou número exato) · `basis`
+(qualquer `flex-basis` válido) · `order` · `as` (default `"div"`) · mais `SpacingProps`.
+
+### Text / Heading — tipografia
+
+```tsx
+import { Text, Heading } from "ember-ui";
+
+<Text as="h3" size="xl" weight="bold" color="strong">Título</Text>
+<Text size="sm" color="muted">Texto secundário/legenda.</Text>
+<Text truncate style={{ maxWidth: 200 }}>Corta com reticências numa linha só</Text>
+
+<Heading level={1}>Título da página</Heading>
+<Heading level={2}>Título de seção</Heading>
+<Heading level={3} variant="sub">Rótulo pequeno de subseção</Heading>
+```
+
+**`Text` props:** `as` (default `"p"`) · `size` (`xs`\|`sm`\|`md`\|`lg`\|`xl`) · `weight`
+(`normal`\|`medium`\|`semibold`\|`bold`) · `color`
+(`default`\|`strong`\|`muted`\|`off`\|`accent`\|`ok`\|`err`\|`warn`\|`info`) · `align`
+(`left`\|`center`\|`right`\|`justify`) · `italic` (`boolean`) · `truncate` (`boolean`) · mais
+`SpacingProps`.
+
+**`Heading` props:** todas as de `Text` (exceto `as`, fixo por `level`) mais `level` (`1`-`4`,
+escolhe `h1`..`h4` e o tamanho padrão) e `variant` (`default`\|`sub`; `"sub"` = rótulo pequeno,
+maiúsculo, cor muted, usado em subtítulos).
+
+### Button / ButtonGroup
+
+```tsx
+import { Button, ButtonGroup, Icon } from "ember-ui";
+
+<Button variant="primary">Instalar</Button>
+<Button variant="secondary" loading>Salvando</Button>
+<Button variant="secondary" icon aria-label="Configurações"><Icon name="settings" /></Button>
+
+<ButtonGroup label="Ações da linha">
+  <Button variant="primary">Salvar</Button>
+  <Button variant="secondary">Cancelar</Button>
+  <Button variant="danger">Excluir</Button>
+</ButtonGroup>
+```
+
+**`Button` props:** `variant` (`primary`\|`secondary`\|`ghost`\|`danger`, default `primary`) ·
+`size` (`sm`\|`md`\|`lg`, default `md`) · `icon` (`boolean`, botão quadrado só com ícone — exige
+`aria-label`) · `loading` (`boolean`) · todo `ButtonHTMLAttributes` + `SpacingProps`.
+
+**`ButtonGroup` props:** `orientation` (`horizontal`\|`vertical`, default `horizontal`) · `label`
+(rótulo acessível do grupo) · `SpacingProps`.
+
+### Icon / IconSprite / BlinkingIcon
+
+```tsx
+import { Icon, BlinkingIcon } from "ember-ui";
+
+<Icon name="download" size="sm" />
+<BlinkingIcon name="bell" size="md" label="Notificação" />
+```
+
+`Icon` props: `name` (ver lista `IconName` abaixo, obrigatório) · `size` (`sm`\|`md`, default
+`md`) · `SpacingProps`. `BlinkingIcon` (ícone com animação de piscar) aceita `name`, `size`
+(`sm`\|`md`\|`lg`), `label` (sem ele o ícone é decorativo/`aria-hidden`).
+
+### Field / Input / PasswordInput / Select / Textarea — formulários
+
+```tsx
+import { Field, Input, PasswordInput, Select, Textarea } from "ember-ui";
+
+<Field label="Nome de usuário" htmlFor="nome">
+  <Input id="nome" placeholder="Digite seu nome" />
+</Field>
+<Field label="Senha" htmlFor="senha">
+  <PasswordInput id="senha" />
+</Field>
+<Field label="Busca" htmlFor="busca">
+  <Input id="busca" type="search" leadingIcon="search" />
+</Field>
+<Field label="E-mail" htmlFor="email" state="error" hint="E-mail inválido." hintIcon="circle-alert">
+  <Input id="email" type="email" aria-invalid="true" />
+</Field>
+<Field label="Mensagem" htmlFor="msg"><Textarea id="msg" /></Field>
+<Field label="Opções" htmlFor="sel"><Select id="sel"><option>A</option></Select></Field>
+```
+
+**`Field` props:** `label`, `htmlFor` (obrigatórios) · `state` (`error`\|`success`) · `hint`
+(`ReactNode`) · `hintIcon` (`IconName`) · `SpacingProps`. É o wrapper com `<label>` + hint; o
+controle (`Input`/`Select`/`Textarea`) vai como `children`.
+
+**`Input` props:** todo `InputHTMLAttributes` + `leadingIcon` (`IconName`) + `trailingAction`
+(`ReactNode`, ex. um botão dentro do campo) + `SpacingProps`.
+
+**`PasswordInput`**: mesmas props de `Input` sem `type` — já cuida do toggle mostrar/ocultar com
+ícone de olho.
+
+**`Select`/`Textarea`**: `HTMLAttributes` nativos do elemento + `SpacingProps`.
+
+### Checkbox / Radio / Switch
+
+```tsx
+import { Checkbox, Radio, Switch } from "ember-ui";
+
+<Checkbox defaultChecked>Marcado</Checkbox>
+<Radio name="q" defaultChecked>Alta</Radio>
+<Switch defaultChecked>Ligado</Switch>
+```
+
+Os três são `<input>` nativos (`checkbox`/`radio`/`checkbox role=switch`) envolvidos num `<label>`
+— aceitam todo `InputHTMLAttributes` (exceto `type`) + `children` (o rótulo) + `SpacingProps`.
+
+### Slider
+
+```tsx
+import { Slider } from "ember-ui";
+<Slider min={0} max={100} defaultValue={60} aria-label="Volume" />
+```
+
+`<input type="range">` nativo estilizado — todo `InputHTMLAttributes` (exceto `type`) +
+`SpacingProps`.
+
+### Tabs / TabList / Tab / TabPanel
+
+```tsx
+import { Tabs, TabList, Tab, TabPanel } from "ember-ui";
+import { useState } from "react";
+
+const [tab, setTab] = useState("loja");
+
+<Tabs value={tab} onChange={setTab}>
+  <TabList aria-label="Exemplo de tabs">
+    <Tab value="loja">Loja</Tab>
+    <Tab value="biblioteca">Biblioteca</Tab>
+  </TabList>
+  <TabPanel value="loja">Destaques da semana.</TabPanel>
+  <TabPanel value="biblioteca">Seus jogos instalados.</TabPanel>
+</Tabs>
+```
+
+Controlado (estado fica fora, em `value`/`onChange` de `Tabs`). `Tab`/`TabPanel` usados fora de
+`<Tabs>` lançam erro. Navegação por setas já incluída.
+
+### Accordion / AccordionItem
+
+```tsx
+import { Accordion, AccordionItem } from "ember-ui";
+
+<Accordion defaultValue="requisitos">
+  <AccordionItem value="requisitos" title="Requisitos do sistema">Conteúdo.</AccordionItem>
+  <AccordionItem value="pagamento" title="Formas de pagamento" disabled>Conteúdo.</AccordionItem>
+</Accordion>
+```
+
+Só uma seção aberta por vez (abrir uma fecha a anterior). `AccordionItem` fora de `<Accordion>`
+lança erro. Navegação por setas já incluída.
+
+### SideNav / SideNavTitle / SideNavLink / SideNavButton
+
+```tsx
+import { SideNav, SideNavTitle, SideNavLink, SideNavButton, Icon } from "ember-ui";
+
+<SideNav>
+  <SideNavTitle>Navegação</SideNavTitle>
+  <SideNavLink href="#loja" current><Icon name="store" size="sm" /> Loja</SideNavLink>
+  <SideNavLink href="#biblioteca"><Icon name="library" size="sm" /> Biblioteca</SideNavLink>
+  <SideNavButton disabled><Icon name="settings" size="sm" /> Ajustes</SideNavButton>
+</SideNav>
+```
+
+`<ul>`/`<li>` semânticos. `SideNavLink` aceita `current` (`aria-current="page"`).
+
+### Window
+
+```tsx
+import { Window, Switch, Button } from "ember-ui";
+
+<Window title="Configurações" onClose={() => {}}>
+  <Switch defaultChecked>Iniciar com o sistema</Switch>
+  <Button variant="primary">Aplicar</Button>
+</Window>
+```
+
+Metáfora visual de janela de desktop (barra de título com minimizar/maximizar/fechar). Props:
+`title` (obrigatório) · `onMinimize`/`onMaximize`/`onClose` (opcionais) · `children`.
+
+### Modal
+
+```tsx
+import { Modal, Button } from "ember-ui";
+import { useState } from "react";
+
+const [open, setOpen] = useState(false);
+
+<Button onClick={() => setOpen(true)}>Modal simples</Button>
+<Modal
+  open={open}
+  onClose={() => setOpen(false)}
+  titleId="t"
+  title="Atualização disponível"
+  footer={<Button onClick={() => setOpen(false)}>Instalar</Button>}
+>
+  <p>Uma nova versão do cliente está pronta.</p>
+</Modal>
+```
+
+Baseado em `<dialog>` nativo. Props: `open`, `onClose`, `title`, `titleId` (obrigatórios, `titleId`
+precisa ser único e casar com `aria-labelledby`) · `variant` (`default`\|`warn`\|`danger`) ·
+`icon` (`IconName`; quando omitido mostra o X de fechar) · `children` · `footer` (`ReactNode`).
+
+### Dropdown / MenuItem / MenuSeparator
+
+```tsx
+import { Dropdown, MenuItem, MenuSeparator } from "ember-ui";
+
+<Dropdown trigger="Ações">
+  <MenuItem icon="play" shortcut="Enter" onSelect={() => {}}>Jogar</MenuItem>
+  <MenuSeparator />
+  <MenuItem icon="trash" danger onSelect={() => {}}>Desinstalar</MenuItem>
+</Dropdown>
+```
+
+Posicionado com Floating UI (flip/shift automáticos). `Dropdown` props: `trigger` (`ReactNode`) ·
+`triggerVariant` (`ButtonVariant`, default `secondary`) · `children` (`MenuItem`/`MenuSeparator`).
+`MenuItem` props: `icon`, `shortcut` (texto do atalho exibido), `danger`, `disabled`, `onSelect`.
+
+### ContextMenu
+
+```tsx
+import { ContextMenu, MenuItem, MenuSeparator } from "ember-ui";
+
+<ContextMenu menu={<>
+  <MenuItem icon="play" shortcut="Enter">Abrir</MenuItem>
+  <MenuSeparator />
+  <MenuItem icon="trash" shortcut="Del" danger>Excluir</MenuItem>
+</>}>
+  <div tabIndex={0}>Clique com o botão direito aqui</div>
+</ContextMenu>
+```
+
+`children` precisa ser um ÚNICO elemento React válido (recebe `onContextMenu` via `cloneElement`).
+`menu` é o conteúdo do menu (mesmos `MenuItem`/`MenuSeparator` do `Dropdown`).
+
+### Tooltip
+
+```tsx
+import { Tooltip, Button } from "ember-ui";
+<Tooltip label="Ativar alertas"><Button variant="secondary">Favoritar</Button></Tooltip>
+```
+
+`children` precisa ser um ÚNICO elemento React válido (hover + foco mostram a dica). Props:
+`label` (string), `children`.
+
+### Popover
+
+```tsx
+import { Popover, Button } from "ember-ui";
+<Popover trigger="Popover"><p>Conteúdo do popover.</p></Popover>
+```
+
+Props: `trigger` (`ReactNode`, fica num `Button`), `children` (conteúdo livre do corpo).
+
+### Card / CardGrid / Discount / PriceOld / PriceNow
+
+```tsx
+import { Card, CardGrid, Tag, PriceNow } from "ember-ui";
+
+<CardGrid>
+  <Card
+    title="Forja das Brasas"
+    href="#"
+    colorFrom="#7a2e00"
+    colorTo="#ff6a00"
+    tags={<Tag>Ação</Tag>}
+    price={<PriceNow>R$ 39,95</PriceNow>}
+  />
+  <Card title="Com imagem" image="https://exemplo.com/capa.jpg" />
+</CardGrid>
+```
+
+**`Card` props:** `title` (obrigatório) · `href` (opcional, vira link) · `image`/`imageAlt`
+(substitui ícone/gradiente, `object-fit: cover`, qualquer proporção de origem funciona) ·
+`colorFrom`/`colorTo` (gradiente de fundo quando não há `image`) · `icon` (`IconName`, default
+`gamepad`) · `disabled` · `tags` (`ReactNode`) · `price` (`ReactNode`, costuma usar `Discount`
++ `PriceOld` + `PriceNow`) · `SpacingProps`. `CardGrid` é um grid responsivo wrapper.
+
+### LibraryList / LibraryItem
+
+```tsx
+import { LibraryList, LibraryItem } from "ember-ui";
+
+<LibraryList aria-label="Biblioteca de jogos">
+  <LibraryItem colorFrom="#7a2e00" colorTo="#ff6a00" name="Forja das Brasas" meta="12 h" current />
+</LibraryList>
+```
+
+`LibraryItem` props: `colorFrom`, `colorTo`, `name`, `meta` (obrigatórios) · `current` (destaque
+visual) · todo `ButtonHTMLAttributes` + `SpacingProps`.
+
+### Progress / Download
+
+```tsx
+import { Progress, Download } from "ember-ui";
+
+<Progress value={65} label="Progresso" />
+<Progress value={100} variant="ok" label="Concluído" />
+
+<Download
+  title="Forja das Brasas" status="Baixando" percent={42}
+  speed="18,4 MB/s" sizeText="3,2 de 7,6 GB" etaText="4 min restantes"
+  onPause={() => {}} onCancel={() => {}}
+/>
+```
+
+`Progress` props: `value` (`number`, 0–100) · `variant` (`default`\|`ok`\|`paused`\|`live`) ·
+`label` (obrigatório, acessível). `Download` é um `Progress` especializado com cabeçalho/stats e
+botões Pausar/Cancelar.
+
+### Badge / Tag / Avatar
+
+```tsx
+import { Badge, Tag, Avatar } from "ember-ui";
+
+<Badge variant="ok">Instalado</Badge>
+<Tag onRemove={() => {}} removeLabel="Remover tag Indie">Indie</Tag>
+<Avatar status="online" label="Lucas, online">L</Avatar>
+```
+
+`Badge` props: `variant` (`default`\|`ok`\|`err`\|`warn`\|`info`\|`muted`). `Tag` props:
+`onRemove`/`removeLabel` (mostra um X removível quando ambos presentes). `Avatar` props: `size`
+(`md`\|`lg`), `status` (`online`\|`away`\|`offline`), `label` (obrigatório, acessível).
+
+### Toast / ToastProvider / useToast
+
+```tsx
+import { ToastProvider, useToast, Button } from "ember-ui";
+
+function Exemplo() {
+  const toast = useToast();
+  return (
+    <Button onClick={() => toast({ title: "Amigo online", variant: "info", text: "Opcional." })}>
+      Disparar toast
+    </Button>
+  );
+}
+
+<ToastProvider>
+  <Exemplo />
+</ToastProvider>
+```
+
+Precisa de `<ToastProvider>` na árvore (geralmente na raiz). `toast(...)` aceita `title`
+(obrigatório), `text` (opcional), `variant` (`ok`\|`err`\|`warn`\|`info`, default `info`),
+`animated` (`boolean`, default `true`, respeita `prefers-reduced-motion`). `ToastProvider` aceita
+`animated` como default global para todos os toasts.
+
+### Pagination / Breadcrumb / BreadcrumbItem
+
+```tsx
+import { Pagination, Breadcrumb, BreadcrumbItem } from "ember-ui";
+import { useState } from "react";
+
+const [page, setPage] = useState(1);
+
+<Breadcrumb>
+  <BreadcrumbItem href="#">Loja</BreadcrumbItem>
+  <BreadcrumbItem current>Forja das Brasas</BreadcrumbItem>
+</Breadcrumb>
+<Pagination page={page} totalPages={12} onChange={setPage} />
+```
+
+`Pagination` props: `page`, `totalPages`, `onChange` (obrigatórios) · `siblingCount` (default `1`)
+· `aria-label` (default `"Paginação"`). Gera janela com elipses (`1 ... 4 5 6 ... 12`).
+`BreadcrumbItem` props: `current` (vira `<span aria-current="page">` em vez de link).
+
+### QRCode
+
+```tsx
+import { QRCode } from "ember-ui";
+
+<QRCode value="https://ember-ui.example/convite" />
+<QRCode value="ID-4821-FORJA-DAS-BRASAS" size={96} level="H" />
+<QRCode value="https://ember-ui.example" color="var(--accent)" background="none" />
+```
+
+Gera o QR como SVG puro no cliente (sem canvas, sem rede). Props: `value` (obrigatório) · `size`
+(px, default `160`) · `level` (`L`\|`M`\|`Q`\|`H`, default `M` — mais alto tolera mais dano mas
+gera QR mais denso) · `margin` (módulos de zona de silêncio, default `2`) · `color` (default
+`"var(--text-strong)"`) · `background` (default `"var(--bg-raised)"`, `"none"` pra transparente).
+
+### CodeWindow
+
+```tsx
+import { CodeWindow } from "ember-ui";
+<CodeWindow title="Terminal" code={`npm install ember-ui`} />
+```
+
+Bloco de código com barra de título e botão de copiar (usa `navigator.clipboard`). Props: `code`
+(obrigatório, string) · `title` (default `"Exemplo de uso"`) · `SpacingProps`.
+
+## Nomes de ícone disponíveis (`IconName`)
+
+`x`, `minus`, `square`, `plus`, `check`, `search`, `eye`, `eye-off`, `chevron-down`,
+`chevron-left`, `chevron-right`, `download`, `bell`, `info`, `circle-alert`, `circle-check`,
+`triangle-alert`, `trash`, `copy`, `ellipsis`, `sun`, `moon`, `play`, `gamepad`, `library`,
+`store`, `users`, `settings`, `bonfire`.
+
+Qualquer outro nome não existe — não inventar. Para adicionar um ícone novo seria necessário
+editar `IconSprite` no próprio repositório da biblioteca.
+
+## Helpers exportados (não-visuais)
+
+- `cx(...classes)` — concatena classes truthy (equivalente simplificado ao `clsx`).
+- `spacingStyle(props)` / `splitSpacingProps(props)` — usados internamente por todo componente
+  para implementar `SpacingProps`; útil ao criar um componente customizado que precise seguir a
+  mesma convenção.
+- `getPaginationRange(current, total, siblingCount)` / `ELLIPSIS` — lógica de janela de páginas
+  usada por `Pagination`.
+
+## Acessibilidade (já coberta pela biblioteca)
+
+- Foco visível (`:focus-visible`) em todo elemento interativo.
+- Contraste AA nos dois temas (claro/escuro).
+- Navegação por teclado: `Tab`/`TabList` com setas, menus (`Dropdown`/`ContextMenu`) com setas,
+  `Accordion` com setas, `Esc` fecha modal/menu/popover.
+- `aria-label`, `aria-current`, `aria-selected`, `aria-expanded`, `role` corretos em cada
+  componente — ao usar `icon` em `Button`, sempre informar `aria-label`.
+- Respeita `prefers-reduced-motion` em toasts e scroll suave.
+
+## Erros comuns ao gerar código com esta biblioteca
+
+- Usar `useTheme`/`ThemeToggle` sem `<ThemeProvider>` na árvore → lança exceção em runtime.
+- Usar `useToast` sem `<ToastProvider>` na árvore → lança exceção em runtime.
+- Usar `Tab`/`TabPanel` fora de `<Tabs>`, ou `AccordionItem` fora de `<Accordion>` → lança exceção.
+- Esquecer `<IconSprite />` na raiz → todo `Icon`/`BlinkingIcon` renderiza vazio (sem erro visível).
+- Passar mais de um filho para `Tooltip`/`ContextMenu` (`children`) → eles exigem exatamente UM
+  elemento React válido, pois usam `cloneElement` para injetar handlers.
+- Usar `Button icon` sem `aria-label` → quebra acessibilidade (ícone sem nome acessível).
+- Inventar um `IconName` que não está na lista acima → não existe, o `<use href>` não resolve.
+- Escrever `style={{ display: "flex" }}` ou classes CSS cruas em vez de `Flex`/`Text` — a própria
+  página de demo (`src/App.tsx`) usa somente os componentes da biblioteca para se compor, sem CSS
+  ad-hoc; siga o mesmo padrão em qualquer app consumidor.
+
+## Scripts do repositório (para quem desenvolve a própria biblioteca)
+
+```bash
+bun install          # instala dependências
+bun dev               # sobe a página de demo (Vite) em http://localhost:5173
+bun run build         # build de produção da página de demo
+bun run build:lib     # gera dist/ com os componentes prontos para publicar/importar
+bun test              # roda a suíte de testes (bun:test)
+bun run typecheck     # tsc --noEmit
+```
+
+## Estrutura do repositório
+
+```
+src/
+  styles/      tokens.css, base.css (reutilizáveis) e layout.css (só da página de demo)
+  lib/         helpers puros: classnames, navegação por teclado, paginação, spacing
+  theme/       ThemeProvider / useTheme / ThemeToggle
+  scroll/      SmoothScrollProvider / useSmoothScroll
+  components/  um componente por pasta, com .tsx + .css + index.ts
+  index.ts     barrel público da biblioteca (tudo que "ember-ui" exporta)
+  App.tsx      página de demo — dogfooda a própria biblioteca pra se compor
+tests/         bun:test sobre a lógica não-trivial extraída em lib/ e theme/
+```
+
+Licença dos ícones: Famicons (via Iconify), MIT, embutidos como SVG inline em `IconSprite`. Não
+usa logo, ícone ou asset de nenhuma marca de terceiros.
