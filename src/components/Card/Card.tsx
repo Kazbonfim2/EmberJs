@@ -8,15 +8,19 @@ export type CardProps = HTMLAttributes<HTMLElement> &
   SpacingProps & {
     title: string;
     href?: string;
-    colorFrom: string;
-    colorTo: string;
+    /** Imagem de capa, em qualquer tamanho/proporção (recorta com object-fit: cover). Quando informada, substitui o ícone/gradiente. */
+    image?: string;
+    imageAlt?: string;
+    /** Usados só quando `image` não é informada -- fundo em gradiente atrás do ícone. */
+    colorFrom?: string;
+    colorTo?: string;
     icon?: IconName;
     disabled?: boolean;
     tags?: ReactNode;
     price?: ReactNode;
   };
 
-export function Card({ title, href, colorFrom, colorTo, icon = "gamepad", disabled = false, tags, price, className, style, ...rest }: CardProps) {
+export function Card({ title, href, image, imageAlt, colorFrom, colorTo, icon = "gamepad", disabled = false, tags, price, className, style, ...rest }: CardProps) {
   const [spacing, domRest] = splitSpacingProps(rest);
   return (
     <article
@@ -25,8 +29,8 @@ export function Card({ title, href, colorFrom, colorTo, icon = "gamepad", disabl
       style={{ ...spacingStyle(spacing), ...style }}
       {...domRest}
     >
-      <div className="card-img" style={{ "--c1": colorFrom, "--c2": colorTo } as CSSProperties}>
-        <Icon name={icon} style={{ width: 40, height: 40, strokeWidth: 1.5 }} />
+      <div className="card-img" style={image ? undefined : ({ "--c1": colorFrom, "--c2": colorTo } as CSSProperties)}>
+        {image ? <img src={image} alt={imageAlt ?? title} loading="lazy" /> : <Icon name={icon} style={{ width: 40, height: 40, strokeWidth: 1.5 }} />}
       </div>
       <div className="card-body">
         <h3 className="card-title">

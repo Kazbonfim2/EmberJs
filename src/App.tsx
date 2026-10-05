@@ -8,6 +8,7 @@ import { Checkbox, Radio, Switch } from "./components/Checkbox";
 import { Slider } from "./components/Slider";
 import { Tabs, TabList, Tab, TabPanel } from "./components/Tabs";
 import { Accordion, AccordionItem } from "./components/Accordion";
+import { useSmoothScroll } from "./scroll";
 import { SideNav, SideNavTitle, SideNavLink, SideNavButton } from "./components/SideNav";
 import { Window } from "./components/Window";
 import { Modal } from "./components/Modal";
@@ -96,6 +97,7 @@ export function App() {
   const [page, setPage] = useState(1);
   const toast = useToast();
   const { theme } = useTheme();
+  const lenis = useSmoothScroll();
 
   return (
     <>
@@ -240,6 +242,11 @@ function Exemplo() {
               também suaviza cliques em links de âncora. Use <code>useSmoothScroll</code> se precisar do controle
               programático (ex.: botão "voltar ao topo").
             </p>
+            <div className="row">
+              <Button id="voltar-ao-topo-demo" variant="secondary" size="sm" onClick={() => lenis?.scrollTo(0)}>
+                Voltar ao topo
+              </Button>
+            </div>
 
             <CodeWindow title="main.tsx" code={`
 import { SmoothScrollProvider } from "ember-ui";
@@ -851,6 +858,52 @@ import { Card, CardGrid, Tag, PriceNow } from "ember-ui";
     colorTo="#ff6a00"
     tags={<Tag>Ação</Tag>}
     price={<PriceNow>R$ 39,95</PriceNow>}
+  />
+</CardGrid>
+            `} />
+
+            <h3 className="sub">Cards com imagem</h3>
+            <p className="muted">
+              Passando <code>image</code>, o card troca o ícone/gradiente pela imagem de capa — qualquer tamanho ou
+              proporção de origem encaixa certinho no mesmo slot (<code>object-fit: cover</code>), então uma imagem
+              retrato, paisagem ou quadrada funcionam igual, sem recorte manual. <code>colorFrom</code>/
+              <code>colorTo</code> deixam de ser necessários nesse modo.
+            </p>
+            <CardGrid>
+              <Card
+                title="Paisagem 600×400"
+                image="https://placehold.co/600x400/7a2e00/ff6a00"
+                tags={<Tag>Ação</Tag>}
+                price={<PriceNow>R$ 39,95</PriceNow>}
+              />
+              <Card
+                title="Quadrada 500×500"
+                image="https://placehold.co/500x500/0b3b4a/2bb8d4"
+                tags={<Badge variant="info">Novo</Badge>}
+                price={<PriceNow>R$ 59,90</PriceNow>}
+              />
+              <Card
+                title="Retrato 400×700"
+                image="https://placehold.co/400x700/2d1b4e/7a4fd1"
+                tags={<Tag>RPG</Tag>}
+                price={<><Discount>-25%</Discount><PriceOld>R$ 120,00</PriceOld><PriceNow>R$ 90,00</PriceNow></>}
+              />
+            </CardGrid>
+
+            <CodeWindow code={`
+import { Card, CardGrid, Tag, PriceNow } from "ember-ui";
+
+<CardGrid>
+  <Card
+    title="Paisagem 600×400"
+    image="https://placehold.co/600x400/7a2e00/ff6a00"
+    tags={<Tag>Ação</Tag>}
+    price={<PriceNow>R$ 39,95</PriceNow>}
+  />
+  <Card
+    title="Retrato 400×700"
+    image="https://placehold.co/400x700/2d1b4e/7a4fd1"
+    tags={<Tag>RPG</Tag>}
   />
 </CardGrid>
             `} />
