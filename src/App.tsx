@@ -193,7 +193,7 @@ import { Button, Card, Badge } from "ember-ui";
           <section className="sec" id="para-llms" aria-labelledby="h-para-llms">
             <Heading level={2} id="h-para-llms">Para LLMs</Heading>
             <Text color="muted">
-              <code>llm.txt</code> é um resumo de toda a biblioteca (instalação, providers
+              <code>llms.txt</code> é um resumo de toda a biblioteca (instalação, providers
               obrigatórios, tokens de design, props de cada componente, lista de ícones e erros
               comuns) num único arquivo de texto, pensado para ser dado como contexto a um agente
               de IA (Claude, GPT, Gemini ou qualquer outro) gerar código correto com o{" "}
@@ -203,18 +203,18 @@ import { Button, Card, Badge } from "ember-ui";
             <Flex wrap align="center" gap={3}>
               <a
                 className="btn btn-primary"
-                href="/llm.txt"
-                download="llm.txt"
-                onClick={() => toast({ title: "Baixando llm.txt", variant: "ok" })}
+                href="/llms.txt"
+                download="llms.txt"
+                onClick={() => toast({ title: "Baixando llms.txt", variant: "ok" })}
               >
                 <Icon name="download" />
-                Baixar llm.txt
+                Baixar llms.txt
               </a>
             </Flex>
 
             <CodeWindow title="Terminal" code={`
 # também disponível direto na raiz do site publicado
-curl -O https://sua-instancia.exemplo/llm.txt
+curl -O https://sua-instancia.exemplo/llms.txt
             `} />
           </section>
 
