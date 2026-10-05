@@ -127,11 +127,11 @@ export function App() {
         <main id="main">
           <section className="sec" id="primeiros-passos" aria-labelledby="h-primeiros-passos">
             <Heading level={2} id="h-primeiros-passos">Primeiros passos</Heading>
-            <p className="muted">
+            <Text color="muted">
               <code>ember-ui</code> é o pacote deste design system React/TypeScript. Instale, importe o CSS base uma
               única vez, envolva a raiz da aplicação com os providers necessários e importe os componentes direto do
               pacote — sem import por componente.
-            </p>
+            </Text>
 
             <Heading level={3} variant="sub">1. Instalação</Heading>
             <CodeWindow title="Terminal" code={`
@@ -139,22 +139,22 @@ npm install ember-ui react react-dom
             `} />
 
             <Heading level={3} variant="sub">2. CSS base</Heading>
-            <p className="muted">
+            <Text color="muted">
               Uma única vez, na raiz da aplicação — traz os tokens (cores, espaçamento, tipografia) e o reset usados
               por todo componente.
-            </p>
+            </Text>
             <CodeWindow title="main.tsx" code={`
 import "ember-ui/styles.css";
             `} />
 
             <Heading level={3} variant="sub">3. Providers na raiz</Heading>
-            <p className="muted">
+            <Text color="muted">
               <code>IconSprite</code> injeta o sprite usado por <code>Icon</code> (e por tudo que renderiza ícone).{" "}
               <code>ThemeProvider</code> controla o tema claro/escuro (veja a seção <a href="#tema">Tema</a>).{" "}
               <code>SmoothScrollProvider</code> suaviza o scroll da página inteira (veja{" "}
               <a href="#scroll-suave">Scroll suave</a>). <code>ToastProvider</code> só é necessário se você usar{" "}
               <code>useToast</code>/<code>Toast</code>.
-            </p>
+            </Text>
             <CodeWindow title="main.tsx" code={`
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
@@ -177,10 +177,10 @@ createRoot(document.getElementById("root")!).render(
             `} />
 
             <Heading level={3} variant="sub">4. Use os componentes</Heading>
-            <p className="muted">
+            <Text color="muted">
               Tudo sai do mesmo pacote. Todo componente que renderiza um elemento aceita <code>m</code>/<code>p</code>{" "}
               (veja <a href="#spacing">Espaçamento rápido</a>) além das próprias props.
-            </p>
+            </Text>
             <CodeWindow code={`
 import { Button, Card, Badge } from "ember-ui";
 
@@ -203,16 +203,16 @@ import { Button, Card, Badge } from "ember-ui";
 
           <section className="sec" id="tema" aria-labelledby="h-tema">
             <Heading level={2} id="h-tema">Tema</Heading>
-            <p className="muted">
+            <Text color="muted">
               <code>ThemeProvider</code> fica uma única vez na raiz da aplicação (veja <code>main.tsx</code>) e guarda o
               tema (<code>light</code>/<code>dark</code>) em contexto, persistindo a escolha entre sessões. Dentro dele,{" "}
               <code>useTheme</code> dá acesso a <code>theme</code> e <code>toggleTheme</code> em qualquer componente, e{" "}
               <code>ThemeToggle</code> é o botão pronto — é o mesmo que aparece no topo desta página.
-            </p>
-            <div className="row">
+            </Text>
+            <Flex wrap align="center" gap={3}>
               <ThemeToggle />
               <Text size="sm" color="muted" m={0}>Tema atual: <strong>{theme}</strong></Text>
-            </div>
+            </Flex>
 
             <CodeWindow code={`
 import { ThemeProvider, ThemeToggle, useTheme } from "ember-ui";
@@ -235,19 +235,19 @@ function Exemplo() {
 
           <section className="sec" id="scroll-suave" aria-labelledby="h-scroll-suave">
             <Heading level={2} id="h-scroll-suave">Scroll suave</Heading>
-            <p className="muted">
+            <Text color="muted">
               <code>SmoothScrollProvider</code> troca o scroll padrão do navegador por um com inércia/easing (via{" "}
               <a href="https://lenis.darkroom.engineering/" target="_blank" rel="noreferrer">Lenis</a>), aplicado em
               toda a página — role esta própria página pra sentir. Já cuida de <code>prefers-reduced-motion</code>{" "}
               sozinho (desativa a suavização e deixa o scroll 1:1) e, com <code>anchors</code> ligado por padrão,
               também suaviza cliques em links de âncora. Use <code>useSmoothScroll</code> se precisar do controle
               programático (ex.: botão "voltar ao topo").
-            </p>
-            <div className="row">
+            </Text>
+            <Flex wrap align="center" gap={3}>
               <Button id="voltar-ao-topo-demo" variant="secondary" size="sm" onClick={() => lenis?.scrollTo(0)}>
                 Voltar ao topo
               </Button>
-            </div>
+            </Flex>
 
             <CodeWindow title="main.tsx" code={`
 import { SmoothScrollProvider } from "ember-ui";
@@ -269,7 +269,7 @@ function VoltarAoTopo() {
 
           <section className="sec" id="texto" aria-labelledby="h-texto">
             <Heading level={2} id="h-texto">Texto</Heading>
-            <Text className="muted">
+            <Text color="muted">
               <code>Text</code> é o componente genérico pra qualquer texto da interface: <code>size</code>, <code>weight</code>,{" "}
               <code>color</code> e <code>align</code> usam os tokens do design system (<code>--fs-*</code>, pesos 400-700,{" "}
               <code>--text-*</code> e as cores semânticas), <code>as</code> troca o elemento (<code>p</code>, <code>span</code>,{" "}
@@ -277,16 +277,16 @@ function VoltarAoTopo() {
             </Text>
 
             <Heading level={3} variant="sub">size + weight + color</Heading>
-            <div className="stack">
+            <Flex direction="column" gap={4}>
               <Text as="h3" size="xl" weight="bold" color="strong" m={0}>Forja das Brasas</Text>
               <Text size="md" color="default" m={0}>Texto padrão, do tamanho e cor normais do corpo.</Text>
               <Text size="sm" color="muted" m={0}>Texto secundário/legenda, mais discreto.</Text>
               <Text size="sm" color="ok" weight="semibold" m={0}>Disponível para jogar</Text>
               <Text size="sm" color="err" weight="semibold" m={0}>Falha ao conectar ao servidor</Text>
-            </div>
+            </Flex>
 
             <Heading level={3} variant="sub">align + truncate + m/p como os demais componentes</Heading>
-            <p className="muted">Mesma prop de espaçamento que Button/Card/Badge usam — aqui com mb pra separar os três exemplos.</p>
+            <Text color="muted">Mesma prop de espaçamento que Button/Card/Badge usam — aqui com mb pra separar os três exemplos.</Text>
             <div style={{ maxWidth: 220 }}>
               <Text align="right" mb={3}>Alinhado à direita</Text>
               <Text truncate mb={3} style={{ padding: "var(--sp-2)", background: "var(--bg-inset)", borderRadius: "var(--r-sm)" }}>
@@ -304,21 +304,21 @@ import { Text } from "ember-ui";
             `} />
 
             <Heading level={3} variant="sub">Heading</Heading>
-            <p className="muted">
+            <Text color="muted">
               <code>Heading</code> é o <code>Text</code> especializado pra títulos: <code>level</code> (1 a 4) escolhe o
               elemento semântico (<code>h1</code>..<code>h4</code>) e já aplica o tamanho certo dos tokens, e{" "}
               <code>variant="sub"</code> dá o rótulo pequeno, maiúsculo e discreto usado nos subtítulos desta própria
               página (como este aqui). Aceita <code>m</code>/<code>p</code> e o resto das props do <code>Text</code>{" "}
               (<code>size</code>, <code>weight</code>, <code>color</code>, <code>align</code>...) pra sobrescrever o
               padrão quando precisar.
-            </p>
-            <div className="stack">
+            </Text>
+            <Flex direction="column" gap={4}>
               <Heading level={1} m={0}>Heading nível 1</Heading>
               <Heading level={2} m={0}>Heading nível 2</Heading>
               <Heading level={3} m={0}>Heading nível 3</Heading>
               <Heading level={4} m={0}>Heading nível 4</Heading>
               <Heading level={3} variant="sub" m={0}>Variant "sub"</Heading>
-            </div>
+            </Flex>
 
             <CodeWindow code={`
 import { Heading } from "ember-ui";
@@ -331,36 +331,36 @@ import { Heading } from "ember-ui";
 
           <section className="sec" id="spacing" aria-labelledby="h-spacing">
             <Heading level={2} id="h-spacing">Espaçamento rápido (m/p)</Heading>
-            <p className="muted">
+            <Text color="muted">
               Todo componente da biblioteca aceita <code>m</code>/<code>mt</code>/<code>mr</code>/<code>mb</code>/<code>ml</code>/
               <code>mx</code>/<code>my</code> (margin) e <code>p</code>/<code>pt</code>/<code>pr</code>/<code>pb</code>/<code>pl</code>/
               <code>px</code>/<code>py</code> (padding) como props diretas — no estilo Chakra UI/styled-system. De <code>1</code> a{" "}
               <code>7</code> usa os mesmos tokens <code>--sp-1</code>..<code>--sp-7</code> do resto do design system; qualquer outro
               número (px) ou string CSS (<code>"1rem"</code>) passa direto. Sem precisar escrever <code>style</code> pra ajustes
               rápidos de espaçamento.
-            </p>
+            </Text>
 
             <Heading level={3} variant="sub">margin por lado, sem depender de Flex/gap</Heading>
-            <p className="muted">
+            <Text color="muted">
               Cada <code>Badge</code> aqui empurra o próximo com <code>ml</code> — útil quando não dá pra (ou não vale a pena)
               envolver os elementos num <code>Flex</code>.
-            </p>
-            <div className="row">
+            </Text>
+            <Flex wrap align="center" gap={3}>
               <Badge>Sem espaçamento</Badge>
               <Badge variant="info" ml={2}>ml={"{2}"}</Badge>
               <Badge variant="ok" ml={6}>ml={"{6}"}</Badge>
-            </div>
+            </Flex>
 
             <Heading level={3} variant="sub">padding sobrescrevendo o espaçamento padrão do componente</Heading>
-            <p className="muted">
+            <Text color="muted">
               <code>p</code>/<code>px</code>/<code>py</code> têm prioridade sobre o padding que o componente já define via CSS —
               é uma sobrescrita deliberada, não uma soma. Útil pra dar mais (ou menos) respiro num caso específico, sem criar uma
               variante nova do componente.
-            </p>
-            <div className="row" style={{ alignItems: "flex-start" }}>
+            </Text>
+            <Flex wrap align="start" gap={3}>
               <Card title="Padding padrão" colorFrom="#333" colorTo="#666" tags={<Badge variant="muted">p padrão</Badge>} />
               <Card title="Mais respiro" colorFrom="#333" colorTo="#666" p={6} tags={<Badge variant="info">p={"{6}"}</Badge>} />
-            </div>
+            </Flex>
 
             <CodeWindow code={`
 import { Badge, Card } from "ember-ui";
@@ -372,19 +372,19 @@ import { Badge, Card } from "ember-ui";
 
           <section className="sec" id="flex" aria-labelledby="h-flex">
             <Heading level={2} id="h-flex">Sistema de Flex</Heading>
-            <p className="muted">
+            <Text color="muted">
               <code>Flex</code> e <code>FlexItem</code> normalizam o uso de flexbox pra não escrever <code>display: flex</code> e
               companhia na mão em todo canto — direção, alinhamento, espaçamento (nos tokens <code>--sp-1</code> a{" "}
               <code>--sp-7</code>) e quebra de linha ficam só props, e funcionam compondo com qualquer outro componente da
               biblioteca (aqui embaixo, com <code>Badge</code>).
-            </p>
+            </Text>
 
             <Heading level={3} variant="sub">Exemplo prático: linha de usuário</Heading>
-            <p className="muted">
+            <Text color="muted">
               Avatar, um bloco de texto que cresce pra preencher o espaço livre (<code>FlexItem grow</code>) e um botão de
               ação, tudo alinhado numa única linha — o padrão clássico de "linha de item com ação" (lista de amigos,
               notificação, item de configuração).
-            </p>
+            </Text>
             <Flex
               align="center"
               gap={3}
@@ -399,13 +399,13 @@ import { Badge, Card } from "ember-ui";
               <Avatar status="online" label="Lucas, online">L</Avatar>
               <FlexItem grow>
                 <div style={{ fontWeight: 600, color: "var(--text-strong)" }}>Lucas</div>
-                <div className="muted" style={{ fontSize: "var(--fs-sm)" }}>Jogando Forja das Brasas</div>
+                <Text as="span" color="muted" style={{ fontSize: "var(--fs-sm)" }}>Jogando Forja das Brasas</Text>
               </FlexItem>
               <Button variant="secondary" size="sm">Chamar pra jogar</Button>
             </Flex>
 
             <Heading level={3} variant="sub">align="center" + justify="between" + gap={3}</Heading>
-            <p className="muted">Distribui nas pontas e centraliza no eixo cruzado — útil pra barras de ação, cabeçalhos de card etc.</p>
+            <Text color="muted">Distribui nas pontas e centraliza no eixo cruzado — útil pra barras de ação, cabeçalhos de card etc.</Text>
             <Flex
               gap={3}
               align="center"
@@ -418,10 +418,10 @@ import { Badge, Card } from "ember-ui";
             </Flex>
 
             <Heading level={3} variant="sub">direction="column" + FlexItem grow</Heading>
-            <p className="muted">
+            <Text color="muted">
               O primeiro <code>FlexItem</code> tem <code>grow</code>, então ele consome todo o espaço livre da coluna; o
               segundo fica no tamanho natural do conteúdo.
-            </p>
+            </Text>
             <Flex direction="column" gap={2} style={{ maxWidth: 280 }}>
               <FlexItem grow style={{ padding: "var(--sp-3)", background: "var(--bg-inset)", borderRadius: "var(--r-sm)" }}>
                 Cresce pra ocupar o espaço (grow)
@@ -464,15 +464,15 @@ import { Flex, FlexItem, Button } from "ember-ui";
               <Button variant="secondary" icon aria-label="Configurações"><Icon name="settings" /></Button>
             </Flex>
             <Heading level={3} variant="sub">Tamanhos</Heading>
-            <div className="row">
+            <Flex wrap align="center" gap={3}>
               <Button variant="primary" size="sm">Pequeno</Button>
               <Button variant="primary">Médio</Button>
               <Button variant="primary" size="lg">Grande</Button>
               <Button variant="secondary" icon size="sm" aria-label="Adicionar"><Icon name="plus" size="sm" /></Button>
               <Button variant="secondary" icon size="lg" aria-label="Adicionar"><Icon name="plus" /></Button>
-            </div>
+            </Flex>
             <Heading level={3} variant="sub">Com ícone, carregando e desabilitado</Heading>
-            <div className="row">
+            <Flex wrap align="center" gap={3}>
               <Button variant="primary"><Icon name="download" />Baixar</Button>
               <Button variant="primary" loading>Carregando</Button>
               <Button variant="secondary" loading>Salvando</Button>
@@ -480,9 +480,9 @@ import { Flex, FlexItem, Button } from "ember-ui";
               <Button variant="secondary" disabled>Desabilitado</Button>
               <Button variant="ghost" disabled>Desabilitado</Button>
               <Button variant="danger" disabled>Desabilitado</Button>
-            </div>
+            </Flex>
             <Heading level={3} variant="sub">Grupos de botões</Heading>
-            <div className="row" style={{ gap: 24 }}>
+            <Flex wrap align="center" gap={6}>
               <ButtonGroup label="Formato do texto">
                 <Button variant="secondary" icon aria-label="Negrito"><Icon name="plus" /></Button>
                 <Button variant="secondary" icon aria-label="Itálico"><Icon name="minus" /></Button>
@@ -498,7 +498,7 @@ import { Flex, FlexItem, Button } from "ember-ui";
                 <Button variant="secondary">Meio</Button>
                 <Button variant="secondary">Base</Button>
               </ButtonGroup>
-            </div>
+            </Flex>
 
             <CodeWindow code={`
 import { Button, ButtonGroup, Icon } from "ember-ui";
@@ -565,31 +565,31 @@ import { Field, Input, PasswordInput } from "ember-ui";
           <section className="sec" id="selecao" aria-labelledby="h-selecao">
             <Heading level={2} id="h-selecao">Checkbox, radio, switch e slider</Heading>
             <div className="grid-2">
-              <fieldset className="stack" style={{ border: 0, padding: 0, margin: 0 }}>
+              <Flex as="fieldset" direction="column" gap={4} style={{ border: 0, padding: 0, margin: 0 }}>
                 <legend className="label" style={{ marginBottom: 8 }}>Checkbox</legend>
                 <Checkbox>Normal</Checkbox>
                 <Checkbox defaultChecked>Marcado</Checkbox>
                 <Checkbox disabled>Desabilitado</Checkbox>
                 <Checkbox defaultChecked disabled>Marcado desabilitado</Checkbox>
-              </fieldset>
-              <fieldset className="stack" style={{ border: 0, padding: 0, margin: 0 }}>
+              </Flex>
+              <Flex as="fieldset" direction="column" gap={4} style={{ border: 0, padding: 0, margin: 0 }}>
                 <legend className="label" style={{ marginBottom: 8 }}>Radio</legend>
                 <Radio name="q" defaultChecked>Alta</Radio>
                 <Radio name="q">Média</Radio>
                 <Radio name="q">Baixa</Radio>
                 <Radio name="q" disabled>Desabilitado</Radio>
-              </fieldset>
-              <fieldset className="stack" style={{ border: 0, padding: 0, margin: 0 }}>
+              </Flex>
+              <Flex as="fieldset" direction="column" gap={4} style={{ border: 0, padding: 0, margin: 0 }}>
                 <legend className="label" style={{ marginBottom: 8 }}>Switch</legend>
                 <Switch>Desligado</Switch>
                 <Switch defaultChecked>Ligado</Switch>
                 <Switch disabled>Desabilitado</Switch>
-              </fieldset>
-              <div className="stack">
+              </Flex>
+              <Flex direction="column" gap={4}>
                 <span className="label" id="l-vol">Slider</span>
                 <Slider min={0} max={100} defaultValue={60} aria-labelledby="l-vol" />
                 <Slider min={0} max={100} defaultValue={30} disabled aria-label="Slider desabilitado" />
-              </div>
+              </Flex>
             </div>
 
             <CodeWindow code={`
@@ -643,10 +643,10 @@ const [tab, setTab] = useState("loja");
 
           <section className="sec" id="accordion" aria-labelledby="h-accordion">
             <Heading level={2} id="h-accordion">Accordion</Heading>
-            <p className="muted">
+            <Text color="muted">
               Só uma seção fica aberta por vez — abrir uma fecha a anterior. Navegação por teclado com{" "}
               <kbd>↑</kbd>/<kbd>↓</kbd> entre os cabeçalhos.
-            </p>
+            </Text>
             <Accordion defaultValue="requisitos">
               <AccordionItem value="requisitos" title="Requisitos do sistema">
                 Windows 10 ou superior, 8 GB de RAM, GPU com suporte a DirectX 12.
@@ -678,10 +678,10 @@ import { Accordion, AccordionItem } from "ember-ui";
             <Window title="Configurações">
               <Switch defaultChecked>Iniciar com o sistema</Switch>
               <Switch>Mostrar notificações</Switch>
-              <div className="row" style={{ justifyContent: "flex-end" }}>
+              <Flex wrap align="center" justify="end" gap={3}>
                 <Button variant="secondary">Cancelar</Button>
                 <Button variant="primary">Aplicar</Button>
-              </div>
+              </Flex>
             </Window>
 
             <CodeWindow code={`
@@ -696,11 +696,11 @@ import { Window, Switch, Button } from "ember-ui";
 
           <section className="sec" id="modal" aria-labelledby="h-modal">
             <Heading level={2} id="h-modal">Modais</Heading>
-            <div className="row">
+            <Flex wrap align="center" gap={3}>
               <Button variant="primary" onClick={() => setOpenModal("basic")}>Modal simples</Button>
               <Button variant="secondary" onClick={() => setOpenModal("confirm")}>Confirmação</Button>
               <Button variant="danger" onClick={() => setOpenModal("error")}>Erro</Button>
-            </div>
+            </Flex>
 
             <Modal
               open={openModal === "basic"}
@@ -743,7 +743,7 @@ import { Window, Switch, Button } from "ember-ui";
               </>}
             >
               <p>Não foi possível alcançar o servidor. Verifique sua internet e tente de novo.</p>
-              <p className="muted">Código: ERR_TIMEOUT (408)</p>
+              <Text color="muted">Código: ERR_TIMEOUT (408)</Text>
             </Modal>
 
             <CodeWindow code={`
@@ -767,7 +767,7 @@ const [open, setOpen] = useState(false);
 
           <section className="sec" id="dropdown" aria-labelledby="h-dropdown">
             <Heading level={2} id="h-dropdown">Dropdown e menu de contexto</Heading>
-            <div className="row" style={{ alignItems: "flex-start" }}>
+            <Flex wrap align="start" gap={3}>
               <Dropdown trigger="Ações" mb={3}>
                 <MenuItem icon="play" shortcut="Enter" onSelect={() => toast({ title: "Jogando...", variant: "info" })}>Jogar</MenuItem>
                 <MenuItem icon="copy" shortcut="Ctrl+C">Copiar link</MenuItem>
@@ -775,7 +775,7 @@ const [open, setOpen] = useState(false);
                 <MenuSeparator />
                 <MenuItem icon="trash" danger onSelect={() => toast({ title: "Desinstalado", variant: "ok" })}>Desinstalar</MenuItem>
               </Dropdown>
-            </div>
+            </Flex>
 
             <Heading level={3} variant="sub">Menu de contexto (clique direito ou tecla Menu)</Heading>
             <ContextMenu
@@ -786,14 +786,16 @@ const [open, setOpen] = useState(false);
                 <MenuItem icon="trash" shortcut="Del" danger>Excluir</MenuItem>
               </>}
             >
-              <div
+              <Flex
                 className="ctx-area"
                 tabIndex={0}
                 aria-label="Área de teste do menu de contexto"
-                style={{ display: "grid", placeItems: "center", minHeight: 100, border: "1px dashed var(--border-strong)", borderRadius: "var(--r-md)", color: "var(--text-2)" }}
+                align="center"
+                justify="center"
+                style={{ minHeight: 100, border: "1px dashed var(--border-strong)", borderRadius: "var(--r-md)", color: "var(--text-2)" }}
               >
                 Clique com o botão direito aqui
-              </div>
+              </Flex>
             </ContextMenu>
 
             <CodeWindow code={`
@@ -809,7 +811,7 @@ import { Dropdown, MenuItem, MenuSeparator } from "ember-ui";
 
           <section className="sec" id="tooltip" aria-labelledby="h-tooltip">
             <Heading level={2} id="h-tooltip">Tooltip e popover</Heading>
-            <div className="row" style={{ minHeight: 140, alignItems: "flex-start" }}>
+            <Flex wrap align="start" gap={3} style={{ minHeight: 140 }}>
               <Tooltip label="Ativar alertas">
                 <Button variant="secondary" icon aria-label="Favoritar"><Icon name="bell" /></Button>
               </Tooltip>
@@ -818,10 +820,10 @@ import { Dropdown, MenuItem, MenuSeparator } from "ember-ui";
               </Tooltip>
               <Popover trigger="Popover">
                 <Heading level={4}>Resumo do jogo</Heading>
-                <p className="muted">Aventura cooperativa para até 4 jogadores, com suporte a controle.</p>
+                <Text color="muted">Aventura cooperativa para até 4 jogadores, com suporte a controle.</Text>
                 <Button variant="primary" size="sm">Ver detalhes</Button>
               </Popover>
-            </div>
+            </Flex>
 
             <CodeWindow code={`
 import { Tooltip, Popover, Button } from "ember-ui";
@@ -869,7 +871,7 @@ import { Tooltip, Popover, Button } from "ember-ui";
                 colorTo="#666"
                 disabled
                 tags={<Badge variant="muted">Em breve</Badge>}
-                price={<span className="muted">Sem preço</span>}
+                price={<Text as="span" color="muted">Sem preço</Text>}
               />
             </CardGrid>
 
@@ -889,12 +891,12 @@ import { Card, CardGrid, Tag, PriceNow } from "ember-ui";
             `} />
 
             <Heading level={3} variant="sub">Cards com imagem</Heading>
-            <p className="muted">
+            <Text color="muted">
               Passando <code>image</code>, o card troca o ícone/gradiente pela imagem de capa — qualquer tamanho ou
               proporção de origem encaixa certinho no mesmo slot (<code>object-fit: cover</code>), então uma imagem
               retrato, paisagem ou quadrada funcionam igual, sem recorte manual. <code>colorFrom</code>/
               <code>colorTo</code> deixam de ser necessários nesse modo.
-            </p>
+            </Text>
             <CardGrid>
               <Card
                 title="Paisagem 600×400"
@@ -955,11 +957,11 @@ import { LibraryList, LibraryItem } from "ember-ui";
 
           <section className="sec" id="progresso" aria-labelledby="h-progresso">
             <Heading level={2} id="h-progresso">Barra de progresso e download</Heading>
-            <div className="stack" style={{ maxWidth: 420 }}>
+            <Flex direction="column" gap={4} style={{ maxWidth: 420 }}>
               <Progress value={65} label="Progresso" />
               <Progress value={100} variant="ok" label="Concluído" />
               <Progress value={30} variant="paused" label="Pausado" />
-            </div>
+            </Flex>
             <Heading level={3} variant="sub">Download</Heading>
             <Download
               title="Forja das Brasas"
@@ -988,26 +990,26 @@ import { Progress, Download } from "ember-ui";
           <section className="sec" id="badges" aria-labelledby="h-badges">
             <Heading level={2} id="h-badges">Badges, tags e avatar</Heading>
             <Heading level={3} variant="sub">Badges</Heading>
-            <div className="row">
+            <Flex wrap align="center" gap={3}>
               <Badge>Destaque</Badge>
               <Badge variant="ok">Instalado</Badge>
               <Badge variant="err">Erro</Badge>
               <Badge variant="warn">Atualizar</Badge>
               <Badge variant="info">Novo</Badge>
               <Badge variant="muted">Beta</Badge>
-            </div>
+            </Flex>
             <Heading level={3} variant="sub">Tags</Heading>
-            <div className="row">
+            <Flex wrap align="center" gap={3}>
               <Tag>Indie</Tag>
               <Tag>Multiplayer</Tag>
               <Tag onRemove={() => {}} removeLabel="Remover tag Removível">Removível</Tag>
-            </div>
+            </Flex>
             <Heading level={3} variant="sub">Avatar com status</Heading>
-            <div className="row" style={{ gap: 24 }}>
+            <Flex wrap align="center" gap={6}>
               <Avatar size="lg" status="online" label="Lucas, online">L</Avatar>
               <Avatar status="away" label="Ana, ausente">A</Avatar>
               <Avatar status="offline" label="Bruno, offline">B</Avatar>
-            </div>
+            </Flex>
 
             <CodeWindow code={`
 import { Badge, Tag, Avatar } from "ember-ui";
@@ -1020,11 +1022,11 @@ import { Badge, Tag, Avatar } from "ember-ui";
 
           <section className="sec" id="icone-piscante" aria-labelledby="h-icone-piscante">
             <Heading level={2} id="h-icone-piscante">Ícone piscante</Heading>
-            <div className="row" style={{ gap: 24 }}>
+            <Flex wrap align="center" gap={6}>
               <BlinkingIcon name="bell" size="sm" label="Notificação, pequeno" />
               <BlinkingIcon name="bell" size="md" label="Notificação, médio" />
               <BlinkingIcon name="bell" size="lg" label="Notificação, grande" />
-            </div>
+            </Flex>
 
             <CodeWindow code={`
 import { BlinkingIcon } from "ember-ui";
@@ -1090,21 +1092,21 @@ const [page, setPage] = useState(1);
 
           <section className="sec" id="qrcode" aria-labelledby="h-qrcode">
             <Heading level={2} id="h-qrcode">QR code</Heading>
-            <p className="muted">
+            <Text color="muted">
               <code>QRCode</code> codifica texto/URL numa imagem (SVG), sem depender de canvas ou de rede — tudo acontece no
               cliente. Cor e fundo já usam os tokens do tema por padrão, então funciona nos dois temas sem configurar nada.
-            </p>
+            </Text>
 
             <Heading level={3} variant="sub">Exemplo prático: card de convite</Heading>
-            <p className="muted">
+            <Text color="muted">
               O padrão mais comum de uso: um QRCode ao lado de um texto e um botão de ação, pra compartilhar um link de
               verdade (convite pra partida, evento, cupom). O botão copia o mesmo link que está codificado no QR.
-            </p>
-            <div
-              className="row"
+            </Text>
+            <Flex
+              wrap
+              align="center"
+              gap={4}
               style={{
-                alignItems: "center",
-                gap: "var(--sp-4)",
                 padding: "var(--sp-5)",
                 maxWidth: 440,
                 background: "var(--bg-raised)",
@@ -1113,11 +1115,11 @@ const [page, setPage] = useState(1);
               }}
             >
               <QRCode value="https://ember-ui.example/convite/forja-das-brasas" size={96} />
-              <div style={{ display: "grid", gap: "var(--sp-2)" }}>
+              <Flex direction="column" gap={2}>
                 <strong style={{ color: "var(--text-strong)" }}>Convite para Forja das Brasas</strong>
-                <p className="muted" style={{ fontSize: "var(--fs-sm)", margin: 0 }}>
+                <Text color="muted" style={{ fontSize: "var(--fs-sm)", margin: 0 }}>
                   Aponte a câmera do celular ou copie o link abaixo pra entrar na partida.
-                </p>
+                </Text>
                 <Button
                   variant="secondary"
                   size="sm"
@@ -1126,22 +1128,22 @@ const [page, setPage] = useState(1);
                   <Icon name="copy" size="sm" />
                   Copiar link
                 </Button>
-              </div>
-            </div>
+              </Flex>
+            </Flex>
 
             <Heading level={3} variant="sub">Link (nível de correção padrão)</Heading>
-            <p className="muted">
+            <Text color="muted">
               Caso de uso mais comum: codificar uma URL pra escanear com o celular. O nível de correção de erro padrão
               (<code>"M"</code>) já é suficiente pra isso.
-            </p>
+            </Text>
             <QRCode value="https://ember-ui.example/convite" />
 
             <Heading level={3} variant="sub">Código curto, com correção de erro alta</Heading>
-            <p className="muted">
+            <Text color="muted">
               Pra um código que vai ser impresso e pode sujar/arranhar (etiqueta, crachá, caixa física), vale subir o{" "}
               <code>level</code> pra <code>"H"</code> — tolera mais dano, ao custo de um QR mais denso. Nesse exemplo também
               reduzimos o <code>size</code>, já que o conteúdo é bem mais curto que uma URL.
-            </p>
+            </Text>
             <QRCode value="ID-4821-FORJA-DAS-BRASAS" size={96} level="H" />
 
             <CodeWindow code={`
