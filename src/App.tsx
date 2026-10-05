@@ -861,6 +861,52 @@ import { Card, CardGrid, Tag, PriceNow } from "ember-ui";
   />
 </CardGrid>
             `} />
+
+            <h3 className="sub">Cards com imagem</h3>
+            <p className="muted">
+              Passando <code>image</code>, o card troca o ícone/gradiente pela imagem de capa — qualquer tamanho ou
+              proporção de origem encaixa certinho no mesmo slot (<code>object-fit: cover</code>), então uma imagem
+              retrato, paisagem ou quadrada funcionam igual, sem recorte manual. <code>colorFrom</code>/
+              <code>colorTo</code> deixam de ser necessários nesse modo.
+            </p>
+            <CardGrid>
+              <Card
+                title="Paisagem 600×400"
+                image="https://placehold.co/600x400/7a2e00/ff6a00"
+                tags={<Tag>Ação</Tag>}
+                price={<PriceNow>R$ 39,95</PriceNow>}
+              />
+              <Card
+                title="Quadrada 500×500"
+                image="https://placehold.co/500x500/0b3b4a/2bb8d4"
+                tags={<Badge variant="info">Novo</Badge>}
+                price={<PriceNow>R$ 59,90</PriceNow>}
+              />
+              <Card
+                title="Retrato 400×700"
+                image="https://placehold.co/400x700/2d1b4e/7a4fd1"
+                tags={<Tag>RPG</Tag>}
+                price={<><Discount>-25%</Discount><PriceOld>R$ 120,00</PriceOld><PriceNow>R$ 90,00</PriceNow></>}
+              />
+            </CardGrid>
+
+            <CodeWindow code={`
+import { Card, CardGrid, Tag, PriceNow } from "ember-ui";
+
+<CardGrid>
+  <Card
+    title="Paisagem 600×400"
+    image="https://placehold.co/600x400/7a2e00/ff6a00"
+    tags={<Tag>Ação</Tag>}
+    price={<PriceNow>R$ 39,95</PriceNow>}
+  />
+  <Card
+    title="Retrato 400×700"
+    image="https://placehold.co/400x700/2d1b4e/7a4fd1"
+    tags={<Tag>RPG</Tag>}
+  />
+</CardGrid>
+            `} />
           </section>
 
           <section className="sec" id="lista" aria-labelledby="h-lista">
