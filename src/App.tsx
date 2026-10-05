@@ -8,6 +8,7 @@ import { Checkbox, Radio, Switch } from "./components/Checkbox";
 import { Slider } from "./components/Slider";
 import { Tabs, TabList, Tab, TabPanel } from "./components/Tabs";
 import { Accordion, AccordionItem } from "./components/Accordion";
+import { useSmoothScroll } from "./scroll";
 import { SideNav, SideNavTitle, SideNavLink, SideNavButton } from "./components/SideNav";
 import { Window } from "./components/Window";
 import { Modal } from "./components/Modal";
@@ -96,6 +97,7 @@ export function App() {
   const [page, setPage] = useState(1);
   const toast = useToast();
   const { theme } = useTheme();
+  const lenis = useSmoothScroll();
 
   return (
     <>
@@ -240,6 +242,11 @@ function Exemplo() {
               também suaviza cliques em links de âncora. Use <code>useSmoothScroll</code> se precisar do controle
               programático (ex.: botão "voltar ao topo").
             </p>
+            <div className="row">
+              <Button id="voltar-ao-topo-demo" variant="secondary" size="sm" onClick={() => lenis?.scrollTo(0)}>
+                Voltar ao topo
+              </Button>
+            </div>
 
             <CodeWindow title="main.tsx" code={`
 import { SmoothScrollProvider } from "ember-ui";
