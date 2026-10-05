@@ -1,19 +1,21 @@
-import { useState } from "react";
-import { Button } from "../components/Button";
-import { Icon } from "../components/Icon";
+import { useState, type HTMLAttributes } from "react";
+import { Button } from "../Button";
+import { Icon } from "../Icon";
+import { spacingStyle, splitSpacingProps, type SpacingProps } from "../../lib/spacing";
+import "./CodeWindow.css";
 
-export type CodeWindowProps = {
-  code: string;
-  title?: string;
-};
+export type CodeWindowProps = HTMLAttributes<HTMLDivElement> &
+  SpacingProps & {
+    code: string;
+    title?: string;
+  };
 
 /**
- * Janela de código só da página de demo (não faz parte da biblioteca) -- mostra um
- * exemplo de uso de um componente, com botão de copiar. Reusa a metáfora visual de
- * Window (barra de título com dots), sem os controles de minimizar/maximizar/fechar,
- * que não fazem sentido pra um bloco estático.
+ * Bloco de código com barra de título (metáfora visual de Window, sem os controles de
+ * minimizar/maximizar/fechar) e botão de copiar.
  */
-export function CodeWindow({ code, title = "Exemplo de uso" }: CodeWindowProps) {
+export function CodeWindow({ code, title = "Exemplo de uso", style, ...rest }: CodeWindowProps) {
+  const [spacing, domRest] = splitSpacingProps(rest);
   const [copied, setCopied] = useState(false);
   const trimmed = code.trim();
 
@@ -28,7 +30,7 @@ export function CodeWindow({ code, title = "Exemplo de uso" }: CodeWindowProps) 
   };
 
   return (
-    <div className="code-window">
+    <div className="code-window" style={{ ...spacingStyle(spacing), ...style }} {...domRest}>
       <div className="code-window-bar">
         <span className="code-window-dot" aria-hidden="true" />
         <span className="code-window-title">{title}</span>

@@ -2,6 +2,8 @@ export * from "./components/Flex";
 export * from "./components/Icon";
 export * from "./components/BlinkingIcon";
 export * from "./components/Text";
+export * from "./components/Heading";
+export * from "./components/CodeWindow";
 export * from "./components/Button";
 export * from "./components/Field";
 export * from "./components/Checkbox";
