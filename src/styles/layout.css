@@ -12,9 +12,9 @@ body {
 .brand-icon { width: 18px; height: 18px; color: var(--accent); }
 .topbar .grow { flex: 1; }
 .shell { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: var(--sp-6); max-width: 1180px; margin: 0 auto; padding: var(--sp-6) var(--sp-5) 64px; }
-.demo-nav { position: sticky; top: 60px; align-self: start; max-height: calc(100vh - 76px); overflow: auto; }
+.demo-nav { position: sticky; top: 60px; align-self: start; min-width: 0; max-height: calc(100vh - 76px); overflow: auto; }
 .demo-nav .sidenav { width: auto; }
-main { display: grid; gap: var(--sp-6); min-width: 0; }
+main { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-6); min-width: 0; }
 .sec { padding: var(--sp-5); background: var(--bg-base); border: 1px solid var(--border); border-radius: var(--r-md); }
 .sec > h2 { margin-bottom: var(--sp-5); padding-left: var(--sp-3); font-size: var(--fs-md); text-transform: uppercase; letter-spacing: .12em; border-left: 3px solid var(--accent); }
 .sec h3.sub { margin: var(--sp-5) 0 var(--sp-3); }

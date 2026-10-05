@@ -1,4 +1,4 @@
-.tabs { display: flex; gap: var(--sp-1); border-bottom: 1px solid var(--border); }
+.tabs { display: flex; gap: var(--sp-1); overflow-x: auto; border-bottom: 1px solid var(--border); }
 .tab { height: 32px; padding: 0 var(--sp-5); background: transparent; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; color: var(--text-2); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; font-size: var(--fs-sm); transition: color var(--ease), background var(--ease); }
 .tab:hover:not(:disabled) { color: var(--text-strong); background: var(--bg-hover); }
 .tab:active:not(:disabled) { background: var(--bg-inset); }
