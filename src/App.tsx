@@ -1069,7 +1069,7 @@ import { BlinkingIcon } from "ember-ui";
           <section className="sec" id="toasts" aria-labelledby="h-toasts">
             <Heading level={2} id="h-toasts">Notificações (toasts)</Heading>
             <DemoToasts />
-            <Flex gap={3} mt={4}>
+            <Flex wrap gap={3} mt={4}>
               <Button variant="secondary" size="sm" onClick={() => toast({ title: "Amigo online", text: "Ana entrou e está jogando Maré Profunda.", variant: "info", animated: true })}>
                 Disparar toast (com animação)
               </Button>
