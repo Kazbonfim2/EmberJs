@@ -24,6 +24,7 @@ import { Toast, useToast } from "./components/Toast";
 import { Pagination, Breadcrumb, BreadcrumbItem } from "./components/Pagination";
 import { QRCode } from "./components/QRCode";
 import { Text } from "./components/Text";
+import { Heading } from "./components/Heading";
 import { ThemeToggle, useTheme } from "./theme";
 import { CodeWindow } from "./components/CodeWindow";
 
@@ -125,19 +126,19 @@ export function App() {
 
         <main id="main">
           <section className="sec" id="primeiros-passos" aria-labelledby="h-primeiros-passos">
-            <h2 id="h-primeiros-passos">Primeiros passos</h2>
+            <Heading level={2} id="h-primeiros-passos">Primeiros passos</Heading>
             <p className="muted">
               <code>ember-ui</code> é o pacote deste design system React/TypeScript. Instale, importe o CSS base uma
               única vez, envolva a raiz da aplicação com os providers necessários e importe os componentes direto do
               pacote — sem import por componente.
             </p>
 
-            <h3 className="sub">1. Instalação</h3>
+            <Heading level={3} variant="sub">1. Instalação</Heading>
             <CodeWindow title="Terminal" code={`
 npm install ember-ui react react-dom
             `} />
 
-            <h3 className="sub">2. CSS base</h3>
+            <Heading level={3} variant="sub">2. CSS base</Heading>
             <p className="muted">
               Uma única vez, na raiz da aplicação — traz os tokens (cores, espaçamento, tipografia) e o reset usados
               por todo componente.
@@ -146,7 +147,7 @@ npm install ember-ui react react-dom
 import "ember-ui/styles.css";
             `} />
 
-            <h3 className="sub">3. Providers na raiz</h3>
+            <Heading level={3} variant="sub">3. Providers na raiz</Heading>
             <p className="muted">
               <code>IconSprite</code> injeta o sprite usado por <code>Icon</code> (e por tudo que renderiza ícone).{" "}
               <code>ThemeProvider</code> controla o tema claro/escuro (veja a seção <a href="#tema">Tema</a>).{" "}
@@ -175,7 +176,7 @@ createRoot(document.getElementById("root")!).render(
 );
             `} />
 
-            <h3 className="sub">4. Use os componentes</h3>
+            <Heading level={3} variant="sub">4. Use os componentes</Heading>
             <p className="muted">
               Tudo sai do mesmo pacote. Todo componente que renderiza um elemento aceita <code>m</code>/<code>p</code>{" "}
               (veja <a href="#spacing">Espaçamento rápido</a>) além das próprias props.
@@ -189,7 +190,7 @@ import { Button, Card, Badge } from "ember-ui";
           </section>
 
           <section className="sec" id="cores" aria-labelledby="h-cores">
-            <h2 id="h-cores">Cores</h2>
+            <Heading level={2} id="h-cores">Cores</Heading>
             <div className="swatches">
               {SWATCHES.map((name) => (
                 <div className="sw" key={name}>
@@ -201,7 +202,7 @@ import { Button, Card, Badge } from "ember-ui";
           </section>
 
           <section className="sec" id="tema" aria-labelledby="h-tema">
-            <h2 id="h-tema">Tema</h2>
+            <Heading level={2} id="h-tema">Tema</Heading>
             <p className="muted">
               <code>ThemeProvider</code> fica uma única vez na raiz da aplicação (veja <code>main.tsx</code>) e guarda o
               tema (<code>light</code>/<code>dark</code>) em contexto, persistindo a escolha entre sessões. Dentro dele,{" "}
@@ -233,7 +234,7 @@ function Exemplo() {
           </section>
 
           <section className="sec" id="scroll-suave" aria-labelledby="h-scroll-suave">
-            <h2 id="h-scroll-suave">Scroll suave</h2>
+            <Heading level={2} id="h-scroll-suave">Scroll suave</Heading>
             <p className="muted">
               <code>SmoothScrollProvider</code> troca o scroll padrão do navegador por um com inércia/easing (via{" "}
               <a href="https://lenis.darkroom.engineering/" target="_blank" rel="noreferrer">Lenis</a>), aplicado em
@@ -267,7 +268,7 @@ function VoltarAoTopo() {
           </section>
 
           <section className="sec" id="texto" aria-labelledby="h-texto">
-            <h2 id="h-texto">Texto</h2>
+            <Heading level={2} id="h-texto">Texto</Heading>
             <Text className="muted">
               <code>Text</code> é o componente genérico pra qualquer texto da interface: <code>size</code>, <code>weight</code>,{" "}
               <code>color</code> e <code>align</code> usam os tokens do design system (<code>--fs-*</code>, pesos 400-700,{" "}
@@ -275,7 +276,7 @@ function VoltarAoTopo() {
               <code>h1</code>..<code>h4</code>, etc.) e aceita <code>m</code>/<code>p</code> como todo o resto da biblioteca.
             </Text>
 
-            <h3 className="sub">size + weight + color</h3>
+            <Heading level={3} variant="sub">size + weight + color</Heading>
             <div className="stack">
               <Text as="h3" size="xl" weight="bold" color="strong" m={0}>Forja das Brasas</Text>
               <Text size="md" color="default" m={0}>Texto padrão, do tamanho e cor normais do corpo.</Text>
@@ -284,7 +285,7 @@ function VoltarAoTopo() {
               <Text size="sm" color="err" weight="semibold" m={0}>Falha ao conectar ao servidor</Text>
             </div>
 
-            <h3 className="sub">align + truncate + m/p como os demais componentes</h3>
+            <Heading level={3} variant="sub">align + truncate + m/p como os demais componentes</Heading>
             <p className="muted">Mesma prop de espaçamento que Button/Card/Badge usam — aqui com mb pra separar os três exemplos.</p>
             <div style={{ maxWidth: 220 }}>
               <Text align="right" mb={3}>Alinhado à direita</Text>
@@ -301,10 +302,35 @@ import { Text } from "ember-ui";
 <Text size="sm" color="muted">Texto secundário/legenda.</Text>
 <Text truncate style={{ maxWidth: 200 }}>Corta com reticências numa linha só</Text>
             `} />
+
+            <Heading level={3} variant="sub">Heading</Heading>
+            <p className="muted">
+              <code>Heading</code> é o <code>Text</code> especializado pra títulos: <code>level</code> (1 a 4) escolhe o
+              elemento semântico (<code>h1</code>..<code>h4</code>) e já aplica o tamanho certo dos tokens, e{" "}
+              <code>variant="sub"</code> dá o rótulo pequeno, maiúsculo e discreto usado nos subtítulos desta própria
+              página (como este aqui). Aceita <code>m</code>/<code>p</code> e o resto das props do <code>Text</code>{" "}
+              (<code>size</code>, <code>weight</code>, <code>color</code>, <code>align</code>...) pra sobrescrever o
+              padrão quando precisar.
+            </p>
+            <div className="stack">
+              <Heading level={1} m={0}>Heading nível 1</Heading>
+              <Heading level={2} m={0}>Heading nível 2</Heading>
+              <Heading level={3} m={0}>Heading nível 3</Heading>
+              <Heading level={4} m={0}>Heading nível 4</Heading>
+              <Heading level={3} variant="sub" m={0}>Variant "sub"</Heading>
+            </div>
+
+            <CodeWindow code={`
+import { Heading } from "ember-ui";
+
+<Heading level={1}>Título da página</Heading>
+<Heading level={2}>Título de seção</Heading>
+<Heading level={3} variant="sub">Rótulo de subseção</Heading>
+            `} />
           </section>
 
           <section className="sec" id="spacing" aria-labelledby="h-spacing">
-            <h2 id="h-spacing">Espaçamento rápido (m/p)</h2>
+            <Heading level={2} id="h-spacing">Espaçamento rápido (m/p)</Heading>
             <p className="muted">
               Todo componente da biblioteca aceita <code>m</code>/<code>mt</code>/<code>mr</code>/<code>mb</code>/<code>ml</code>/
               <code>mx</code>/<code>my</code> (margin) e <code>p</code>/<code>pt</code>/<code>pr</code>/<code>pb</code>/<code>pl</code>/
@@ -314,7 +340,7 @@ import { Text } from "ember-ui";
               rápidos de espaçamento.
             </p>
 
-            <h3 className="sub">margin por lado, sem depender de Flex/gap</h3>
+            <Heading level={3} variant="sub">margin por lado, sem depender de Flex/gap</Heading>
             <p className="muted">
               Cada <code>Badge</code> aqui empurra o próximo com <code>ml</code> — útil quando não dá pra (ou não vale a pena)
               envolver os elementos num <code>Flex</code>.
@@ -325,7 +351,7 @@ import { Text } from "ember-ui";
               <Badge variant="ok" ml={6}>ml={"{6}"}</Badge>
             </div>
 
-            <h3 className="sub">padding sobrescrevendo o espaçamento padrão do componente</h3>
+            <Heading level={3} variant="sub">padding sobrescrevendo o espaçamento padrão do componente</Heading>
             <p className="muted">
               <code>p</code>/<code>px</code>/<code>py</code> têm prioridade sobre o padding que o componente já define via CSS —
               é uma sobrescrita deliberada, não uma soma. Útil pra dar mais (ou menos) respiro num caso específico, sem criar uma
@@ -345,7 +371,7 @@ import { Badge, Card } from "ember-ui";
           </section>
 
           <section className="sec" id="flex" aria-labelledby="h-flex">
-            <h2 id="h-flex">Sistema de Flex</h2>
+            <Heading level={2} id="h-flex">Sistema de Flex</Heading>
             <p className="muted">
               <code>Flex</code> e <code>FlexItem</code> normalizam o uso de flexbox pra não escrever <code>display: flex</code> e
               companhia na mão em todo canto — direção, alinhamento, espaçamento (nos tokens <code>--sp-1</code> a{" "}
@@ -353,7 +379,7 @@ import { Badge, Card } from "ember-ui";
               biblioteca (aqui embaixo, com <code>Badge</code>).
             </p>
 
-            <h3 className="sub">Exemplo prático: linha de usuário</h3>
+            <Heading level={3} variant="sub">Exemplo prático: linha de usuário</Heading>
             <p className="muted">
               Avatar, um bloco de texto que cresce pra preencher o espaço livre (<code>FlexItem grow</code>) e um botão de
               ação, tudo alinhado numa única linha — o padrão clássico de "linha de item com ação" (lista de amigos,
@@ -378,7 +404,7 @@ import { Badge, Card } from "ember-ui";
               <Button variant="secondary" size="sm">Chamar pra jogar</Button>
             </Flex>
 
-            <h3 className="sub">align="center" + justify="between" + gap={3}</h3>
+            <Heading level={3} variant="sub">align="center" + justify="between" + gap={3}</Heading>
             <p className="muted">Distribui nas pontas e centraliza no eixo cruzado — útil pra barras de ação, cabeçalhos de card etc.</p>
             <Flex
               gap={3}
@@ -391,7 +417,7 @@ import { Badge, Card } from "ember-ui";
               <Badge variant="ok">Direita</Badge>
             </Flex>
 
-            <h3 className="sub">direction="column" + FlexItem grow</h3>
+            <Heading level={3} variant="sub">direction="column" + FlexItem grow</Heading>
             <p className="muted">
               O primeiro <code>FlexItem</code> tem <code>grow</code>, então ele consome todo o espaço livre da coluna; o
               segundo fica no tamanho natural do conteúdo.
@@ -416,7 +442,7 @@ import { Flex, FlexItem, Button } from "ember-ui";
           </section>
 
           <section className="sec" id="scrollbar" aria-labelledby="h-scrollbar">
-            <h2 id="h-scrollbar">Scrollbar</h2>
+            <Heading level={2} id="h-scrollbar">Scrollbar</Heading>
             <div className="scroll-box" tabIndex={0} role="region" aria-label="Área rolável">
               <p>Notas da versão 2.4. Corrigimos falhas de conexão, melhoramos o desempenho de downloads e atualizamos a interface da biblioteca.</p>
               <p>O thumb fica laranja ao passar o mouse e mais escuro ao arrastar.</p>
@@ -428,8 +454,8 @@ import { Flex, FlexItem, Button } from "ember-ui";
           </section>
 
           <section className="sec" id="botoes" aria-labelledby="h-botoes">
-            <h2 id="h-botoes">Botões</h2>
-            <h3 className="sub">Variantes</h3>
+            <Heading level={2} id="h-botoes">Botões</Heading>
+            <Heading level={3} variant="sub">Variantes</Heading>
             <Flex gap={3} wrap>
               <Button variant="primary">Instalar</Button>
               <Button variant="secondary">Cancelar</Button>
@@ -437,7 +463,7 @@ import { Flex, FlexItem, Button } from "ember-ui";
               <Button variant="danger">Excluir</Button>
               <Button variant="secondary" icon aria-label="Configurações"><Icon name="settings" /></Button>
             </Flex>
-            <h3 className="sub">Tamanhos</h3>
+            <Heading level={3} variant="sub">Tamanhos</Heading>
             <div className="row">
               <Button variant="primary" size="sm">Pequeno</Button>
               <Button variant="primary">Médio</Button>
@@ -445,7 +471,7 @@ import { Flex, FlexItem, Button } from "ember-ui";
               <Button variant="secondary" icon size="sm" aria-label="Adicionar"><Icon name="plus" size="sm" /></Button>
               <Button variant="secondary" icon size="lg" aria-label="Adicionar"><Icon name="plus" /></Button>
             </div>
-            <h3 className="sub">Com ícone, carregando e desabilitado</h3>
+            <Heading level={3} variant="sub">Com ícone, carregando e desabilitado</Heading>
             <div className="row">
               <Button variant="primary"><Icon name="download" />Baixar</Button>
               <Button variant="primary" loading>Carregando</Button>
@@ -455,7 +481,7 @@ import { Flex, FlexItem, Button } from "ember-ui";
               <Button variant="ghost" disabled>Desabilitado</Button>
               <Button variant="danger" disabled>Desabilitado</Button>
             </div>
-            <h3 className="sub">Grupos de botões</h3>
+            <Heading level={3} variant="sub">Grupos de botões</Heading>
             <div className="row" style={{ gap: 24 }}>
               <ButtonGroup label="Formato do texto">
                 <Button variant="secondary" icon aria-label="Negrito"><Icon name="plus" /></Button>
@@ -492,7 +518,7 @@ import { Button, ButtonGroup, Icon } from "ember-ui";
           </section>
 
           <section className="sec" id="inputs" aria-labelledby="h-inputs">
-            <h2 id="h-inputs">Inputs</h2>
+            <Heading level={2} id="h-inputs">Inputs</Heading>
             <div className="grid-2">
               <Field label="Nome de usuário" htmlFor="i-nome">
                 <Input id="i-nome" placeholder="Digite seu nome" />
@@ -537,7 +563,7 @@ import { Field, Input, PasswordInput } from "ember-ui";
           </section>
 
           <section className="sec" id="selecao" aria-labelledby="h-selecao">
-            <h2 id="h-selecao">Checkbox, radio, switch e slider</h2>
+            <Heading level={2} id="h-selecao">Checkbox, radio, switch e slider</Heading>
             <div className="grid-2">
               <fieldset className="stack" style={{ border: 0, padding: 0, margin: 0 }}>
                 <legend className="label" style={{ marginBottom: 8 }}>Checkbox</legend>
@@ -577,7 +603,7 @@ import { Checkbox, Radio, Switch, Slider } from "ember-ui";
           </section>
 
           <section className="sec" id="tabs" aria-labelledby="h-tabs">
-            <h2 id="h-tabs">Tabs e menu lateral</h2>
+            <Heading level={2} id="h-tabs">Tabs e menu lateral</Heading>
             <Tabs value={tab} onChange={setTab}>
               <TabList aria-label="Exemplo de tabs">
                 <Tab value="loja">Loja</Tab>
@@ -589,7 +615,7 @@ import { Checkbox, Radio, Switch, Slider } from "ember-ui";
               <TabPanel value="biblioteca">Seus jogos instalados e favoritos.</TabPanel>
               <TabPanel value="comunidade">Grupos, fóruns e screenshots.</TabPanel>
             </Tabs>
-            <h3 className="sub">Menu lateral</h3>
+            <Heading level={3} variant="sub">Menu lateral</Heading>
             <SideNav>
               <SideNavTitle>Navegação</SideNavTitle>
               <SideNavLink href="#tabs" current><Icon name="store" size="sm" /> Loja</SideNavLink>
@@ -616,7 +642,7 @@ const [tab, setTab] = useState("loja");
           </section>
 
           <section className="sec" id="accordion" aria-labelledby="h-accordion">
-            <h2 id="h-accordion">Accordion</h2>
+            <Heading level={2} id="h-accordion">Accordion</Heading>
             <p className="muted">
               Só uma seção fica aberta por vez — abrir uma fecha a anterior. Navegação por teclado com{" "}
               <kbd>↑</kbd>/<kbd>↓</kbd> entre os cabeçalhos.
@@ -648,7 +674,7 @@ import { Accordion, AccordionItem } from "ember-ui";
           </section>
 
           <section className="sec" id="janela" aria-labelledby="h-janela">
-            <h2 id="h-janela">Janela</h2>
+            <Heading level={2} id="h-janela">Janela</Heading>
             <Window title="Configurações">
               <Switch defaultChecked>Iniciar com o sistema</Switch>
               <Switch>Mostrar notificações</Switch>
@@ -669,7 +695,7 @@ import { Window, Switch, Button } from "ember-ui";
           </section>
 
           <section className="sec" id="modal" aria-labelledby="h-modal">
-            <h2 id="h-modal">Modais</h2>
+            <Heading level={2} id="h-modal">Modais</Heading>
             <div className="row">
               <Button variant="primary" onClick={() => setOpenModal("basic")}>Modal simples</Button>
               <Button variant="secondary" onClick={() => setOpenModal("confirm")}>Confirmação</Button>
@@ -740,7 +766,7 @@ const [open, setOpen] = useState(false);
           </section>
 
           <section className="sec" id="dropdown" aria-labelledby="h-dropdown">
-            <h2 id="h-dropdown">Dropdown e menu de contexto</h2>
+            <Heading level={2} id="h-dropdown">Dropdown e menu de contexto</Heading>
             <div className="row" style={{ alignItems: "flex-start" }}>
               <Dropdown trigger="Ações" mb={3}>
                 <MenuItem icon="play" shortcut="Enter" onSelect={() => toast({ title: "Jogando...", variant: "info" })}>Jogar</MenuItem>
@@ -751,7 +777,7 @@ const [open, setOpen] = useState(false);
               </Dropdown>
             </div>
 
-            <h3 className="sub">Menu de contexto (clique direito ou tecla Menu)</h3>
+            <Heading level={3} variant="sub">Menu de contexto (clique direito ou tecla Menu)</Heading>
             <ContextMenu
               menu={<>
                 <MenuItem icon="play" shortcut="Enter">Abrir</MenuItem>
@@ -782,7 +808,7 @@ import { Dropdown, MenuItem, MenuSeparator } from "ember-ui";
           </section>
 
           <section className="sec" id="tooltip" aria-labelledby="h-tooltip">
-            <h2 id="h-tooltip">Tooltip e popover</h2>
+            <Heading level={2} id="h-tooltip">Tooltip e popover</Heading>
             <div className="row" style={{ minHeight: 140, alignItems: "flex-start" }}>
               <Tooltip label="Ativar alertas">
                 <Button variant="secondary" icon aria-label="Favoritar"><Icon name="bell" /></Button>
@@ -791,7 +817,7 @@ import { Dropdown, MenuItem, MenuSeparator } from "ember-ui";
                 <Button variant="secondary">Passe o mouse ou foque</Button>
               </Tooltip>
               <Popover trigger="Popover">
-                <h4>Resumo do jogo</h4>
+                <Heading level={4}>Resumo do jogo</Heading>
                 <p className="muted">Aventura cooperativa para até 4 jogadores, com suporte a controle.</p>
                 <Button variant="primary" size="sm">Ver detalhes</Button>
               </Popover>
@@ -811,7 +837,7 @@ import { Tooltip, Popover, Button } from "ember-ui";
           </section>
 
           <section className="sec" id="cards" aria-labelledby="h-cards">
-            <h2 id="h-cards">Cards</h2>
+            <Heading level={2} id="h-cards">Cards</Heading>
             <CardGrid>
               <Card
                 title="Forja das Brasas"
@@ -862,7 +888,7 @@ import { Card, CardGrid, Tag, PriceNow } from "ember-ui";
 </CardGrid>
             `} />
 
-            <h3 className="sub">Cards com imagem</h3>
+            <Heading level={3} variant="sub">Cards com imagem</Heading>
             <p className="muted">
               Passando <code>image</code>, o card troca o ícone/gradiente pela imagem de capa — qualquer tamanho ou
               proporção de origem encaixa certinho no mesmo slot (<code>object-fit: cover</code>), então uma imagem
@@ -910,7 +936,7 @@ import { Card, CardGrid, Tag, PriceNow } from "ember-ui";
           </section>
 
           <section className="sec" id="lista" aria-labelledby="h-lista">
-            <h2 id="h-lista">Lista de itens</h2>
+            <Heading level={2} id="h-lista">Lista de itens</Heading>
             <LibraryList aria-label="Biblioteca de jogos">
               <LibraryItem colorFrom="#7a2e00" colorTo="#ff6a00" name="Forja das Brasas" meta="12 h" />
               <LibraryItem colorFrom="#0b3b4a" colorTo="#2bb8d4" name="Maré Profunda" meta="3 h" current />
@@ -928,13 +954,13 @@ import { LibraryList, LibraryItem } from "ember-ui";
           </section>
 
           <section className="sec" id="progresso" aria-labelledby="h-progresso">
-            <h2 id="h-progresso">Barra de progresso e download</h2>
+            <Heading level={2} id="h-progresso">Barra de progresso e download</Heading>
             <div className="stack" style={{ maxWidth: 420 }}>
               <Progress value={65} label="Progresso" />
               <Progress value={100} variant="ok" label="Concluído" />
               <Progress value={30} variant="paused" label="Pausado" />
             </div>
-            <h3 className="sub">Download</h3>
+            <Heading level={3} variant="sub">Download</Heading>
             <Download
               title="Forja das Brasas"
               status="Baixando"
@@ -960,8 +986,8 @@ import { Progress, Download } from "ember-ui";
           </section>
 
           <section className="sec" id="badges" aria-labelledby="h-badges">
-            <h2 id="h-badges">Badges, tags e avatar</h2>
-            <h3 className="sub">Badges</h3>
+            <Heading level={2} id="h-badges">Badges, tags e avatar</Heading>
+            <Heading level={3} variant="sub">Badges</Heading>
             <div className="row">
               <Badge>Destaque</Badge>
               <Badge variant="ok">Instalado</Badge>
@@ -970,13 +996,13 @@ import { Progress, Download } from "ember-ui";
               <Badge variant="info">Novo</Badge>
               <Badge variant="muted">Beta</Badge>
             </div>
-            <h3 className="sub">Tags</h3>
+            <Heading level={3} variant="sub">Tags</Heading>
             <div className="row">
               <Tag>Indie</Tag>
               <Tag>Multiplayer</Tag>
               <Tag onRemove={() => {}} removeLabel="Remover tag Removível">Removível</Tag>
             </div>
-            <h3 className="sub">Avatar com status</h3>
+            <Heading level={3} variant="sub">Avatar com status</Heading>
             <div className="row" style={{ gap: 24 }}>
               <Avatar size="lg" status="online" label="Lucas, online">L</Avatar>
               <Avatar status="away" label="Ana, ausente">A</Avatar>
@@ -993,7 +1019,7 @@ import { Badge, Tag, Avatar } from "ember-ui";
           </section>
 
           <section className="sec" id="icone-piscante" aria-labelledby="h-icone-piscante">
-            <h2 id="h-icone-piscante">Ícone piscante</h2>
+            <Heading level={2} id="h-icone-piscante">Ícone piscante</Heading>
             <div className="row" style={{ gap: 24 }}>
               <BlinkingIcon name="bell" size="sm" label="Notificação, pequeno" />
               <BlinkingIcon name="bell" size="md" label="Notificação, médio" />
@@ -1010,7 +1036,7 @@ import { BlinkingIcon } from "ember-ui";
           </section>
 
           <section className="sec" id="toasts" aria-labelledby="h-toasts">
-            <h2 id="h-toasts">Notificações (toasts)</h2>
+            <Heading level={2} id="h-toasts">Notificações (toasts)</Heading>
             <DemoToasts />
             <Flex gap={3} mt={4}>
               <Button variant="secondary" size="sm" onClick={() => toast({ title: "Amigo online", text: "Ana entrou e está jogando Maré Profunda.", variant: "info", animated: true })}>
@@ -1040,7 +1066,7 @@ function Exemplo() {
           </section>
 
           <section className="sec" id="paginacao" aria-labelledby="h-paginacao">
-            <h2 id="h-paginacao">Paginação e breadcrumb</h2>
+            <Heading level={2} id="h-paginacao">Paginação e breadcrumb</Heading>
             <Breadcrumb>
               <BreadcrumbItem href="#paginacao">Loja</BreadcrumbItem>
               <BreadcrumbItem href="#paginacao">Ação</BreadcrumbItem>
@@ -1063,13 +1089,13 @@ const [page, setPage] = useState(1);
           </section>
 
           <section className="sec" id="qrcode" aria-labelledby="h-qrcode">
-            <h2 id="h-qrcode">QR code</h2>
+            <Heading level={2} id="h-qrcode">QR code</Heading>
             <p className="muted">
               <code>QRCode</code> codifica texto/URL numa imagem (SVG), sem depender de canvas ou de rede — tudo acontece no
               cliente. Cor e fundo já usam os tokens do tema por padrão, então funciona nos dois temas sem configurar nada.
             </p>
 
-            <h3 className="sub">Exemplo prático: card de convite</h3>
+            <Heading level={3} variant="sub">Exemplo prático: card de convite</Heading>
             <p className="muted">
               O padrão mais comum de uso: um QRCode ao lado de um texto e um botão de ação, pra compartilhar um link de
               verdade (convite pra partida, evento, cupom). O botão copia o mesmo link que está codificado no QR.
@@ -1103,14 +1129,14 @@ const [page, setPage] = useState(1);
               </div>
             </div>
 
-            <h3 className="sub">Link (nível de correção padrão)</h3>
+            <Heading level={3} variant="sub">Link (nível de correção padrão)</Heading>
             <p className="muted">
               Caso de uso mais comum: codificar uma URL pra escanear com o celular. O nível de correção de erro padrão
               (<code>"M"</code>) já é suficiente pra isso.
             </p>
             <QRCode value="https://ember-ui.example/convite" />
 
-            <h3 className="sub">Código curto, com correção de erro alta</h3>
+            <Heading level={3} variant="sub">Código curto, com correção de erro alta</Heading>
             <p className="muted">
               Pra um código que vai ser impresso e pode sujar/arranhar (etiqueta, crachá, caixa física), vale subir o{" "}
               <code>level</code> pra <code>"H"</code> — tolera mais dano, ao custo de um QR mais denso. Nesse exemplo também
