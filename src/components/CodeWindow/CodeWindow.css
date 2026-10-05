@@ -1,0 +1,5 @@
+.code-window { margin-top: var(--sp-4); background: var(--bg-inset); border: 1px solid var(--border); border-radius: var(--r-md); overflow: hidden; }
+.code-window-bar { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-2) var(--sp-3); background: var(--bg-raised); border-bottom: 1px solid var(--border); }
+.code-window-dot { width: 10px; height: 10px; flex: none; border-radius: 50%; background: var(--accent); }
+.code-window-title { flex: 1; font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--text-2); }
+.code-window-body { margin: 0; padding: var(--sp-4); overflow-x: auto; font: var(--fs-sm)/1.6 "Cascadia Code", Consolas, monospace; color: var(--text); white-space: pre; }

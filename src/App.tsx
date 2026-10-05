@@ -25,7 +25,7 @@ import { Pagination, Breadcrumb, BreadcrumbItem } from "./components/Pagination"
 import { QRCode } from "./components/QRCode";
 import { Text } from "./components/Text";
 import { ThemeToggle, useTheme } from "./theme";
-import { CodeWindow } from "./demo/CodeWindow";
+import { CodeWindow } from "./components/CodeWindow";
 
 const SECTION_GROUPS = [
   {
