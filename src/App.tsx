@@ -33,6 +33,7 @@ const SECTION_GROUPS = [
     title: "Primeiros passos",
     items: [
       ["primeiros-passos", "Instalação e uso"],
+      ["para-llms", "Para LLMs"],
     ],
   },
   {
@@ -186,6 +187,34 @@ import { Button, Card, Badge } from "ember-ui";
 
 <Card title="Forja das Brasas" colorFrom="#333" colorTo="#666" tags={<Badge variant="ok">Instalado</Badge>} />
 <Button variant="primary" mt={4}>Jogar</Button>
+            `} />
+          </section>
+
+          <section className="sec" id="para-llms" aria-labelledby="h-para-llms">
+            <Heading level={2} id="h-para-llms">Para LLMs</Heading>
+            <Text color="muted">
+              <code>llm.txt</code> é um resumo de toda a biblioteca (instalação, providers
+              obrigatórios, tokens de design, props de cada componente, lista de ícones e erros
+              comuns) num único arquivo de texto, pensado para ser dado como contexto a um agente
+              de IA (Claude, GPT, Gemini ou qualquer outro) gerar código correto com o{" "}
+              <code>ember-ui</code> sem precisar explorar o repositório inteiro. Segue o mesmo
+              espírito da convenção <a href="https://llmstxt.org/" target="_blank" rel="noreferrer">llms.txt</a>.
+            </Text>
+            <Flex wrap align="center" gap={3}>
+              <a
+                className="btn btn-primary"
+                href="/llm.txt"
+                download="llm.txt"
+                onClick={() => toast({ title: "Baixando llm.txt", variant: "ok" })}
+              >
+                <Icon name="download" />
+                Baixar llm.txt
+              </a>
+            </Flex>
+
+            <CodeWindow title="Terminal" code={`
+# também disponível direto na raiz do site publicado
+curl -O https://sua-instancia.exemplo/llm.txt
             `} />
           </section>
 
@@ -875,7 +904,7 @@ import { Tooltip, Popover, Button } from "ember-ui";
               />
             </CardGrid>
 
-            <CodeWindow code={`
+            <CodeWindow mb={3} code={`
 import { Card, CardGrid, Tag, PriceNow } from "ember-ui";
 
 <CardGrid>
