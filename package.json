@@ -20,7 +20,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "build:lib": "tsc -p tsconfig.json --emitDeclarationOnly --outDir dist && bun build ./src/index.ts --outdir dist --target browser --format esm --external react --external react-dom",
-    "test": "bun test"
+    "test": "bun test",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "peerDependencies": {
     "react": "^18.0.0",
