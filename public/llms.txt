@@ -5,13 +5,30 @@
 > gerar código correto usando esta biblioteca sem precisar explorar o repositório inteiro.
 > Formato inspirado na convenção llms.txt (https://llmstxt.org/).
 
-Pacote npm: `ember-ui`. Peer deps: `react@^18`, `react-dom@^18`.
+Pacote: `ember-ui`. Peer deps: `react@^18`, `react-dom@^18`.
 
 ## Instalação
 
+**Este pacote NÃO está publicado no registry do npm.** `npm install ember-ui` sozinho vai falhar
+(pacote inexistente no registry). A única forma de instalar hoje é via tarball local, gerado a
+partir do repositório-fonte (`html-css-js-emberjs`, branch `react/main`).
+
+Se você tem acesso ao repositório-fonte:
+
 ```bash
-npm install ember-ui react react-dom
+# dentro do repositório-fonte -- gera ember-ui-0.1.0.tgz na raiz
+bun run pack:lib
+
+# no projeto consumidor -- caminho absoluto ou relativo até o .tgz gerado acima
+npm install /caminho/para/html-css-js-emberjs/ember-ui-0.1.0.tgz react react-dom
 ```
+
+Se já existe um `ember-ui-0.1.0.tgz` pronto na raiz do repositório-fonte (sem precisar rodar
+`bun run pack:lib` de novo), pule direto pro `npm install` acima apontando pra ele. `bun add` no
+lugar de `npm install` funciona igual. Detalhes completos (incluindo a alternativa `bun link` para
+desenvolvimento ativo) estão no `README.md` do repositório-fonte, seção "Instalar em outro
+projeto". Nunca sugira `npm install ember-ui` sem o caminho do tarball -- esse comando sozinho
+não resolve nada, pois o pacote não existe no registry público.
 
 CSS base, uma única vez, na raiz da aplicação:
 

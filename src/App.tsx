@@ -135,9 +135,24 @@ export function App() {
             </Text>
 
             <Heading level={3} variant="sub">1. Instalação</Heading>
-            <CodeWindow title="Terminal" code={`
-npm install ember-ui react react-dom
+            <Text color="muted">
+              <code>ember-ui</code> ainda não está publicado no registry do npm — <code>npm install ember-ui</code>{" "}
+              sozinho não funciona. A instalação é via tarball gerado a partir deste repositório (branch{" "}
+              <code>react/main</code>).
+            </Text>
+            <CodeWindow title="Terminal — neste repositório" code={`
+bun run pack:lib   # gera ember-ui-0.1.0.tgz na raiz do repo
             `} />
+            <CodeWindow title="Terminal — no projeto que vai consumir a lib" code={`
+npm install /caminho/para/html-css-js-emberjs/ember-ui-0.1.0.tgz react react-dom
+# ou, com bun:
+bun add /caminho/para/html-css-js-emberjs/ember-ui-0.1.0.tgz react react-dom
+            `} />
+            <Text color="muted">
+              Veja a seção "Instalar em outro projeto" do <code>README.md</code> para fixar isso no{" "}
+              <code>package.json</code> (via <code>file:</code>) ou usar <code>bun link</code>/<code>npm link</code> em
+              desenvolvimento ativo.
+            </Text>
 
             <Heading level={3} variant="sub">2. CSS base</Heading>
             <Text color="muted">
